@@ -139,10 +139,14 @@
   </main>
 
   <script>
-    function startGame() {
-      document.getElementById("welcome").style.display = "none";
-      document.getElementById("game").style.display = "block";
-    }
-  </script>
+  function startGame() {
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("game").style.display = "block";
+
+    setTimeout(function() {
+      window.location.href = "home.html";
+    }, 1500);
+  }
+</script>
 </body>
 </html>
