@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Tiny World · Home</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#f7e8e6;
+  font-family:monospace;
+  color:#76535c;
+  text-align:center;
+}
+h1{margin:28px 0 6px;color:#bd788e}
+p{margin:0 0 20px;font-size:13px}
+.game{
+  width:min(96vw,850px);
+  margin:auto;
+  padding:12px;
+  background:#b98c80;
+  border:6px solid #825c59;
+  box-shadow:8px 8px 0 #d8b7b2;
+}
+.house{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  background:#825c59;
+}
+.room{
+  min-height:245px;
+  padding:12px;
+  position:relative;
+  overflow:hidden;
+  border:5px solid #9d726a;
+  image-rendering:pixelated;
+}
+.bedroom{
+  background:repeating-linear-gradient(
+    90deg,#e9bb9e 0 24px,#dca98d 24px 26px);
+}
+.kitchen{
+  background:conic-gradient(
+    #f4dcd0 25%,#fff0e5 0 50%,
+    #f4dcd0 0 75%,#fff0e5 0) 0 0/44px 44px;
+}
+.living{
+  background:repeating-linear-gradient(
+    0deg,#d7b48e 0 25px,#c49d78 25px 27px);
+}
+.bathroom{
+  background:conic-gradient(
+    #c3dfd9 25%,#e7f5ef 0 50%,
+    #c3dfd9 0 75%,#e7f5ef 0) 0 0/40px 40px;
+}
+.room-name{
+  position:absolute;
+  left:9px;top:8px;
+  background:#fff0e8;
+  padding:5px 8px;
+  border:2px solid #aa8583;
+  font-size:12px;
+  z-index:2;
+}
+.furniture{
+  position:absolute;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  border:4px solid #a77a72;
+  box-shadow:5px 5px 0 #8d625b;
+}
+.bed{
+  width:115px;height:145px;
+  left:50%;top:48px;
+  transform:translateX(-50%);
+  background:linear-gradient(#fff4e9 0 25%,#efb6c3 25%);
+}
+.wardrobe{
+  width:65px;height:85px;
+  right:13px;bottom:14px;
+  background:#b98465;
+}
+.desk{
+  width:90px;height:52px;
+  left:13px;bottom:17px;
+  background:#edc3b2;
+}
+.counter{
+  width:75%;height:53px;
+  top:15px;right:10px;
+  background:#f5d7c4;
+}
+.fridge{
+  width:67px;height:90px;
+  left:14px;bottom:17px;
+  background:#f9e4e8;
+}
+.table{
+  width:100px;height:85px;
+  right:25px;bottom:25px;
+  background:#e6b48f;
+}
+.sofa{
+  width:150px;height:70px;
+  left:50%;top:43px;
+  transform:translateX(-50%);
+  background:#e5a9bc;
+}
+.tv{
+  width:105px;height:45px;
+  left:50%;bottom:25px;
+  transform:translateX(-50%);
+  background:#78677c;
+}
+.rug{
+  position:absolute;
+  width:155px;height:90px;
+  left:50%;top:115px;
+  transform:translateX(-50%);
+  background:#f6d9cb;
+  border:6px solid #eab7bb;
+}
+.bath{
+  width:125px;height:90px;
+  top:48px;right:18px;
+  background:#f5faf7;
+}
+.sink{
+  width:72px;height:62px;
+  bottom:30px;left:20px;
+  background:#f9e5e4;
+}
+.laundry{
+  width:75px;height:75px;
+  right:25px;bottom:25px;
+  background:#e9eef2;
+}
+@media(max-width:560px){
+  .game{padding:6px;border-width:4px}
+  .room{min-height:190px;padding:5px;border-width:3px}
+  .furniture{font-size:23px;zoom:.7}
+  .room-name{font-size:10px}
+}
+</style>
+</head>
+<body>
+<h1>Our Tiny World</h1>
+<p>♡ Jiwoo & Haram's Little Home ♡</p>
+<div class="game">
+  <div class="house">
+    <section class="room bedroom">
+      <span class="room-name">🎀 BEDROOM</span>
+      <div class="furniture bed">🛏️</div>
+      <div class="furniture wardrobe">👗</div>
+      <div class="furniture desk">📖</div>
+    </section>
+    <section class="room kitchen">
+      <span class="room-name">🍓 KITCHEN</span>
+      <div class="furniture counter">🍳</div>
+      <div class="furniture fridge">🥛</div>
+      <div class="furniture table">🍰</div>
+    </section>
+    <section class="room living">
+      <span class="room-name">🎀 LIVING ROOM</span>
+      <div class="rug"></div>
+      <div class="furniture sofa">🛋️</div>
+      <div class="furniture tv">📺</div>
+    </section>
+    <section class="room bathroom">
+      <span class="room-name">🫧 BATHROOM</span>
+      <div class="furniture bath">🛁</div>
+      <div class="furniture sink">🪞</div>
+      <div class="furniture laundry">🧺</div>
+    </section>
+  </div>
+</div>
+</body>
+</html>
