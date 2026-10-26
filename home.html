@@ -5,586 +5,505 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our Tiny World · Home</title>
-
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#f7e8e6;
+  font-family:"Courier New",monospace;
+  color:#76535c;
+  text-align:center;
+  padding:24px 12px 45px;
 }
 
-body {
-  margin: 0;
-  background: #f7e8e6;
-  font-family: "Courier New", monospace;
-  color: #76535c;
-  text-align: center;
-  padding: 22px 12px 45px;
+h1{
+  margin:0 0 5px;
+  font-size:clamp(25px,4vw,36px);
+  color:#bd788e;
 }
 
-h1 {
-  margin: 0 0 5px;
-  font-size: 32px;
-  color: #bd788e;
+.subtitle{
+  margin:0 0 23px;
+  font-size:14px;
 }
 
-.subtitle {
-  margin: 0 0 25px;
-  font-size: 14px;
+.viewport{
+  width:min(97vw,1150px);
+  margin:auto;
+  overflow-x:auto;
+  padding:12px 12px 18px;
 }
 
-.game {
-  width: min(96vw, 1100px);
-  margin: auto;
-  padding: 14px;
-  background: #b98c80;
-  border: 7px solid #825c59;
-  box-shadow: 9px 9px 0 #d8b7b2;
-  overflow-x: auto;
+.house{
+  position:relative;
+  width:1050px;
+  height:790px;
+  margin:auto;
+  text-align:left;
 }
 
-.house {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1000 / 720;
-  min-width: 620px;
-  background: #825c59;
-  overflow: hidden;
+.room{
+  position:absolute;
+  overflow:hidden;
+  border:7px solid #825c59;
+  box-shadow:6px 6px 0 #d8b7b2;
 }
 
-/* 四个不同大小的房间 */
+/* ===== 房屋布局 ===== */
 
-.room {
-  position: absolute;
-  overflow: hidden;
-  border: 6px solid #825c59;
-}
-
-.bedroom {
-  left: 0;
-  top: 0;
-  width: 65%;
-  height: 43%;
-  background: repeating-linear-gradient(
-    90deg,
-    #e9bb9e 0 27px,
-    #dca98d 27px 30px
+.bedroom{
+  left:110px;
+  top:0;
+  width:555px;
+  height:300px;
+  background:repeating-linear-gradient(
+    90deg,#e9bb9e 0 27px,#dca98d 27px 30px
   );
 }
 
-.kitchen {
-  left: 65%;
-  top: 0;
-  width: 35%;
-  height: 60%;
-  background: conic-gradient(
-    #f4dcd0 25%,
-    #fff0e5 0 50%,
-    #f4dcd0 0 75%,
-    #fff0e5 0
-  ) 0 0 / 48px 48px;
+.kitchen{
+  left:665px;
+  top:40px;
+  width:365px;
+  height:430px;
+  background:conic-gradient(
+    #f4dcd0 25%,#fff0e5 0 50%,
+    #f4dcd0 0 75%,#fff0e5 0
+  ) 0 0/46px 46px;
 }
 
-.living {
-  left: 0;
-  top: 43%;
-  width: 65%;
-  height: 57%;
-  background: repeating-linear-gradient(
-    0deg,
-    #d7b48e 0 30px,
-    #c49d78 30px 33px
+.living{
+  left:20px;
+  top:300px;
+  width:645px;
+  height:420px;
+  background:repeating-linear-gradient(
+    0deg,#d7b48e 0 30px,#c49d78 30px 33px
   );
 }
 
-.bathroom {
-  left: 65%;
-  top: 60%;
-  width: 35%;
-  height: 40%;
-  background: conic-gradient(
-    #c3dfd9 25%,
-    #e7f5ef 0 50%,
-    #c3dfd9 0 75%,
-    #e7f5ef 0
-  ) 0 0 / 42px 42px;
+.bathroom{
+  left:665px;
+  top:470px;
+  width:295px;
+  height:250px;
+  background:conic-gradient(
+    #c3dfd9 25%,#e7f5ef 0 50%,
+    #c3dfd9 0 75%,#e7f5ef 0
+  ) 0 0/42px 42px;
 }
 
-/* 让客厅向厨房下方延伸，形成不规则结构 */
-.living-extension {
-  position: absolute;
-  left: 65%;
-  top: 60%;
-  width: 10%;
-  height: 40%;
-  background: repeating-linear-gradient(
-    0deg,
-    #d7b48e 0 30px,
-    #c49d78 30px 33px
+.entry{
+  left:310px;
+  top:720px;
+  width:230px;
+  height:70px;
+  background:repeating-linear-gradient(
+    90deg,#d7b48e 0 25px,#c49d78 25px 28px
   );
-  border: 6px solid #825c59;
-  border-left: 0;
-  z-index: 2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#9c6d72;
+  font-size:16px;
+  letter-spacing:2px;
 }
 
-/* 卫生间相应缩小 */
-.bathroom {
-  left: 75%;
-  width: 25%;
+.room-name{
+  position:absolute;
+  left:11px;
+  top:10px;
+  z-index:10;
+  background:#fff0e8;
+  border:3px solid #aa8583;
+  padding:6px 9px;
+  font-size:13px;
+  white-space:nowrap;
 }
 
-/* 房间标签 */
-
-.room-name {
-  position: absolute;
-  left: 12px;
-  top: 10px;
-  z-index: 10;
-  padding: 7px 10px;
-  background: #fff0e8;
-  border: 3px solid #aa8583;
-  font-size: 13px;
-  white-space: nowrap;
+.pixel{
+  position:absolute;
+  border:5px solid #9b7068;
+  box-shadow:6px 6px 0 #785550;
 }
 
-/* 家具通用像素样式 */
+/* ===== 卧室家具 ===== */
 
-.pixel {
-  position: absolute;
-  border: 5px solid #9b7068;
-  box-shadow: 6px 6px 0 #785550;
-}
-
-/* 卧室 */
-
-.window {
-  left: 6%;
-  top: 25%;
-  width: 17%;
-  height: 25%;
+.window{
+  left:6%;
+  top:25%;
+  width:105px;
+  height:85px;
   background:
-    linear-gradient(90deg,transparent 46%,#fff3e8 46% 54%,transparent 54%),
-    linear-gradient(transparent 46%,#fff3e8 46% 54%,transparent 54%),
+    linear-gradient(90deg,
+      transparent 46%,#fff3e8 46% 54%,
+      transparent 54%),
+    linear-gradient(
+      transparent 46%,#fff3e8 46% 54%,
+      transparent 54%),
     #a8dbe0;
 }
 
-.bed {
-  left: 36%;
-  top: 18%;
-  width: 29%;
-  height: 70%;
-  background: #eeb4c5;
+.bed{
+  left:35%;
+  top:43px;
+  width:160px;
+  height:210px;
+  background:#eeb4c5;
 }
 
-.bed::before {
-  content: "";
-  position: absolute;
-  left: 5%;
-  top: 5%;
-  width: 90%;
-  height: 25%;
+.bed::before{
+  content:"";
+  position:absolute;
+  left:5%;
+  top:5%;
+  width:90%;
+  height:25%;
+  background:linear-gradient(
+    90deg,
+    #fff8f0 0 47%,
+    #e4bfc9 47% 53%,
+    #fff8f0 53%
+  );
+  border:4px solid #dfafbd;
+}
+
+.bed::after{
+  content:"";
+  position:absolute;
+  left:-12%;
+  bottom:-3%;
+  width:124%;
+  height:36%;
+  background:#f7dce0;
+  border:8px solid #efb6c9;
+}
+
+.wardrobe{
+  right:25px;
+  bottom:20px;
+  width:95px;
+  height:120px;
   background:
-    linear-gradient(90deg,#fff8f0 0 47%,#e4bfc9 47% 53%,#fff8f0 53%);
-  border: 4px solid #dfafbd;
-}
-
-.bed::after {
-  content: "";
-  position: absolute;
-  left: -10%;
-  bottom: -3%;
-  width: 120%;
-  height: 34%;
-  background: #f7dce0;
-  border: 8px solid #efb6c9;
-}
-
-.wardrobe {
-  right: 4%;
-  bottom: 7%;
-  width: 17%;
-  height: 39%;
-  background:
-    linear-gradient(90deg,transparent 48%,#815a55 48% 52%,transparent 52%),
+    linear-gradient(
+      90deg,
+      transparent 48%,
+      #815a55 48% 52%,
+      transparent 52%
+    ),
     #bb8b73;
 }
 
-.wardrobe::after {
-  content: "▪   ▪";
-  position: absolute;
-  left: 20%;
-  top: 40%;
-  color: #ffe1aa;
-  font-size: 18px;
+.wardrobe::after{
+  content:"▪   ▪";
+  position:absolute;
+  left:20%;
+  top:40%;
+  color:#ffe1aa;
+  font-size:18px;
 }
 
-.bedside {
-  left: 5%;
-  bottom: 9%;
-  width: 13%;
-  height: 17%;
-  background: #bd8d74;
+.bedside{
+  left:25px;
+  bottom:22px;
+  width:75px;
+  height:60px;
+  background:#bd8d74;
 }
 
-.bedside::after {
-  content: "";
-  position: absolute;
-  inset: 25%;
-  border: 3px solid #9b7068;
-  background: #e5b89a;
+.bedside::after{
+  content:"";
+  position:absolute;
+  inset:25%;
+  border:3px solid #9b7068;
+  background:#e5b89a;
 }
 
-/* 厨房 */
+/* ===== 厨房家具 ===== */
 
-.counter {
-  top: 20%;
-  left: 16%;
-  width: 78%;
-  height: 22%;
-  background: #e8bba4;
+.counter{
+  top:68px;
+  right:20px;
+  width:270px;
+  height:96px;
+  background:#e8bba4;
 }
 
-.counter::before {
-  content: "";
-  position: absolute;
-  left: 5%;
-  top: 15%;
-  width: 26%;
-  height: 34%;
-  background:
-    linear-gradient(90deg,#77727b 0 42%,#e9d8d6 42% 58%,#77727b 58%);
-  border: 4px solid #f8e8e1;
+.counter::before{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:12px;
+  width:75px;
+  height:29px;
+  background:linear-gradient(
+    90deg,
+    #77727b 0 42%,
+    #e9d8d6 42% 58%,
+    #77727b 58%
+  );
+  border:4px solid #f8e8e1;
 }
 
-.counter::after {
-  content: "";
-  position: absolute;
-  left: 5%;
-  bottom: 7%;
-  width: 90%;
-  height: 27%;
-  background: repeating-linear-gradient(
+.counter::after{
+  content:"";
+  position:absolute;
+  left:12px;
+  bottom:8px;
+  width:235px;
+  height:28px;
+  background:repeating-linear-gradient(
     90deg,
     #f6d7c4 0 30%,
     #ad8178 30% 32%
   );
-  border: 3px solid #ad8178;
+  border:3px solid #ad8178;
 }
 
-.fridge {
-  left: 8%;
-  bottom: 9%;
-  width: 24%;
-  height: 39%;
-  background: linear-gradient(
+.fridge{
+  left:20px;
+  bottom:30px;
+  width:90px;
+  height:150px;
+  background:linear-gradient(
     #f5dce6 0 49%,
     #ae7f90 49% 52%,
     #e7b6ca 52%
   );
-  z-index: 4;
 }
 
-.fridge::after {
-  content: "";
-  position: absolute;
-  right: 15%;
-  top: 20%;
-  width: 6px;
-  height: 17%;
-  background: #fff5eb;
-  box-shadow: 0 65px 0 #fff5eb;
+.fridge::after{
+  content:"";
+  position:absolute;
+  right:13px;
+  top:28px;
+  width:6px;
+  height:25px;
+  background:#fff5eb;
+  box-shadow:0 78px 0 #fff5eb;
 }
 
-.dining-table {
-  right: 8%;
-  bottom: 9%;
-  width: 42%;
-  height: 26%;
-  background: #d6a587;
+.dining-table{
+  right:32px;
+  bottom:40px;
+  width:135px;
+  height:105px;
+  background:#d6a587;
 }
 
 .dining-table::before,
-.dining-table::after {
-  content: "";
-  position: absolute;
-  top: 25%;
-  width: 15%;
-  height: 50%;
-  background: #e6c3a8;
-  border: 4px solid #9b7068;
+.dining-table::after{
+  content:"";
+  position:absolute;
+  top:27px;
+  width:20px;
+  height:45px;
+  background:#e6c3a8;
+  border:4px solid #9b7068;
 }
 
-.dining-table::before {
-  left: -23%;
+.dining-table::before{
+  left:-28px;
 }
 
-.dining-table::after {
-  right: -23%;
+.dining-table::after{
+  right:-28px;
 }
 
-.strawberry {
-  position: absolute;
-  left: 43%;
-  top: 38%;
-  width: 20px;
-  height: 20px;
-  background: #e36e88;
-  border-top: 5px solid #69a56e;
+.strawberry{
+  position:absolute;
+  left:50px;
+  top:32px;
+  width:22px;
+  height:22px;
+  background:#e36e88;
+  border-top:5px solid #69a56e;
 }
 
-/* 客厅 */
+/* ===== 客厅家具 ===== */
 
-.sofa {
-  left: 30%;
-  top: 16%;
-  width: 36%;
-  height: 27%;
-  background: #e6a9be;
+.sofa{
+  left:185px;
+  top:72px;
+  width:240px;
+  height:125px;
+  background:#e6a9be;
 }
 
-.sofa::before {
-  content: "";
-  position: absolute;
-  left: 5%;
-  bottom: 8%;
-  width: 90%;
-  height: 37%;
-  background:
-    linear-gradient(90deg,#f6d2dd 0 48%,#d39caf 48% 52%,#f6d2dd 52%);
-  border: 4px solid #ba839a;
+.sofa::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  bottom:10px;
+  width:210px;
+  height:48px;
+  background:linear-gradient(
+    90deg,
+    #f6d2dd 0 48%,
+    #d39caf 48% 52%,
+    #f6d2dd 52%
+  );
+  border:4px solid #ba839a;
 }
 
-.rug {
-  position: absolute;
-  left: 26%;
-  top: 43%;
-  width: 44%;
-  height: 36%;
-  background: #f7ded7;
-  border: 9px solid #efb6c9;
+.rug{
+  position:absolute;
+  left:155px;
+  top:200px;
+  width:310px;
+  height:155px;
+  background:#f7ded7;
+  border:9px solid #efb6c9;
 }
 
-.coffee-table {
-  left: 40%;
-  top: 52%;
-  width: 20%;
-  height: 15%;
-  background: #c9957c;
+.coffee-table{
+  left:245px;
+  top:230px;
+  width:130px;
+  height:75px;
+  background:#c9957c;
 }
 
-.coffee-table::after {
-  content: "♡";
-  position: absolute;
-  left: 43%;
-  top: 15%;
-  color: #ef8da7;
-  font-size: 22px;
+.coffee-table::after{
+  content:"♡";
+  position:absolute;
+  left:45%;
+  top:17%;
+  color:#ef8da7;
+  font-size:24px;
 }
 
-.tv {
-  left: 39%;
-  bottom: 5%;
-  width: 23%;
-  height: 17%;
-  background: #bb8a73;
+.tv{
+  left:265px;
+  bottom:16px;
+  width:120px;
+  height:60px;
+  background:#bb8a73;
 }
 
-.tv::before {
-  content: "";
-  position: absolute;
-  left: 16%;
-  top: -48%;
-  width: 68%;
-  height: 75%;
-  background: #a7d4d8;
-  border: 7px solid #78677c;
+.tv::before{
+  content:"";
+  position:absolute;
+  left:17px;
+  top:-42px;
+  width:75px;
+  height:55px;
+  background:#a7d4d8;
+  border:7px solid #78677c;
 }
 
-.picture {
-  right: 6%;
-  top: 15%;
-  width: 13%;
-  height: 17%;
-  background: #f5ceda;
-  display: grid;
-  place-items: center;
-  color: #d77c9d;
-  font-size: 24px;
+.picture{
+  right:32px;
+  top:50px;
+  width:82px;
+  height:70px;
+  background:#f5ceda;
+  display:grid;
+  place-items:center;
+  color:#d77c9d;
+  font-size:23px;
 }
 
-/* 卫生间 */
+/* ===== 卫生间家具 ===== */
 
-.bathtub {
-  right: 5%;
-  top: 24%;
-  width: 54%;
-  height: 30%;
-  background: #f8fbf8;
+.bathtub{
+  right:14px;
+  top:65px;
+  width:140px;
+  height:95px;
+  background:#f8fbf8;
 }
 
-.bathtub::after {
-  content: "";
-  position: absolute;
-  inset: 12%;
-  background: #bce3e5;
-  border: 5px solid #e3f5f5;
+.bathtub::after{
+  content:"";
+  position:absolute;
+  inset:12%;
+  background:#bce3e5;
+  border:5px solid #e3f5f5;
 }
 
-.sink {
-  left: 7%;
-  bottom: 17%;
-  width: 42%;
-  height: 22%;
-  background: #e8b4c7;
+.sink{
+  left:17px;
+  bottom:18px;
+  width:115px;
+  height:65px;
+  background:#e8b4c7;
 }
 
-.sink::after {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  background: #e9faf7;
-  border: 4px solid #f9e7e8;
+.sink::after{
+  content:"";
+  position:absolute;
+  inset:18%;
+  background:#e9faf7;
+  border:4px solid #f9e7e8;
 }
 
-.mirror {
-  left: 10%;
-  top: 20%;
-  width: 33%;
-  height: 28%;
-  background: #b6e5e9;
+.mirror{
+  left:23px;
+  top:65px;
+  width:85px;
+  height:85px;
+  background:#b6e5e9;
 }
 
-.basket {
-  right: 7%;
-  bottom: 8%;
-  width: 29%;
-  height: 23%;
-  background: repeating-linear-gradient(
+.basket{
+  right:20px;
+  bottom:16px;
+  width:78px;
+  height:60px;
+  background:repeating-linear-gradient(
     90deg,
     #c68d6e 0 15px,
     #dfac89 15px 20px
   );
 }
 
-/* 墙壁边缘 */
+/* ===== 门口与玄关 ===== */
 
-.house::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 7px solid #825c59;
-  pointer-events: none;
-  z-index: 20;
+.door{
+  position:absolute;
+  z-index:12;
+  background:#d9b5a4;
+  border:3px solid #825c59;
 }
 
-@media(max-width:650px) {
-  h1 {
-    font-size: 25px;
+.door-bedroom{
+  left:175px;
+  top:293px;
+  width:85px;
+  height:14px;
+}
+
+.door-kitchen{
+  left:658px;
+  top:325px;
+  width:14px;
+  height:90px;
+}
+
+.door-bath{
+  left:658px;
+  top:548px;
+  width:14px;
+  height:65px;
+}
+
+.entry-mat{
+  position:absolute;
+  bottom:7px;
+  left:62px;
+  width:95px;
+  height:25px;
+  background:#efb6c9;
+  border:3px solid #c58b98;
+}
+
+@media(max-width:1100px){
+  .house{
+    margin-left:0;
+    margin-right:0;
   }
-
-  .game {
-    padding: 7px;
-  }
-
-  .room-name {
-    font-size: 11px;
-    padding: 4px 5px;
-  }
-}
-/* ===== Our Tiny World · Grid Layout V3 ===== */
-
-/* 整个房屋网格 */
-.house {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  gap: 0;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1000 / 720;
-  min-width: 620px;
-  background: #825c59;
-  overflow: hidden;
-}
-
-/* 房间统一恢复正常布局 */
-.room {
-  position: relative;
-  left: auto;
-  top: auto;
-  width: auto;
-  height: auto;
-  min-height: 0;
-  clip-path: none;
-  border: 5px solid #825c59;
-  overflow: hidden;
-}
-
-/* 卧室：左上 */
-.bedroom {
-  grid-column: 1 / 8;
-  grid-row: 1 / 5;
-}
-
-/* 厨房：右上，面积比卧室小 */
-.kitchen {
-  grid-column: 8 / 13;
-  grid-row: 1 / 7;
-}
-
-/* 客厅：左下，面积最大 */
-.living {
-  grid-column: 1 / 8;
-  grid-row: 5 / 11;
-}
-
-/* 卫生间：右下，面积最小 */
-.bathroom {
-  grid-column: 9 / 13;
-  grid-row: 7 / 11;
-}
-
-/* 客厅右侧向外延伸一格 */
-.living-extension {
-  display: block;
-  position: relative;
-  left: auto;
-  top: auto;
-  width: auto;
-  height: auto;
-  grid-column: 8 / 9;
-  grid-row: 7 / 11;
-  border: 5px solid #825c59;
-  border-left: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    #d7b48e 0 30px,
-    #c49d78 30px 33px
-  );
-  z-index: 1;
-}
-
-/* 厨房家具保持在厨房内部 */
-.kitchen .fridge {
-  z-index: 3;
-}
-
-/* 所有家具仍保持原来的位置和样式 */
-.pixel {
-  position: absolute;
-}
-  /* 客厅延伸区域与主客厅连通 */
-.living-extension {
-  border-left: none;
-  border-top: none;
-}
-
-/* 去掉主客厅右下方的分隔墙 */
-.living {
-  border-right: none;
-}
-
-/* 保留客厅与厨房之间的墙 */
-.kitchen {
-  border-left: 5px solid #825c59;
 }
 </style>
 </head>
@@ -592,15 +511,16 @@ h1 {
 <body>
 
 <h1>Our Tiny World</h1>
-<p class="subtitle">♡ Jiwoo & Haram's Little Home ♡</p>
+<p class="subtitle">
+  ♡ Jiwoo &amp; Haram's Little Home ♡
+</p>
 
-<div class="game">
-  <div class="house">
+<div class="viewport">
+  <main class="house">
 
     <!-- 卧室 -->
     <section class="room bedroom">
       <span class="room-name">🥛 BEDROOM</span>
-
       <div class="pixel window"></div>
       <div class="pixel bed"></div>
       <div class="pixel wardrobe"></div>
@@ -610,7 +530,6 @@ h1 {
     <!-- 厨房 -->
     <section class="room kitchen">
       <span class="room-name">🥛 KITCHEN</span>
-
       <div class="pixel counter"></div>
       <div class="pixel fridge"></div>
       <div class="pixel dining-table">
@@ -621,7 +540,6 @@ h1 {
     <!-- 客厅 -->
     <section class="room living">
       <span class="room-name">🥛 LIVING ROOM</span>
-
       <div class="rug"></div>
       <div class="pixel sofa"></div>
       <div class="pixel coffee-table"></div>
@@ -629,20 +547,27 @@ h1 {
       <div class="pixel picture">♡ ♡</div>
     </section>
 
-    <!-- 客厅延伸区域 -->
-    <div class="living-extension"></div>
-
     <!-- 卫生间 -->
     <section class="room bathroom">
       <span class="room-name">🫧 BATHROOM</span>
-
       <div class="pixel mirror"></div>
       <div class="pixel sink"></div>
       <div class="pixel bathtub"></div>
       <div class="pixel basket"></div>
     </section>
 
-  </div>
+    <!-- 玄关 -->
+    <section class="room entry">
+      <span>♡ ENTRY ♡</span>
+      <div class="entry-mat"></div>
+    </section>
+
+    <!-- 房间门口 -->
+    <div class="door door-bedroom"></div>
+    <div class="door door-kitchen"></div>
+    <div class="door door-bath"></div>
+
+  </main>
 </div>
 
 </body>
