@@ -659,6 +659,77 @@ h1 {
   margin-top: 18px;
   line-height: 1.8;
 }
+  
+/* 卧室窗户天气切换 */
+#bedroomWindow {
+  cursor: pointer;
+  overflow: hidden;
+  background: #a8dbe0;
+  transition: background 0.3s;
+}
+
+/* 白天 */
+#bedroomWindow.day {
+  background: #a8dbe0;
+}
+
+/* 黄昏 */
+#bedroomWindow.sunset {
+  background: linear-gradient(
+    #eaa4b6 0%,
+    #f8c4ac 55%,
+    #ffe1b9 100%
+  );
+}
+
+/* 夜晚 */
+#bedroomWindow.night {
+  background: #34436d;
+}
+
+/* 太阳、月亮 */
+#bedroomWindow::after {
+  content: "☀";
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  font-size: 21px;
+  color: #fff4c7;
+  z-index: 1;
+}
+
+#bedroomWindow.sunset::after {
+  content: "☀";
+  color: #ffdb9e;
+  top: 22px;
+}
+
+#bedroomWindow.night::after {
+  content: "☾";
+  color: #fff3c6;
+}
+
+/* 窗框十字 */
+#bedroomWindow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 46%,
+      #fff3e8 46% 54%,
+      transparent 54%
+    ),
+    linear-gradient(
+      transparent 46%,
+      #fff3e8 46% 54%,
+      transparent 54%
+    );
+  pointer-events: none;
+}
+
 </style>
 </head>
 
@@ -677,7 +748,10 @@ h1 {
     <section class="room bedroom">
       <span class="room-name">🥛 BEDROOM</span>
 
-      <div class="pixel window"></div>
+      <div class="pixel window" id="bedroomWindow"
+     onclick="changeWindowView()"
+     title="Click to change the sky ♡">
+</div>
       <div class="pixel bed" onclick="openBedMemory()" title="Click to explore ♡"></div>
       <div class="pixel wardrobe" onclick="openWardrobe()" title="Choose an outfit ♡"></div>
       <div class="pixel bedside"></div>
@@ -806,5 +880,21 @@ function chooseOutfit(number) {
     "<p>" + dialogues[number] + "</p>";
 }
 </script>
+  
+<script>
+const windowViews = ["day", "sunset", "night"];
+let currentWindowView = 0;
+
+function changeWindowView() {
+  const windowElement = document.getElementById("bedroomWindow");
+
+  currentWindowView =
+    (currentWindowView + 1) % windowViews.length;
+
+  windowElement.classList.remove("day", "sunset", "night");
+  windowElement.classList.add(windowViews[currentWindowView]);
+}
+</script>
+
 </body>
 </html>
