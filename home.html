@@ -146,6 +146,203 @@ p{margin:0 0 20px;font-size:13px}
   .furniture{font-size:23px;zoom:.7}
   .room-name{font-size:10px}
 }
+  /* ===== PIXEL BEDROOM ===== */
+
+.bedroom {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #e9bc9e 0 30px,
+      #d8a78c 30px 32px
+    );
+}
+
+/* 窗户 */
+.pixel-window {
+  position: absolute;
+  width: 76px;
+  height: 62px;
+  top: 45px;
+  left: 20px;
+  background: #f9e8d9;
+  border: 6px solid #a77b71;
+  box-shadow: 4px 4px 0 #805d5b;
+}
+
+.window-glass {
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 46%,
+      #fff2e8 46% 54%,
+      transparent 54%
+    ),
+    linear-gradient(
+      0deg,
+      transparent 45%,
+      #fff2e8 45% 55%,
+      transparent 55%
+    ),
+    #a9d9df;
+}
+
+/* 双人床 */
+.pixel-bed {
+  position: absolute;
+  width: 130px;
+  height: 150px;
+  left: 50%;
+  top: 45px;
+  transform: translateX(-50%);
+  background: #f6d3d9;
+  border: 6px solid #9b6b68;
+  box-shadow: 5px 5px 0 #795451;
+}
+
+.bed-headboard {
+  position: absolute;
+  height: 16px;
+  left: -4px;
+  right: -4px;
+  top: -9px;
+  background: #bd8875;
+  border: 4px solid #865e58;
+}
+
+.bed-pillows {
+  display: flex;
+  gap: 5px;
+  padding: 14px 7px 0;
+}
+
+.bed-pillows span {
+  display: block;
+  width: 50%;
+  height: 30px;
+  background: #fff9ee;
+  border: 3px solid #e7bdc5;
+}
+
+.bed-blanket {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 57px;
+  bottom: 9px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #efafbf 0 12px,
+      #e6a0b3 12px 15px
+    );
+  border-top: 7px solid #fff2e9;
+}
+
+.bed-footboard {
+  position: absolute;
+  bottom: -5px;
+  left: -4px;
+  right: -4px;
+  height: 12px;
+  background: #bd8875;
+  border: 3px solid #865e58;
+}
+
+/* 地毯 */
+.pixel-rug {
+  position: absolute;
+  width: 160px;
+  height: 72px;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  background: #f5d8d8;
+  border: 7px solid #e6aab8;
+  box-shadow: inset 0 0 0 5px #fff0e5;
+}
+
+/* 床头柜 */
+.pixel-nightstand {
+  position: absolute;
+  width: 52px;
+  height: 46px;
+  left: 17px;
+  bottom: 24px;
+  background: #c58f75;
+  border: 5px solid #90665d;
+  box-shadow: 4px 4px 0 #78534e;
+}
+
+.nightstand-drawer {
+  width: 32px;
+  height: 16px;
+  margin: 7px auto;
+  background: #e7b99a;
+  border: 3px solid #90665d;
+}
+
+/* 衣柜 */
+.pixel-wardrobe {
+  position: absolute;
+  width: 74px;
+  height: 100px;
+  right: 12px;
+  bottom: 16px;
+  display: flex;
+  background: #bc896e;
+  border: 6px solid #805b52;
+  box-shadow: 4px 4px 0 #674b46;
+}
+
+.wardrobe-door {
+  flex: 1;
+  border-right: 3px solid #805b52;
+  position: relative;
+}
+
+.wardrobe-door:last-child {
+  border-right: 0;
+}
+
+.wardrobe-door::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 48%;
+  width: 5px;
+  height: 8px;
+  background: #f4d6a2;
+}
+
+/* 小兔子装饰 */
+.pixel-bunny {
+  position: absolute;
+  right: 100px;
+  bottom: 16px;
+  color: #d17c9a;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* 手机适配 */
+@media (max-width: 560px) {
+  .pixel-bed {
+    transform: translateX(-50%) scale(.72);
+    transform-origin: top center;
+  }
+
+  .pixel-window,
+  .pixel-nightstand,
+  .pixel-wardrobe {
+    zoom: .7;
+  }
+
+  .pixel-rug {
+    transform: translateX(-50%) scale(.75);
+  }
+}
 </style>
 </head>
 <body>
@@ -154,11 +351,35 @@ p{margin:0 0 20px;font-size:13px}
 <div class="game">
   <div class="house">
     <section class="room bedroom">
-      <span class="room-name">🎀 BEDROOM</span>
-      <div class="furniture bed">🛏️</div>
-      <div class="furniture wardrobe">👗</div>
-      <div class="furniture desk">📖</div>
-    </section>
+  <span class="room-name">🎀 BEDROOM</span>
+
+  <div class="pixel-window">
+    <div class="window-glass"></div>
+  </div>
+
+  <div class="pixel-bed">
+    <div class="bed-headboard"></div>
+    <div class="bed-pillows">
+      <span></span>
+      <span></span>
+    </div>
+    <div class="bed-blanket"></div>
+    <div class="bed-footboard"></div>
+  </div>
+
+  <div class="pixel-rug"></div>
+
+  <div class="pixel-nightstand">
+    <div class="nightstand-drawer"></div>
+  </div>
+
+  <div class="pixel-wardrobe">
+    <div class="wardrobe-door"></div>
+    <div class="wardrobe-door"></div>
+  </div>
+
+  <div class="pixel-bunny">♡</div>
+</section>
     <section class="room kitchen">
       <span class="room-name">🍓 KITCHEN</span>
       <div class="furniture counter">🍳</div>
