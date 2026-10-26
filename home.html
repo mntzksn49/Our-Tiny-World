@@ -343,6 +343,193 @@ p{margin:0 0 20px;font-size:13px}
     transform: translateX(-50%) scale(.75);
   }
 }
+/* ===== PIXEL KITCHEN ===== */
+
+.pixel-kitchen-counter {
+  position: absolute;
+  top: 48px;
+  right: 14px;
+  width: 68%;
+  height: 70px;
+  background: #e8b99f;
+  border: 5px solid #986c64;
+  box-shadow: 4px 4px 0 #7b5754;
+}
+
+.pixel-stove {
+  position: absolute;
+  top: 5px;
+  left: 12px;
+  width: 65px;
+  height: 28px;
+  background: #f8e9e3;
+  border: 3px solid #b68c85;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.pixel-stove span {
+  width: 15px;
+  height: 15px;
+  background: #777079;
+  border: 4px solid #a8a0a3;
+}
+
+.pixel-sink {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  width: 55px;
+  height: 28px;
+  background: #c5e2e2;
+  border: 5px solid #f9eee7;
+  box-shadow: inset 0 0 0 3px #8bb8c1;
+}
+
+.counter-cabinets {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 3px;
+  height: 23px;
+  display: flex;
+}
+
+.counter-cabinets span {
+  flex: 1;
+  border: 3px solid #b78478;
+  background: #f4d5c2;
+  position: relative;
+}
+
+.counter-cabinets span::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  top: 6px;
+  right: 8px;
+  background: #aa8174;
+}
+
+/* 粉色双开门冰箱 */
+.pixel-fridge {
+  position: absolute;
+  width: 64px;
+  height: 106px;
+  left: 17px;
+  bottom: 17px;
+  background: linear-gradient(
+    to bottom,
+    #f7d9e2 0 55%,
+    #b98694 55% 59%,
+    #f1c3d1 59% 100%
+  );
+  border: 5px solid #a77a83;
+  box-shadow: 4px 4px 0 #84616a;
+}
+
+.fridge-handle-top,
+.fridge-handle-bottom {
+  position: absolute;
+  width: 5px;
+  height: 18px;
+  right: 9px;
+  background: #fff7ed;
+}
+
+.fridge-handle-top { top: 16px; }
+.fridge-handle-bottom { bottom: 14px; }
+
+/* 餐桌 */
+.pixel-dining-table {
+  position: absolute;
+  width: 120px;
+  height: 76px;
+  right: 35px;
+  bottom: 24px;
+  background: #dba98b;
+  border: 7px solid #a77b69;
+  box-shadow: 5px 5px 0 #846052;
+}
+
+.pixel-plate {
+  position: absolute;
+  width: 40px;
+  height: 30px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff9ee;
+  border: 5px solid #e9c9b8;
+}
+
+.pixel-strawberry {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 27px;
+  left: 48px;
+  background: #e66e80;
+  box-shadow:
+    5px 0 #e66e80,
+    0 5px #e66e80,
+    5px 5px #c95470,
+    3px -5px #72a577;
+}
+
+/* 两把椅子 */
+.pixel-kitchen-chair {
+  position: absolute;
+  width: 36px;
+  height: 34px;
+  background: #e9c4a9;
+  border: 5px solid #a77b69;
+  box-shadow: 3px 3px 0 #846052;
+}
+
+.chair-left {
+  right: 165px;
+  bottom: 44px;
+}
+
+.chair-right {
+  right: 15px;
+  bottom: 44px;
+}
+
+@media (max-width: 560px) {
+  .pixel-kitchen-counter {
+    width: 63%;
+    height: 60px;
+  }
+
+  .pixel-stove {
+    left: 3px;
+    width: 35px;
+  }
+
+  .pixel-sink {
+    right: 3px;
+    width: 30px;
+  }
+
+  .pixel-fridge {
+    transform: scale(.7);
+    transform-origin: bottom left;
+  }
+
+  .pixel-dining-table {
+    transform: scale(.7);
+    transform-origin: bottom right;
+    right: 15px;
+  }
+
+  .pixel-kitchen-chair {
+    display: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -381,11 +568,31 @@ p{margin:0 0 20px;font-size:13px}
   <div class="pixel-bunny">♡</div>
 </section>
     <section class="room kitchen">
-      <span class="room-name">🥛 KITCHEN</span>
-      <div class="furniture counter">🍳</div>
-      <div class="furniture fridge">🥛</div>
-      <div class="furniture table">🍰</div>
-    </section>
+  <span class="room-name">🥛 KITCHEN</span>
+
+  <div class="pixel-kitchen-counter">
+    <div class="pixel-stove">
+      <span></span><span></span>
+    </div>
+    <div class="pixel-sink"></div>
+    <div class="counter-cabinets">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="pixel-fridge">
+    <div class="fridge-handle-top"></div>
+    <div class="fridge-handle-bottom"></div>
+  </div>
+
+  <div class="pixel-dining-table">
+    <div class="pixel-plate"></div>
+    <div class="pixel-strawberry"></div>
+  </div>
+
+  <div class="pixel-kitchen-chair chair-left"></div>
+  <div class="pixel-kitchen-chair chair-right"></div>
+</section>
     <section class="room living">
       <span class="room-name">🥛 LIVING ROOM</span>
       <div class="rug"></div>
