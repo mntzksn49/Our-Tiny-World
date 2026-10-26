@@ -730,6 +730,58 @@ h1 {
   pointer-events: none;
 }
 
+/* 床头柜互动 */
+.bedside {
+  cursor: pointer;
+}
+
+.bedside:hover {
+  filter: brightness(1.08);
+}
+
+/* 日记本 */
+.diary-book {
+  background: #fffaf4;
+  border: 3px solid #d9a3b2;
+  padding: 25px 18px;
+  min-height: 190px;
+  box-shadow: inset 5px 0 0 #f4d5df;
+}
+
+.diary-date {
+  font-size: 13px;
+  color: #c47790;
+  margin-bottom: 20px;
+}
+
+.diary-text {
+  font-size: 15px;
+  line-height: 2;
+  color: #865e6c;
+  white-space: pre-line;
+}
+
+.diary-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.diary-controls button {
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  padding: 8px 15px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.diary-controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 </style>
 </head>
 
@@ -754,7 +806,9 @@ h1 {
 </div>
       <div class="pixel bed" onclick="openBedMemory()" title="Click to explore ♡"></div>
       <div class="pixel wardrobe" onclick="openWardrobe()" title="Choose an outfit ♡"></div>
-      <div class="pixel bedside"></div>
+      <div class="pixel bedside"
+     onclick="openDiary()"
+     title="Our Little Diary ♡"></div>
     </section>
 
     <!-- ===== 厨房 ===== -->
@@ -893,6 +947,85 @@ function changeWindowView() {
 
   windowElement.classList.remove("day", "sunset", "night");
   windowElement.classList.add(windowViews[currentWindowView]);
+}
+</script>
+
+<!-- 双人日记互动 -->
+<div class="memory-overlay" id="diaryMemory"
+     onclick="closeDiary()">
+  <div class="memory-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeDiary()">×</button>
+
+    <h2>♡ Our Little Diary ♡</h2>
+
+    <div class="diary-book">
+      <div class="diary-date" id="diaryDate"></div>
+      <div class="diary-text" id="diaryText"></div>
+    </div>
+
+    <div class="diary-controls">
+      <button id="diaryPrev" onclick="changeDiaryPage(-1)">
+        ← PREV
+      </button>
+      <button id="diaryNext" onclick="changeDiaryPage(1)">
+        NEXT →
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const diaryPages = [
+  {
+    date: "♡ PAGE 01 ♡",
+    text: "🍓：今天也要好好照顾我们宝宝。\n\n🎀：那姐姐要一直陪着我哦。"
+  },
+  {
+    date: "♡ PAGE 02 ♡",
+    text: "🎀：今天想和姐姐一起待在家里。\n\n🍓：好呀，我们哪里也不去。"
+  },
+  {
+    date: "♡ PAGE 03 ♡",
+    text: "🍓：今天最开心的事情是什么？\n\n🎀：当然是和姐姐在一起啦 ♡"
+  }
+];
+
+let diaryPage = 0;
+
+function openDiary() {
+  diaryPage = 0;
+  renderDiary();
+  document.getElementById("diaryMemory").style.display = "flex";
+}
+
+function closeDiary() {
+  document.getElementById("diaryMemory").style.display = "none";
+}
+
+function changeDiaryPage(direction) {
+  diaryPage += direction;
+  diaryPage = Math.max(
+    0,
+    Math.min(diaryPage, diaryPages.length - 1)
+  );
+  renderDiary();
+}
+
+function renderDiary() {
+  const page = diaryPages[diaryPage];
+
+  document.getElementById("diaryDate").textContent = page.date;
+  document.getElementById("diaryText").textContent = page.text;
+
+  document.getElementById("diaryPrev").disabled =
+    diaryPage === 0;
+
+  document.getElementById("diaryNext").disabled =
+    diaryPage === diaryPages.length - 1;
 }
 </script>
 
