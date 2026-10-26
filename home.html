@@ -839,6 +839,52 @@ h1 {
   }
 }
 
+/* 冰箱互动 */
+.fridge {
+  cursor: pointer;
+}
+
+.fridge:hover {
+  filter: brightness(1.08);
+}
+
+.fridge-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.fridge-item {
+  border: 3px solid #d9a5b5;
+  background: #fff1f3;
+  padding: 18px 6px;
+  cursor: pointer;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.fridge-item:hover {
+  background: #f7d5df;
+}
+
+.fridge-emoji {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.fridge-note {
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  padding: 18px 12px;
+  min-height: 95px;
+  white-space: pre-line;
+  line-height: 2;
+  color: #865e6c;
+}
+
 </style>
 </head>
 
@@ -875,7 +921,9 @@ h1 {
       <div class="pixel counter"
      onclick="openCooking()"
      title="Let's Cook ♡"></div>
-      <div class="pixel fridge"></div>
+      <div class="pixel fridge"
+     onclick="openFridge()"
+     title="Open the fridge ♡"></div>
 
       <div class="pixel dining-table">
         <div class="strawberry"></div>
@@ -1149,6 +1197,73 @@ function closeCooking() {
 function cookFood(food) {
   document.getElementById("cookingResult").textContent =
     cookingStories[food];
+}
+</script>
+
+<!-- 冰箱互动弹窗 -->
+<div class="memory-overlay" id="fridgeMemory"
+     onclick="closeFridge()">
+
+  <div class="memory-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeFridge()">×</button>
+
+    <h2>♡ Our Little Fridge ♡</h2>
+    <p>What's inside?</p>
+
+    
+<div class="fridge-items">
+  <button class="fridge-item"
+          onclick="showFridgeNote('Orange juice')">
+    <span class="fridge-emoji">🍊</span>
+    Orange Juice
+  </button>
+
+  <button class="fridge-item"
+          onclick="showFridgeNote('Strawberry')">
+    <span class="fridge-emoji">🍓</span>
+    Strawberry
+  </button>
+
+  <button class="fridge-item"
+          onclick="showFridgeNote('Macaron')">
+    <span class="fridge-emoji">🩷</span>
+    Macarons
+  </button>
+</div>
+
+
+    <div class="fridge-note" id="fridgeNote">
+      ♡ Pick something from the fridge ♡
+    </div>
+
+  </div>
+</div>
+
+<script>
+const fridgeNotes = {
+  "Orange juice": "🍊 冰箱里永远都有橙汁。\n\n🎀：姐姐，帮我拿一下橙汁。\n\n🍓：今天要少喝点冰的哦，不然你肚子又痛",
+
+  Strawberry: "🍓 新鲜的草莓。\n\n🍓：河岚快来尝尝，这个草莓超级甜。\n\n🎀：比起草莓我更想吃你多一点啦...",
+
+  Macaron: "🩷 最后一盒马卡龙。\n\n🎀：马卡龙快吃完了！姐姐！\n\n🍓：知道啦，我给宝宝再买♡"
+};
+
+function openFridge() {
+  document.getElementById("fridgeMemory").style.display = "flex";
+  document.getElementById("fridgeNote").textContent =
+    "♡ Pick something from the fridge ♡";
+}
+
+function closeFridge() {
+  document.getElementById("fridgeMemory").style.display = "none";
+}
+
+function showFridgeNote(item) {
+  document.getElementById("fridgeNote").textContent =
+    fridgeNotes[item];
 }
 </script>
 
