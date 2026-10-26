@@ -941,7 +941,115 @@ h1 {
     padding: 12px 3px;
   }
 }
+/* ===== Cooking Mini Game ===== */
 
+.cooking-window {
+  width: min(92vw, 480px);
+}
+
+.food-option.selected {
+  background: #efb6c9;
+  border-color: #b8758d;
+  box-shadow: 3px 3px 0 #d69cab;
+}
+
+.food-option:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.cooking-stage {
+  background: #fff3ef;
+  border: 3px solid #e3b4c2;
+  padding: 18px 12px;
+  margin-bottom: 18px;
+}
+
+.cooking-ingredients {
+  font-size: 23px;
+  min-height: 38px;
+  color: #b8758d;
+  margin-bottom: 12px;
+}
+
+.cooking-pot {
+  display: grid;
+  place-items: center;
+  height: 100px;
+  font-size: 55px;
+  background: #f9e1df;
+  border: 4px solid #d9a5b5;
+  margin: 12px auto;
+  width: 85%;
+}
+
+.cooking-pot.is-cooking {
+  animation: cookingShake 0.35s steps(2) infinite;
+}
+
+@keyframes cookingShake {
+  0% {
+    transform: translateX(-3px);
+  }
+
+  50% {
+    transform: translateX(3px);
+  }
+
+  100% {
+    transform: translateX(-3px);
+  }
+}
+
+.cooking-progress {
+  height: 15px;
+  background: #fffaf7;
+  border: 3px solid #d9a5b5;
+  margin: 18px 0;
+  overflow: hidden;
+}
+
+.cooking-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #e8a8ba;
+  transition: width 2.4s linear;
+}
+
+.cook-start {
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cook-start:hover:not(:disabled) {
+  background: #d98fa7;
+}
+
+.cook-start:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.cooking-result {
+  animation: cookingAppear 0.3s ease-out;
+}
+
+@keyframes cookingAppear {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
 </head>
 
@@ -1209,28 +1317,47 @@ function renderDiary() {
 
     <div class="cooking-menu">
   <button class="food-option"
-          onclick="cookFood('Taiyaki')">
+          onclick="selectFood('Taiyaki', this)">
     <span class="food-emoji">🐟</span>
     Taiyaki
   </button>
 
   <button class="food-option"
-          onclick="cookFood('Cake')">
+          onclick="selectFood('Cake', this)">
     <span class="food-emoji">🍰</span>
     Strawberry Tart
   </button>
 
   <button class="food-option"
-          onclick="cookFood('Shabu-shabu')">
+          onclick="selectFood('Shabu-shabu', this)">
     <span class="food-emoji">🍲</span>
     Shabu-shabu
+  </button>
+</div>
+
+<div class="cooking-stage">
+  <div class="cooking-ingredients" id="cookingIngredients">
+    ♡ Pick a recipe ♡
+  </div>
+
+  <div class="cooking-pot" id="cookingPot">🍳</div>
+
+  <div class="cooking-progress">
+    <div class="cooking-progress-bar"
+         id="cookingProgressBar"></div>
+  </div>
+
+  <button class="cook-start"
+          id="cookStartButton"
+          onclick="startCooking()"
+          disabled>
+    ♡ START COOKING ♡
   </button>
 </div>
 
 <div class="cooking-result" id="cookingResult">
   ♡ Choose something to cook ♡
 </div>
-
   </div>
 </div>
 
@@ -1243,19 +1370,149 @@ const cookingStories = {
   "Shabu-shabu": "🍲 今天晚上想吃什么？\n\n🎀：我们去吃涮涮锅吧！\n\n🍓：看来河岚跟我又共享神经元了呢♡"
 };
 
+const cookingRecipes = {
+  Taiyaki: {
+    ingredients: "🥚  +  🥛  +  🐟",
+    cooking: "🔥 🐟 🔥",
+    finished: "🐟",
+    label: "Fresh Taiyaki!"
+  },
+
+  Cake: {
+    ingredients: "🍓  +  🥛  +  🍰",
+    cooking: "🧁 ♡ 🍓",
+    finished: "🍰",
+    label: "Strawberry Tart!"
+  },
+
+  "Shabu-shabu": {
+    ingredients: "🥬  +  🥩  +  🍲",
+    cooking: "♨️ 🍲 ♨️",
+    finished: "🍲",
+    label: "Shabu-shabu!"
+  }
+};
+
+let selectedFood = null;
+let cookingTimer = null;
+
 function openCooking() {
   document.getElementById("cookingMemory").style.display = "flex";
-  document.getElementById("cookingResult").textContent =
-    "♡ Choose something to cook ♡";
+  resetCooking();
 }
 
 function closeCooking() {
+  clearTimeout(cookingTimer);
+  cookingTimer = null;
+
   document.getElementById("cookingMemory").style.display = "none";
 }
 
-function cookFood(food) {
+function resetCooking() {
+  clearTimeout(cookingTimer);
+  cookingTimer = null;
+  selectedFood = null;
+
+  document.getElementById("cookingIngredients").textContent =
+    "♡ Pick a recipe ♡";
+
+  document.getElementById("cookingPot").textContent = "🍳";
+  document.getElementById("cookingPot").classList.remove("is-cooking");
+
+  document.getElementById("cookingProgressBar").style.width = "0%";
+
+  document.getElementById("cookStartButton").disabled = true;
+  document.getElementById("cookStartButton").textContent =
+    "♡ START COOKING ♡";
+
   document.getElementById("cookingResult").textContent =
-    cookingStories[food];
+    "♡ Choose something to cook ♡";
+
+  document.querySelectorAll(".food-option").forEach(button => {
+    button.classList.remove("selected");
+    button.disabled = false;
+  });
+}
+
+function selectFood(food, button) {
+  clearTimeout(cookingTimer);
+  cookingTimer = null;
+  selectedFood = food;
+
+  const recipe = cookingRecipes[food];
+
+  document.querySelectorAll(".food-option").forEach(item => {
+    item.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+
+  document.getElementById("cookingIngredients").textContent =
+    recipe.ingredients;
+
+  document.getElementById("cookingPot").textContent = "🍳";
+  document.getElementById("cookingPot").classList.remove("is-cooking");
+
+  document.getElementById("cookingProgressBar").style.width = "0%";
+
+  const startButton = document.getElementById("cookStartButton");
+  startButton.disabled = false;
+  startButton.textContent = "♡ START COOKING ♡";
+
+  document.getElementById("cookingResult").textContent =
+    "♡ Ready to cook? ♡";
+}
+
+function startCooking() {
+  if (!selectedFood) return;
+
+  const food = selectedFood;
+  const recipe = cookingRecipes[food];
+
+  const pot = document.getElementById("cookingPot");
+  const progress = document.getElementById("cookingProgressBar");
+  const startButton = document.getElementById("cookStartButton");
+  const result = document.getElementById("cookingResult");
+
+  clearTimeout(cookingTimer);
+
+  startButton.disabled = true;
+  startButton.textContent = "COOKING... ♡";
+
+  document.querySelectorAll(".food-option").forEach(button => {
+    button.disabled = true;
+  });
+
+  pot.textContent = recipe.cooking;
+  pot.classList.add("is-cooking");
+
+  progress.style.width = "0%";
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      progress.style.width = "100%";
+    });
+  });
+
+  result.textContent = "♡ Making something delicious... ♡";
+
+  cookingTimer = setTimeout(() => {
+    cookingTimer = null;
+
+    pot.classList.remove("is-cooking");
+    pot.textContent = recipe.finished;
+
+    result.textContent =
+      "♡ " + recipe.label + " ♡\n\n" +
+      cookingStories[food];
+
+    startButton.disabled = false;
+    startButton.textContent = "♡ COOK AGAIN ♡";
+
+    document.querySelectorAll(".food-option").forEach(button => {
+      button.disabled = false;
+    });
+  }, 2400);
 }
 </script>
 
