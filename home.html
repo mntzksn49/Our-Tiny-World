@@ -570,7 +570,22 @@ h1 {
 /* 所有家具仍保持原来的位置和样式 */
 .pixel {
   position: absolute;
-}  
+}
+  /* 客厅延伸区域与主客厅连通 */
+.living-extension {
+  border-left: none;
+  border-top: none;
+}
+
+/* 去掉主客厅右下方的分隔墙 */
+.living {
+  border-right: none;
+}
+
+/* 保留客厅与厨房之间的墙 */
+.kitchen {
+  border-left: 5px solid #825c59;
+}
 </style>
 </head>
 
