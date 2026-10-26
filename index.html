@@ -28,10 +28,84 @@
       box-shadow: 8px 8px 0 #e9c7c6;
     }
 
-    .decorations {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
+    
+.decorations {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  margin-bottom: 24px;
+  height: 76px;
+}
+
+/* 用小方格组成真正的像素图案 */
+.pixel-strawberry,
+.pixel-bow {
+  display: block;
+  position: relative;
+  width: 8px;
+  height: 8px;
+  transform: scale(5);
+  transform-origin: center;
+  image-rendering: pixelated;
+}
+
+.pixel-strawberry {
+  background: #e96b78;
+  box-shadow:
+    -8px -24px #62a66e,
+    0 -32px #62a66e,
+    8px -24px #62a66e,
+    -16px -16px #e96b78,
+    -8px -16px #e96b78,
+    0 -16px #e96b78,
+    8px -16px #e96b78,
+    16px -16px #e96b78,
+    -16px -8px #e96b78,
+    -8px -8px #ffd9a4,
+    8px -8px #ffd9a4,
+    16px -8px #e96b78,
+    -8px 0 #e96b78,
+    8px 0 #e96b78,
+    -8px 8px #e96b78,
+    0 8px #ffd9a4,
+    8px 8px #e96b78,
+    0 16px #e96b78;
+}
+
+.pixel-bow {
+  background: #f8c2d0;
+  box-shadow:
+    -24px -16px #e98aa7,
+    -16px -16px #e98aa7,
+    16px -16px #e98aa7,
+    24px -16px #e98aa7,
+    -32px -8px #e98aa7,
+    -24px -8px #f8c2d0,
+    -16px -8px #f8c2d0,
+    -8px -8px #e98aa7,
+    8px -8px #e98aa7,
+    16px -8px #f8c2d0,
+    24px -8px #f8c2d0,
+    32px -8px #e98aa7,
+    -32px 0 #e98aa7,
+    -24px 0 #f8c2d0,
+    -16px 0 #f8c2d0,
+    -8px 0 #e98aa7,
+    8px 0 #e98aa7,
+    16px 0 #f8c2d0,
+    24px 0 #f8c2d0,
+    32px 0 #e98aa7,
+    -24px 8px #e98aa7,
+    -16px 8px #e98aa7,
+    -8px 8px #e98aa7,
+    8px 8px #e98aa7,
+    16px 8px #e98aa7,
+    24px 8px #e98aa7,
+    -16px 16px #e98aa7,
+    16px 16px #e98aa7;
+}
+
 
     h1 {
       font-size: clamp(25px, 7vw, 36px);
@@ -68,7 +142,7 @@
 </head>
 <body>
   <main class="start-screen">
-    <div class="decorations">🍓 🎀 🐰 🥛</div>
+    <div class="decorations">   <span class="pixel-strawberry"></span>   <span class="pixel-bow"></span> </div>
     <h1>Our Tiny World</h1>
     <p class="subtitle">Jiwoo & Haram's Little Home</p>
 
