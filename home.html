@@ -530,6 +530,195 @@ p{margin:0 0 20px;font-size:13px}
     display: none;
   }
 }
+  /* ===== PIXEL LIVING ROOM ===== */
+
+/* 双人合照相框 */
+.living-photo {
+  position: absolute;
+  top: 43px;
+  right: 19px;
+  width: 62px;
+  height: 51px;
+  background: #f9dce5;
+  border: 6px solid #a87970;
+  box-shadow: 4px 4px 0 #805d58;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d77f9c;
+  font-size: 18px;
+}
+
+/* 粉色双人沙发 */
+.living-sofa {
+  position: absolute;
+  width: 145px;
+  height: 76px;
+  left: 50%;
+  top: 43px;
+  transform: translateX(-50%);
+  background: #e7a5b9;
+  border: 5px solid #a46f7e;
+  box-shadow: 5px 5px 0 #805c65;
+  z-index: 2;
+}
+
+.sofa-back {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  right: 5px;
+  height: 28px;
+  background: #f1bfd0;
+  border-bottom: 4px solid #ce8da5;
+}
+
+.sofa-cushion {
+  position: absolute;
+  top: 28px;
+  width: 43%;
+  height: 28px;
+  background: #f6d4df;
+  border: 3px solid #d494aa;
+}
+
+.cushion-one { left: 5px; }
+.cushion-two { right: 5px; }
+
+.sofa-seat {
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  right: 4px;
+  height: 13px;
+  background: #d88fa8;
+  border-top: 3px solid #b87890;
+}
+
+/* 地毯 */
+.living-rug {
+  position: absolute;
+  width: 185px;
+  height: 105px;
+  left: 50%;
+  top: 106px;
+  transform: translateX(-50%);
+  background: #f8dfd7;
+  border: 8px solid #e9aebe;
+  box-shadow: inset 0 0 0 5px #fff1e9;
+  z-index: 0;
+}
+
+/* 木质茶几 */
+.living-coffee-table {
+  position: absolute;
+  width: 95px;
+  height: 43px;
+  left: 50%;
+  top: 125px;
+  transform: translateX(-50%);
+  background: #d6a383;
+  border: 6px solid #9e7363;
+  box-shadow: 4px 4px 0 #805a51;
+  z-index: 3;
+}
+
+/* 草莓牛奶 */
+.strawberry-milk {
+  position: absolute;
+  width: 17px;
+  height: 21px;
+  left: 50%;
+  top: 5px;
+  transform: translateX(-50%);
+  background: #f7d4de;
+  border: 3px solid #fff8ee;
+}
+
+.strawberry-milk::before {
+  content: "";
+  position: absolute;
+  width: 17px;
+  height: 5px;
+  background: #e58fa8;
+  top: -7px;
+  left: -3px;
+}
+
+.strawberry-milk span {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #e66e80;
+  top: 5px;
+  left: 3px;
+}
+
+/* 电视柜 */
+.living-tv-stand {
+  position: absolute;
+  width: 110px;
+  height: 47px;
+  left: 50%;
+  bottom: 13px;
+  transform: translateX(-50%);
+  background: #bd8c74;
+  border: 5px solid #8c6258;
+  box-shadow: 4px 4px 0 #71504b;
+  z-index: 4;
+}
+
+/* 电视 */
+.living-tv-screen {
+  position: absolute;
+  width: 72px;
+  height: 43px;
+  left: 50%;
+  bottom: 29px;
+  transform: translateX(-50%);
+  background: #8db6bb;
+  border: 7px solid #806b77;
+  box-shadow: inset 0 0 0 3px #c5e1df;
+}
+
+.living-tv-drawer {
+  position: absolute;
+  width: 52px;
+  height: 10px;
+  left: 50%;
+  bottom: 5px;
+  transform: translateX(-50%);
+  background: #e8c1a4;
+  border: 2px solid #956b5d;
+}
+
+/* 手机适配 */
+@media (max-width: 560px) {
+  .living-sofa {
+    transform: translateX(-50%) scale(.72);
+    transform-origin: top center;
+  }
+
+  .living-rug {
+    transform: translateX(-50%) scale(.7);
+    transform-origin: top center;
+  }
+
+  .living-coffee-table {
+    transform: translateX(-50%) scale(.7);
+    transform-origin: top center;
+  }
+
+  .living-tv-stand {
+    transform: translateX(-50%) scale(.75);
+    transform-origin: bottom center;
+  }
+
+  .living-photo {
+    transform: scale(.7);
+    transform-origin: top right;
+  }
+}
 </style>
 </head>
 <body>
@@ -594,11 +783,32 @@ p{margin:0 0 20px;font-size:13px}
   <div class="pixel-kitchen-chair chair-right"></div>
 </section>
     <section class="room living">
-      <span class="room-name">🥛 LIVING ROOM</span>
-      <div class="rug"></div>
-      <div class="furniture sofa">🛋️</div>
-      <div class="furniture tv">📺</div>
-    </section>
+  <span class="room-name">🥛 LIVING ROOM</span>
+
+  <div class="living-photo">
+    <span>♡ ♡</span>
+  </div>
+
+  <div class="living-sofa">
+    <div class="sofa-back"></div>
+    <div class="sofa-cushion cushion-one"></div>
+    <div class="sofa-cushion cushion-two"></div>
+    <div class="sofa-seat"></div>
+  </div>
+
+  <div class="living-rug"></div>
+
+  <div class="living-coffee-table">
+    <div class="strawberry-milk">
+      <span></span>
+    </div>
+  </div>
+
+  <div class="living-tv-stand">
+    <div class="living-tv-screen"></div>
+    <div class="living-tv-drawer"></div>
+  </div>
+</section>
     <section class="room bathroom">
       <span class="room-name">🫧 BATHROOM</span>
       <div class="furniture bath">🛁</div>
