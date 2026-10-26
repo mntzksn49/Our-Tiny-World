@@ -1050,6 +1050,105 @@ h1 {
     transform: translateY(0);
   }
 }
+  /* ===== Interactive Fridge ===== */
+
+.fridge-window {
+  width: min(92vw, 470px);
+}
+
+.fridge-scene {
+  margin: 18px auto;
+  width: 210px;
+  height: 175px;
+  position: relative;
+  perspective: 600px;
+}
+
+.fridge-inside {
+  position: absolute;
+  inset: 0;
+  background: #fff2f5;
+  border: 7px solid #b9859a;
+  box-shadow: inset 0 0 0 5px #f3d5df;
+}
+
+.fridge-inside::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 6px;
+  background: #d9a5b5;
+}
+
+.fridge-door {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f9e0e9, #e7b6ca);
+  border: 7px solid #a9798b;
+  transform-origin: left center;
+  transition: transform 0.8s ease;
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.fridge-door::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 45%;
+  width: 7px;
+  height: 35px;
+  background: #fff9f4;
+}
+
+.fridge-scene.open .fridge-door {
+  transform: rotateY(-110deg);
+}
+
+.fridge-items {
+  transition: opacity 0.3s;
+}
+
+.fridge-items.locked {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.fridge-item:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.fridge-count {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+}
+
+.fridge-plate {
+  min-height: 80px;
+  margin: 15px auto;
+  padding: 15px;
+  background: #fff9f5;
+  border: 4px solid #e4b8c5;
+  border-radius: 50%;
+  width: 190px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+}
+
+.fridge-plate.pop {
+  animation: fridgePop 0.4s ease;
+}
+
+@keyframes fridgePop {
+  0% { transform: scale(0.7); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
 </style>
 </head>
 
@@ -1538,7 +1637,7 @@ function startCooking() {
 <div class="memory-overlay" id="fridgeMemory"
      onclick="closeFridge()">
 
-  <div class="memory-window"
+  <div class="memory-window fridge-window"
        onclick="event.stopPropagation()">
 
     <button class="memory-close"
@@ -1547,27 +1646,39 @@ function startCooking() {
     <h2>♡ Our Little Fridge ♡</h2>
     <p>What's inside?</p>
 
-    
-<div class="fridge-items">
-  <button class="fridge-item"
-          onclick="showFridgeNote('Orange juice')">
-    <span class="fridge-emoji">🍊</span>
-    Orange Juice
-  </button>
+    <div class="fridge-scene" id="fridgeScene">
+      <div class="fridge-inside"></div>
+      <div class="fridge-door"></div>
+    </div>
 
-  <button class="fridge-item"
-          onclick="showFridgeNote('Strawberry')">
-    <span class="fridge-emoji">🍓</span>
-    Strawberry
-  </button>
+    <div class="fridge-items locked" id="fridgeItems">
 
-  <button class="fridge-item"
-          onclick="showFridgeNote('Macaron')">
-    <span class="fridge-emoji">🩷</span>
-    Macarons
-  </button>
-</div>
+      <button class="fridge-item"
+              onclick="takeFridgeItem('Orange juice')">
+        <span class="fridge-emoji">🍊</span>
+        Orange Juice
+        <span class="fridge-count" id="countOrange">× 2</span>
+      </button>
 
+      <button class="fridge-item"
+              onclick="takeFridgeItem('Strawberry')">
+        <span class="fridge-emoji">🍓</span>
+        Strawberry
+        <span class="fridge-count" id="countStrawberry">× 2</span>
+      </button>
+
+      <button class="fridge-item"
+              onclick="takeFridgeItem('Macaron')">
+        <span class="fridge-emoji">🩷</span>
+        Macarons
+        <span class="fridge-count" id="countMacaron">× 2</span>
+      </button>
+
+    </div>
+
+    <p>♡ Tap to take something ♡</p>
+
+    <div class="fridge-plate" id="fridgePlate">♡</div>
 
     <div class="fridge-note" id="fridgeNote">
       ♡ Pick something from the fridge ♡
@@ -1585,17 +1696,80 @@ const fridgeNotes = {
   Macaron: "🩷 最后一盒马卡龙。\n\n🎀：马卡龙快吃完了！姐姐！\n\n🍓：知道啦，我给宝宝再买♡"
 };
 
+const fridgeEmojis = {
+  "Orange juice": "🍊",
+  Strawberry: "🍓",
+  Macaron: "🩷"
+};
+
+let fridgeStock = {};
+let fridgeOpenTimer = null;
+
 function openFridge() {
+  fridgeStock = {
+    "Orange juice": 2,
+    Strawberry: 2,
+    Macaron: 2
+  };
+
   document.getElementById("fridgeMemory").style.display = "flex";
+  document.getElementById("fridgeScene").classList.remove("open");
+  document.getElementById("fridgeItems").classList.add("locked");
+
+  document.getElementById("fridgePlate").textContent = "♡";
   document.getElementById("fridgeNote").textContent =
-    "♡ Pick something from the fridge ♡";
+    "♡ Opening our little fridge... ♡";
+
+  updateFridgeStock();
+
+  clearTimeout(fridgeOpenTimer);
+
+  setTimeout(() => {
+  document.getElementById("fridgeScene").classList.add("open");
+}, 100);
+
+  fridgeOpenTimer = setTimeout(() => {
+    document.getElementById("fridgeItems").classList.remove("locked");
+    document.getElementById("fridgeNote").textContent =
+      "♡ Pick something from the fridge ♡";
+  }, 900);
 }
 
 function closeFridge() {
+  clearTimeout(fridgeOpenTimer);
   document.getElementById("fridgeMemory").style.display = "none";
 }
 
-function showFridgeNote(item) {
+function updateFridgeStock() {
+  const items = [
+    ["Orange juice", "countOrange"],
+    ["Strawberry", "countStrawberry"],
+    ["Macaron", "countMacaron"]
+  ];
+
+  items.forEach(([name, id]) => {
+    const countElement = document.getElementById(id);
+    countElement.textContent = "× " + fridgeStock[name];
+
+    countElement.closest("button").disabled =
+      fridgeStock[name] === 0;
+  });
+}
+
+function takeFridgeItem(item) {
+  if (fridgeStock[item] <= 0) return;
+
+  fridgeStock[item]--;
+  updateFridgeStock();
+
+  const plate = document.getElementById("fridgePlate");
+
+  plate.classList.remove("pop");
+  void plate.offsetWidth;
+  plate.classList.add("pop");
+
+  plate.textContent = fridgeEmojis[item];
+
   document.getElementById("fridgeNote").textContent =
     fridgeNotes[item];
 }
