@@ -5,1146 +5,548 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our Tiny World · Home</title>
+
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:#f7e8e6;
-  font-family:monospace;
-  color:#76535c;
-  text-align:center;
-}
-h1{margin:28px 0 6px;color:#bd788e}
-p{margin:0 0 20px;font-size:13px}
-.game{
-  width:min(96vw,850px);
-  margin:auto;
-  padding:12px;
-  background:#b98c80;
-  border:6px solid #825c59;
-  box-shadow:8px 8px 0 #d8b7b2;
-}
-.house{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  background:#825c59;
-}
-.room{
-  min-height:245px;
-  padding:12px;
-  position:relative;
-  overflow:hidden;
-  border:5px solid #9d726a;
-  image-rendering:pixelated;
-}
-.bedroom{
-  background:repeating-linear-gradient(
-    90deg,#e9bb9e 0 24px,#dca98d 24px 26px);
-}
-.kitchen{
-  background:conic-gradient(
-    #f4dcd0 25%,#fff0e5 0 50%,
-    #f4dcd0 0 75%,#fff0e5 0) 0 0/44px 44px;
-}
-.living{
-  background:repeating-linear-gradient(
-    0deg,#d7b48e 0 25px,#c49d78 25px 27px);
-}
-.bathroom{
-  background:conic-gradient(
-    #c3dfd9 25%,#e7f5ef 0 50%,
-    #c3dfd9 0 75%,#e7f5ef 0) 0 0/40px 40px;
-}
-.room-name{
-  position:absolute;
-  left:9px;top:8px;
-  background:#fff0e8;
-  padding:5px 8px;
-  border:2px solid #aa8583;
-  font-size:12px;
-  z-index:2;
-}
-.furniture{
-  position:absolute;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  border:4px solid #a77a72;
-  box-shadow:5px 5px 0 #8d625b;
-}
-.bed{
-  width:115px;height:145px;
-  left:50%;top:48px;
-  transform:translateX(-50%);
-  background:linear-gradient(#fff4e9 0 25%,#efb6c3 25%);
-}
-.wardrobe{
-  width:65px;height:85px;
-  right:13px;bottom:14px;
-  background:#b98465;
-}
-.desk{
-  width:90px;height:52px;
-  left:13px;bottom:17px;
-  background:#edc3b2;
-}
-.counter{
-  width:75%;height:53px;
-  top:15px;right:10px;
-  background:#f5d7c4;
-}
-.fridge{
-  width:67px;height:90px;
-  left:14px;bottom:17px;
-  background:#f9e4e8;
-}
-.table{
-  width:100px;height:85px;
-  right:25px;bottom:25px;
-  background:#e6b48f;
-}
-.sofa{
-  width:150px;height:70px;
-  left:50%;top:43px;
-  transform:translateX(-50%);
-  background:#e5a9bc;
-}
-.tv{
-  width:105px;height:45px;
-  left:50%;bottom:25px;
-  transform:translateX(-50%);
-  background:#78677c;
-}
-.rug{
-  position:absolute;
-  width:155px;height:90px;
-  left:50%;top:115px;
-  transform:translateX(-50%);
-  background:#f6d9cb;
-  border:6px solid #eab7bb;
-}
-.bath{
-  width:125px;height:90px;
-  top:48px;right:18px;
-  background:#f5faf7;
-}
-.sink{
-  width:72px;height:62px;
-  bottom:30px;left:20px;
-  background:#f9e5e4;
-}
-.laundry{
-  width:75px;height:75px;
-  right:25px;bottom:25px;
-  background:#e9eef2;
-}
-@media(max-width:560px){
-  .game{padding:6px;border-width:4px}
-  .room{min-height:190px;padding:5px;border-width:3px}
-  .furniture{font-size:23px;zoom:.7}
-  .room-name{font-size:10px}
-}
-  /* ===== PIXEL BEDROOM ===== */
-
-.bedroom {
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #e9bc9e 0 30px,
-      #d8a78c 30px 32px
-    );
+* {
+  box-sizing: border-box;
 }
 
-/* 窗户 */
-.pixel-window {
-  position: absolute;
-  width: 76px;
-  height: 62px;
-  top: 45px;
-  left: 20px;
-  background: #f9e8d9;
-  border: 6px solid #a77b71;
-  box-shadow: 4px 4px 0 #805d5b;
+body {
+  margin: 0;
+  background: #f7e8e6;
+  font-family: "Courier New", monospace;
+  color: #76535c;
+  text-align: center;
+  padding: 22px 12px 45px;
 }
 
-.window-glass {
+h1 {
+  margin: 0 0 5px;
+  font-size: 32px;
+  color: #bd788e;
+}
+
+.subtitle {
+  margin: 0 0 25px;
+  font-size: 14px;
+}
+
+.game {
+  width: min(96vw, 1100px);
+  margin: auto;
+  padding: 14px;
+  background: #b98c80;
+  border: 7px solid #825c59;
+  box-shadow: 9px 9px 0 #d8b7b2;
+  overflow-x: auto;
+}
+
+.house {
+  position: relative;
   width: 100%;
-  height: 100%;
-  background:
-    linear-gradient(
-      90deg,
-      transparent 46%,
-      #fff2e8 46% 54%,
-      transparent 54%
-    ),
-    linear-gradient(
-      0deg,
-      transparent 45%,
-      #fff2e8 45% 55%,
-      transparent 55%
-    ),
-    #a9d9df;
-}
-
-/* 双人床 */
-.pixel-bed {
-  position: absolute;
-  width: 130px;
-  height: 150px;
-  left: 50%;
-  top: 45px;
-  transform: translateX(-50%);
-  background: #f6d3d9;
-  border: 6px solid #9b6b68;
-  box-shadow: 5px 5px 0 #795451;
-}
-
-.bed-headboard {
-  position: absolute;
-  height: 16px;
-  left: -4px;
-  right: -4px;
-  top: -9px;
-  background: #bd8875;
-  border: 4px solid #865e58;
-}
-
-.bed-pillows {
-  display: flex;
-  gap: 5px;
-  padding: 14px 7px 0;
-}
-
-.bed-pillows span {
-  display: block;
-  width: 50%;
-  height: 30px;
-  background: #fff9ee;
-  border: 3px solid #e7bdc5;
-}
-
-.bed-blanket {
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  top: 57px;
-  bottom: 9px;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #efafbf 0 12px,
-      #e6a0b3 12px 15px
-    );
-  border-top: 7px solid #fff2e9;
-}
-
-.bed-footboard {
-  position: absolute;
-  bottom: -5px;
-  left: -4px;
-  right: -4px;
-  height: 12px;
-  background: #bd8875;
-  border: 3px solid #865e58;
-}
-
-/* 地毯 */
-.pixel-rug {
-  position: absolute;
-  width: 160px;
-  height: 72px;
-  left: 50%;
-  bottom: 10px;
-  transform: translateX(-50%);
-  background: #f5d8d8;
-  border: 7px solid #e6aab8;
-  box-shadow: inset 0 0 0 5px #fff0e5;
-}
-
-/* 床头柜 */
-.pixel-nightstand {
-  position: absolute;
-  width: 52px;
-  height: 46px;
-  left: 17px;
-  bottom: 24px;
-  background: #c58f75;
-  border: 5px solid #90665d;
-  box-shadow: 4px 4px 0 #78534e;
-}
-
-.nightstand-drawer {
-  width: 32px;
-  height: 16px;
-  margin: 7px auto;
-  background: #e7b99a;
-  border: 3px solid #90665d;
-}
-
-/* 衣柜 */
-.pixel-wardrobe {
-  position: absolute;
-  width: 74px;
-  height: 100px;
-  right: 12px;
-  bottom: 16px;
-  display: flex;
-  background: #bc896e;
-  border: 6px solid #805b52;
-  box-shadow: 4px 4px 0 #674b46;
-}
-
-.wardrobe-door {
-  flex: 1;
-  border-right: 3px solid #805b52;
-  position: relative;
-}
-
-.wardrobe-door:last-child {
-  border-right: 0;
-}
-
-.wardrobe-door::after {
-  content: "";
-  position: absolute;
-  right: 5px;
-  top: 48%;
-  width: 5px;
-  height: 8px;
-  background: #f4d6a2;
-}
-
-/* 小兔子装饰 */
-.pixel-bunny {
-  position: absolute;
-  right: 100px;
-  bottom: 16px;
-  color: #d17c9a;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-/* 手机适配 */
-@media (max-width: 560px) {
-  .pixel-bed {
-    transform: translateX(-50%) scale(.72);
-    transform-origin: top center;
-  }
-
-  .pixel-window,
-  .pixel-nightstand,
-  .pixel-wardrobe {
-    zoom: .7;
-  }
-
-  .pixel-rug {
-    transform: translateX(-50%) scale(.75);
-  }
-}
-/* ===== PIXEL KITCHEN ===== */
-
-.pixel-kitchen-counter {
-  position: absolute;
-  top: 48px;
-  right: 14px;
-  width: 68%;
-  height: 70px;
-  background: #e8b99f;
-  border: 5px solid #986c64;
-  box-shadow: 4px 4px 0 #7b5754;
-}
-
-.pixel-stove {
-  position: absolute;
-  top: 5px;
-  left: 12px;
-  width: 65px;
-  height: 28px;
-  background: #f8e9e3;
-  border: 3px solid #b68c85;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.pixel-stove span {
-  width: 15px;
-  height: 15px;
-  background: #777079;
-  border: 4px solid #a8a0a3;
-}
-
-.pixel-sink {
-  position: absolute;
-  top: 5px;
-  right: 15px;
-  width: 55px;
-  height: 28px;
-  background: #c5e2e2;
-  border: 5px solid #f9eee7;
-  box-shadow: inset 0 0 0 3px #8bb8c1;
-}
-
-.counter-cabinets {
-  position: absolute;
-  left: 4px;
-  right: 4px;
-  bottom: 3px;
-  height: 23px;
-  display: flex;
-}
-
-.counter-cabinets span {
-  flex: 1;
-  border: 3px solid #b78478;
-  background: #f4d5c2;
-  position: relative;
-}
-
-.counter-cabinets span::after {
-  content: "";
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  top: 6px;
-  right: 8px;
-  background: #aa8174;
-}
-
-/* 粉色双开门冰箱 */
-.pixel-fridge {
-  position: absolute;
-  width: 64px;
-  height: 106px;
-  left: 17px;
-  bottom: 17px;
-  background: linear-gradient(
-    to bottom,
-    #f7d9e2 0 55%,
-    #b98694 55% 59%,
-    #f1c3d1 59% 100%
-  );
-  border: 5px solid #a77a83;
-  box-shadow: 4px 4px 0 #84616a;
-}
-
-.fridge-handle-top,
-.fridge-handle-bottom {
-  position: absolute;
-  width: 5px;
-  height: 18px;
-  right: 9px;
-  background: #fff7ed;
-}
-
-.fridge-handle-top { top: 16px; }
-.fridge-handle-bottom { bottom: 14px; }
-
-/* 餐桌 */
-.pixel-dining-table {
-  position: absolute;
-  width: 120px;
-  height: 76px;
-  right: 35px;
-  bottom: 24px;
-  background: #dba98b;
-  border: 7px solid #a77b69;
-  box-shadow: 5px 5px 0 #846052;
-}
-
-.pixel-plate {
-  position: absolute;
-  width: 40px;
-  height: 30px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff9ee;
-  border: 5px solid #e9c9b8;
-}
-
-.pixel-strawberry {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  top: 27px;
-  left: 48px;
-  background: #e66e80;
-  box-shadow:
-    5px 0 #e66e80,
-    0 5px #e66e80,
-    5px 5px #c95470,
-    3px -5px #72a577;
-}
-
-/* 两把椅子 */
-.pixel-kitchen-chair {
-  position: absolute;
-  width: 36px;
-  height: 34px;
-  background: #e9c4a9;
-  border: 5px solid #a77b69;
-  box-shadow: 3px 3px 0 #846052;
-}
-
-.chair-left {
-  right: 165px;
-  bottom: 44px;
-}
-
-.chair-right {
-  right: 15px;
-  bottom: 44px;
-}
-
-@media (max-width: 560px) {
-  .pixel-kitchen-counter {
-    width: 63%;
-    height: 60px;
-  }
-
-  .pixel-stove {
-    left: 3px;
-    width: 35px;
-  }
-
-  .pixel-sink {
-    right: 3px;
-    width: 30px;
-  }
-
-  .pixel-fridge {
-    transform: scale(.7);
-    transform-origin: bottom left;
-  }
-
-  .pixel-dining-table {
-    transform: scale(.7);
-    transform-origin: bottom right;
-    right: 15px;
-  }
-
-  .pixel-kitchen-chair {
-    display: none;
-  }
-}
-  /* ===== PIXEL LIVING ROOM ===== */
-
-/* 双人合照相框 */
-.living-photo {
-  position: absolute;
-  top: 43px;
-  right: 19px;
-  width: 62px;
-  height: 51px;
-  background: #f9dce5;
-  border: 6px solid #a87970;
-  box-shadow: 4px 4px 0 #805d58;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #d77f9c;
-  font-size: 18px;
-}
-
-/* 粉色双人沙发 */
-.living-sofa {
-  position: absolute;
-  width: 145px;
-  height: 76px;
-  left: 50%;
-  top: 43px;
-  transform: translateX(-50%);
-  background: #e7a5b9;
-  border: 5px solid #a46f7e;
-  box-shadow: 5px 5px 0 #805c65;
-  z-index: 2;
-}
-
-.sofa-back {
-  position: absolute;
-  top: 0;
-  left: 5px;
-  right: 5px;
-  height: 28px;
-  background: #f1bfd0;
-  border-bottom: 4px solid #ce8da5;
-}
-
-.sofa-cushion {
-  position: absolute;
-  top: 28px;
-  width: 43%;
-  height: 28px;
-  background: #f6d4df;
-  border: 3px solid #d494aa;
-}
-
-.cushion-one { left: 5px; }
-.cushion-two { right: 5px; }
-
-.sofa-seat {
-  position: absolute;
-  bottom: 0;
-  left: 4px;
-  right: 4px;
-  height: 13px;
-  background: #d88fa8;
-  border-top: 3px solid #b87890;
-}
-
-/* 地毯 */
-.living-rug {
-  position: absolute;
-  width: 185px;
-  height: 105px;
-  left: 50%;
-  top: 106px;
-  transform: translateX(-50%);
-  background: #f8dfd7;
-  border: 8px solid #e9aebe;
-  box-shadow: inset 0 0 0 5px #fff1e9;
-  z-index: 0;
-}
-
-/* 木质茶几 */
-.living-coffee-table {
-  position: absolute;
-  width: 95px;
-  height: 43px;
-  left: 50%;
-  top: 125px;
-  transform: translateX(-50%);
-  background: #d6a383;
-  border: 6px solid #9e7363;
-  box-shadow: 4px 4px 0 #805a51;
-  z-index: 3;
-}
-
-/* 草莓牛奶 */
-.strawberry-milk {
-  position: absolute;
-  width: 17px;
-  height: 21px;
-  left: 50%;
-  top: 5px;
-  transform: translateX(-50%);
-  background: #f7d4de;
-  border: 3px solid #fff8ee;
-}
-
-.strawberry-milk::before {
-  content: "";
-  position: absolute;
-  width: 17px;
-  height: 5px;
-  background: #e58fa8;
-  top: -7px;
-  left: -3px;
-}
-
-.strawberry-milk span {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: #e66e80;
-  top: 5px;
-  left: 3px;
-}
-
-/* 电视柜 */
-.living-tv-stand {
-  position: absolute;
-  width: 110px;
-  height: 47px;
-  left: 50%;
-  bottom: 13px;
-  transform: translateX(-50%);
-  background: #bd8c74;
-  border: 5px solid #8c6258;
-  box-shadow: 4px 4px 0 #71504b;
-  z-index: 4;
-}
-
-/* 电视 */
-.living-tv-screen {
-  position: absolute;
-  width: 72px;
-  height: 43px;
-  left: 50%;
-  bottom: 29px;
-  transform: translateX(-50%);
-  background: #8db6bb;
-  border: 7px solid #806b77;
-  box-shadow: inset 0 0 0 3px #c5e1df;
-}
-
-.living-tv-drawer {
-  position: absolute;
-  width: 52px;
-  height: 10px;
-  left: 50%;
-  bottom: 5px;
-  transform: translateX(-50%);
-  background: #e8c1a4;
-  border: 2px solid #956b5d;
-}
-
-/* 手机适配 */
-@media (max-width: 560px) {
-  .living-sofa {
-    transform: translateX(-50%) scale(.72);
-    transform-origin: top center;
-  }
-
-  .living-rug {
-    transform: translateX(-50%) scale(.7);
-    transform-origin: top center;
-  }
-
-  .living-coffee-table {
-    transform: translateX(-50%) scale(.7);
-    transform-origin: top center;
-  }
-
-  .living-tv-stand {
-    transform: translateX(-50%) scale(.75);
-    transform-origin: bottom center;
-  }
-
-  .living-photo {
-    transform: scale(.7);
-    transform-origin: top right;
-  }
-}
-/* ===== PIXEL BATHROOM ===== */
-
-.bathroom {
-  position: relative;
-}
-
-/* 镜子 */
-.pixel-mirror {
-  position: absolute;
-  width: 60px;
-  height: 76px;
-  left: 12%;
-  top: 22%;
-  background: #b9e4e9;
-  border: 7px solid #b88784;
-  box-shadow: 4px 4px 0 #865d5b;
-}
-
-.pixel-mirror::after {
-  content: "";
-  position: absolute;
-  width: 9px;
-  height: 35px;
-  left: 10px;
-  top: 8px;
-  background: #eaffff;
-}
-
-/* 洗手台 */
-.pixel-sink {
-  position: absolute;
-  width: 90px;
-  height: 49px;
-  left: 9%;
-  top: 58%;
-  background: #e7aabb;
-  border: 6px solid #ad7b80;
-  box-shadow: 4px 4px 0 #865d5b;
-}
-
-.sink-basin {
-  position: absolute;
-  width: 54px;
-  height: 18px;
-  left: 12px;
-  top: 4px;
-  background: #f9f7ef;
-  border: 4px solid #b9d8d8;
-}
-
-.sink-tap {
-  position: absolute;
-  width: 10px;
-  height: 15px;
-  background: #8faeb6;
-  left: 34px;
-  top: -18px;
-}
-
-/* 护肤品 */
-.skincare {
-  position: absolute;
-  left: 12%;
-  top: 49%;
-  display: flex;
-  gap: 7px;
-}
-
-.bottle {
-  display: block;
-  width: 13px;
-  height: 23px;
-  border: 3px solid #a67c81;
-}
-
-.bottle.pink {
-  background: #f6a4c0;
-}
-
-.bottle.cream {
-  background: #fff3d5;
-  height: 19px;
-  margin-top: 4px;
-}
-
-/* 浴缸 */
-.pixel-bathtub {
-  position: absolute;
-  width: 43%;
-  height: 36%;
-  right: 8%;
-  top: 25%;
-  background: #fff5ed;
-  border: 8px solid #b88784;
-  box-shadow: 5px 5px 0 #865d5b;
-}
-
-.bath-water {
-  position: absolute;
-  inset: 8px;
-  background: #bce4e5;
-  border: 5px solid #e6f9f7;
-}
-
-.bath-bubbles {
-  position: absolute;
-  top: -19px;
-  left: 20%;
-  font-size: 21px;
-  color: #fff;
-  text-shadow: 2px 2px #9dcbd2;
-}
-
-/* 洗衣篮 */
-.pixel-basket {
-  position: absolute;
-  width: 60px;
-  height: 47px;
-  right: 10%;
-  bottom: 10%;
-  background: repeating-linear-gradient(
-    90deg,
-    #d3a27f 0 9px,
-    #b98366 9px 13px
-  );
-  border: 5px solid #926b60;
-  box-shadow: 4px 4px 0 #865d5b;
-}
-
-.basket-clothes {
-  position: absolute;
-  width: 38px;
-  height: 14px;
-  left: 5px;
-  top: -12px;
-  background: linear-gradient(
-    90deg,
-    #f6b9c8 50%,
-    #fff0d8 50%
-  );
-}
-
-/* 毛巾 */
-.pixel-towel {
-  position: absolute;
-  width: 32px;
-  height: 43px;
-  right: 30%;
-  bottom: 13%;
-  background: #f4b1c5;
-  border: 5px solid #fff0eb;
-  box-shadow: 4px 4px 0 #ad8080;
-}
-
-/* 地垫 */
-.bath-mat {
-  position: absolute;
-  width: 75px;
-  height: 32px;
-  left: 37%;
-  bottom: 8%;
-  background: #f2b6c7;
-  border: 5px solid #e19eb4;
-}
-
-/* 兔子装饰 */
-.bunny-decor {
-  position: absolute;
-  width: 30px;
-  height: 27px;
-  right: 9%;
-  top: 12%;
-  background: #fff8f3;
-  border: 3px solid #b88784;
-}
-
-.bunny-ear {
-  position: absolute;
-  width: 9px;
-  height: 17px;
-  background: #fff8f3;
-  border: 3px solid #b88784;
-  top: -18px;
-}
-
-.bunny-ear.left {
-  left: 2px;
-}
-
-.bunny-ear.right {
-  right: 2px;
-}
-
-.bunny-face {
-  font-size: 9px;
-  color: #a67b84;
-  line-height: 21px;
-}
-
-/* 手机适配 */
-@media (max-width: 560px) {
-  .pixel-mirror {
-    width: 37px;
-    height: 49px;
-    border-width: 4px;
-  }
-
-  .pixel-sink {
-    width: 53px;
-    height: 35px;
-    border-width: 4px;
-  }
-
-  .sink-basin {
-    width: 32px;
-    height: 12px;
-    left: 6px;
-    border-width: 2px;
-  }
-
-  .sink-tap {
-    left: 20px;
-  }
-
-  .pixel-bathtub {
-    border-width: 5px;
-  }
-
-  .pixel-basket {
-    width: 36px;
-    height: 32px;
-    border-width: 3px;
-  }
-
-  .pixel-towel {
-    width: 22px;
-    height: 28px;
-  }
-
-  .bath-mat {
-    width: 43px;
-    height: 22px;
-  }
-
-  .bunny-decor {
-    transform: scale(.75);
-  }
-}
-  /* ===== 不规则像素小屋布局 ===== */
-
-.house.house-layout {
-  display: grid;
-  grid-template-columns: 1.15fr 0.65fr 0.85fr;
-  grid-template-rows: 225px 110px 225px;
-  gap: 7px;
+  aspect-ratio: 1000 / 720;
+  min-width: 620px;
   background: #825c59;
-}
-
-/* 左上：卧室 */
-.house-layout .bedroom {
-  grid-column: 1 / 3;
-  grid-row: 1;
-}
-
-/* 右上：厨房 */
-.house-layout .kitchen {
-  grid-column: 3;
-  grid-row: 1 / 3;
-}
-
-/* 左下：大客厅 */
-.house-layout .living {
-  grid-column: 1 / 3;
-  grid-row: 2 / 4;
-}
-
-/* 右下：小浴室 */
-.house-layout .bathroom {
-  grid-column: 3;
-  grid-row: 3;
-}
-
-/* 家具保持在各自房间内 */
-.house-layout .room {
-  min-width: 0;
   overflow: hidden;
 }
 
-/* 小屏幕适配 */
-@media (max-width: 560px) {
-  .house.house-layout {
-    grid-template-rows: 155px 70px 155px;
-    gap: 4px;
+/* 四个不同大小的房间 */
+
+.room {
+  position: absolute;
+  overflow: hidden;
+  border: 6px solid #825c59;
+}
+
+.bedroom {
+  left: 0;
+  top: 0;
+  width: 65%;
+  height: 43%;
+  background: repeating-linear-gradient(
+    90deg,
+    #e9bb9e 0 27px,
+    #dca98d 27px 30px
+  );
+}
+
+.kitchen {
+  left: 65%;
+  top: 0;
+  width: 35%;
+  height: 60%;
+  background: conic-gradient(
+    #f4dcd0 25%,
+    #fff0e5 0 50%,
+    #f4dcd0 0 75%,
+    #fff0e5 0
+  ) 0 0 / 48px 48px;
+}
+
+.living {
+  left: 0;
+  top: 43%;
+  width: 65%;
+  height: 57%;
+  background: repeating-linear-gradient(
+    0deg,
+    #d7b48e 0 30px,
+    #c49d78 30px 33px
+  );
+}
+
+.bathroom {
+  left: 65%;
+  top: 60%;
+  width: 35%;
+  height: 40%;
+  background: conic-gradient(
+    #c3dfd9 25%,
+    #e7f5ef 0 50%,
+    #c3dfd9 0 75%,
+    #e7f5ef 0
+  ) 0 0 / 42px 42px;
+}
+
+/* 让客厅向厨房下方延伸，形成不规则结构 */
+.living-extension {
+  position: absolute;
+  left: 65%;
+  top: 60%;
+  width: 10%;
+  height: 40%;
+  background: repeating-linear-gradient(
+    0deg,
+    #d7b48e 0 30px,
+    #c49d78 30px 33px
+  );
+  border: 6px solid #825c59;
+  border-left: 0;
+  z-index: 2;
+}
+
+/* 卫生间相应缩小 */
+.bathroom {
+  left: 75%;
+  width: 25%;
+}
+
+/* 房间标签 */
+
+.room-name {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  z-index: 10;
+  padding: 7px 10px;
+  background: #fff0e8;
+  border: 3px solid #aa8583;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* 家具通用像素样式 */
+
+.pixel {
+  position: absolute;
+  border: 5px solid #9b7068;
+  box-shadow: 6px 6px 0 #785550;
+}
+
+/* 卧室 */
+
+.window {
+  left: 6%;
+  top: 25%;
+  width: 17%;
+  height: 25%;
+  background:
+    linear-gradient(90deg,transparent 46%,#fff3e8 46% 54%,transparent 54%),
+    linear-gradient(transparent 46%,#fff3e8 46% 54%,transparent 54%),
+    #a8dbe0;
+}
+
+.bed {
+  left: 36%;
+  top: 18%;
+  width: 29%;
+  height: 70%;
+  background: #eeb4c5;
+}
+
+.bed::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 25%;
+  background:
+    linear-gradient(90deg,#fff8f0 0 47%,#e4bfc9 47% 53%,#fff8f0 53%);
+  border: 4px solid #dfafbd;
+}
+
+.bed::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  bottom: -3%;
+  width: 120%;
+  height: 34%;
+  background: #f7dce0;
+  border: 8px solid #efb6c9;
+}
+
+.wardrobe {
+  right: 4%;
+  bottom: 7%;
+  width: 17%;
+  height: 39%;
+  background:
+    linear-gradient(90deg,transparent 48%,#815a55 48% 52%,transparent 52%),
+    #bb8b73;
+}
+
+.wardrobe::after {
+  content: "▪   ▪";
+  position: absolute;
+  left: 20%;
+  top: 40%;
+  color: #ffe1aa;
+  font-size: 18px;
+}
+
+.bedside {
+  left: 5%;
+  bottom: 9%;
+  width: 13%;
+  height: 17%;
+  background: #bd8d74;
+}
+
+.bedside::after {
+  content: "";
+  position: absolute;
+  inset: 25%;
+  border: 3px solid #9b7068;
+  background: #e5b89a;
+}
+
+/* 厨房 */
+
+.counter {
+  top: 20%;
+  left: 16%;
+  width: 78%;
+  height: 22%;
+  background: #e8bba4;
+}
+
+.counter::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  top: 15%;
+  width: 26%;
+  height: 34%;
+  background:
+    linear-gradient(90deg,#77727b 0 42%,#e9d8d6 42% 58%,#77727b 58%);
+  border: 4px solid #f8e8e1;
+}
+
+.counter::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  bottom: 7%;
+  width: 90%;
+  height: 27%;
+  background: repeating-linear-gradient(
+    90deg,
+    #f6d7c4 0 30%,
+    #ad8178 30% 32%
+  );
+  border: 3px solid #ad8178;
+}
+
+.fridge {
+  left: 8%;
+  bottom: 9%;
+  width: 24%;
+  height: 39%;
+  background: linear-gradient(
+    #f5dce6 0 49%,
+    #ae7f90 49% 52%,
+    #e7b6ca 52%
+  );
+  z-index: 4;
+}
+
+.fridge::after {
+  content: "";
+  position: absolute;
+  right: 15%;
+  top: 20%;
+  width: 6px;
+  height: 17%;
+  background: #fff5eb;
+  box-shadow: 0 65px 0 #fff5eb;
+}
+
+.dining-table {
+  right: 8%;
+  bottom: 9%;
+  width: 42%;
+  height: 26%;
+  background: #d6a587;
+}
+
+.dining-table::before,
+.dining-table::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  width: 15%;
+  height: 50%;
+  background: #e6c3a8;
+  border: 4px solid #9b7068;
+}
+
+.dining-table::before {
+  left: -23%;
+}
+
+.dining-table::after {
+  right: -23%;
+}
+
+.strawberry {
+  position: absolute;
+  left: 43%;
+  top: 38%;
+  width: 20px;
+  height: 20px;
+  background: #e36e88;
+  border-top: 5px solid #69a56e;
+}
+
+/* 客厅 */
+
+.sofa {
+  left: 30%;
+  top: 16%;
+  width: 36%;
+  height: 27%;
+  background: #e6a9be;
+}
+
+.sofa::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  bottom: 8%;
+  width: 90%;
+  height: 37%;
+  background:
+    linear-gradient(90deg,#f6d2dd 0 48%,#d39caf 48% 52%,#f6d2dd 52%);
+  border: 4px solid #ba839a;
+}
+
+.rug {
+  position: absolute;
+  left: 26%;
+  top: 43%;
+  width: 44%;
+  height: 36%;
+  background: #f7ded7;
+  border: 9px solid #efb6c9;
+}
+
+.coffee-table {
+  left: 40%;
+  top: 52%;
+  width: 20%;
+  height: 15%;
+  background: #c9957c;
+}
+
+.coffee-table::after {
+  content: "♡";
+  position: absolute;
+  left: 43%;
+  top: 15%;
+  color: #ef8da7;
+  font-size: 22px;
+}
+
+.tv {
+  left: 39%;
+  bottom: 5%;
+  width: 23%;
+  height: 17%;
+  background: #bb8a73;
+}
+
+.tv::before {
+  content: "";
+  position: absolute;
+  left: 16%;
+  top: -48%;
+  width: 68%;
+  height: 75%;
+  background: #a7d4d8;
+  border: 7px solid #78677c;
+}
+
+.picture {
+  right: 6%;
+  top: 15%;
+  width: 13%;
+  height: 17%;
+  background: #f5ceda;
+  display: grid;
+  place-items: center;
+  color: #d77c9d;
+  font-size: 24px;
+}
+
+/* 卫生间 */
+
+.bathtub {
+  right: 5%;
+  top: 24%;
+  width: 54%;
+  height: 30%;
+  background: #f8fbf8;
+}
+
+.bathtub::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  background: #bce3e5;
+  border: 5px solid #e3f5f5;
+}
+
+.sink {
+  left: 7%;
+  bottom: 17%;
+  width: 42%;
+  height: 22%;
+  background: #e8b4c7;
+}
+
+.sink::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  background: #e9faf7;
+  border: 4px solid #f9e7e8;
+}
+
+.mirror {
+  left: 10%;
+  top: 20%;
+  width: 33%;
+  height: 28%;
+  background: #b6e5e9;
+}
+
+.basket {
+  right: 7%;
+  bottom: 8%;
+  width: 29%;
+  height: 23%;
+  background: repeating-linear-gradient(
+    90deg,
+    #c68d6e 0 15px,
+    #dfac89 15px 20px
+  );
+}
+
+/* 墙壁边缘 */
+
+.house::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 7px solid #825c59;
+  pointer-events: none;
+  z-index: 20;
+}
+
+@media(max-width:650px) {
+  h1 {
+    font-size: 25px;
   }
 
-  .house-layout .room {
-    padding: 4px;
+  .game {
+    padding: 7px;
+  }
+
+  .room-name {
+    font-size: 11px;
+    padding: 4px 5px;
   }
 }
 </style>
 </head>
+
 <body>
+
 <h1>Our Tiny World</h1>
-<p>♡ Jiwoo & Haram's Little Home ♡</p>
+<p class="subtitle">♡ Jiwoo & Haram's Little Home ♡</p>
+
 <div class="game">
-  <div class="house house-layout">
+  <div class="house">
+
+    <!-- 卧室 -->
     <section class="room bedroom">
-  <span class="room-name">🥛 BEDROOM</span>
+      <span class="room-name">🥛 BEDROOM</span>
 
-  <div class="pixel-window">
-    <div class="window-glass"></div>
-  </div>
+      <div class="pixel window"></div>
+      <div class="pixel bed"></div>
+      <div class="pixel wardrobe"></div>
+      <div class="pixel bedside"></div>
+    </section>
 
-  <div class="pixel-bed">
-    <div class="bed-headboard"></div>
-    <div class="bed-pillows">
-      <span></span>
-      <span></span>
-    </div>
-    <div class="bed-blanket"></div>
-    <div class="bed-footboard"></div>
-  </div>
-
-  <div class="pixel-rug"></div>
-
-  <div class="pixel-nightstand">
-    <div class="nightstand-drawer"></div>
-  </div>
-
-  <div class="pixel-wardrobe">
-    <div class="wardrobe-door"></div>
-    <div class="wardrobe-door"></div>
-  </div>
-
-  <div class="pixel-bunny">♡</div>
-</section>
+    <!-- 厨房 -->
     <section class="room kitchen">
-  <span class="room-name">🥛 KITCHEN</span>
+      <span class="room-name">🥛 KITCHEN</span>
 
-  <div class="pixel-kitchen-counter">
-    <div class="pixel-stove">
-      <span></span><span></span>
-    </div>
-    <div class="pixel-sink"></div>
-    <div class="counter-cabinets">
-      <span></span><span></span><span></span>
-    </div>
-  </div>
+      <div class="pixel counter"></div>
+      <div class="pixel fridge"></div>
+      <div class="pixel dining-table">
+        <div class="strawberry"></div>
+      </div>
+    </section>
 
-  <div class="pixel-fridge">
-    <div class="fridge-handle-top"></div>
-    <div class="fridge-handle-bottom"></div>
-  </div>
-
-  <div class="pixel-dining-table">
-    <div class="pixel-plate"></div>
-    <div class="pixel-strawberry"></div>
-  </div>
-
-  <div class="pixel-kitchen-chair chair-left"></div>
-  <div class="pixel-kitchen-chair chair-right"></div>
-</section>
+    <!-- 客厅 -->
     <section class="room living">
-  <span class="room-name">🥛 LIVING ROOM</span>
+      <span class="room-name">🥛 LIVING ROOM</span>
 
-  <div class="living-photo">
-    <span>♡ ♡</span>
-  </div>
+      <div class="rug"></div>
+      <div class="pixel sofa"></div>
+      <div class="pixel coffee-table"></div>
+      <div class="pixel tv"></div>
+      <div class="pixel picture">♡ ♡</div>
+    </section>
 
-  <div class="living-sofa">
-    <div class="sofa-back"></div>
-    <div class="sofa-cushion cushion-one"></div>
-    <div class="sofa-cushion cushion-two"></div>
-    <div class="sofa-seat"></div>
-  </div>
+    <!-- 客厅延伸区域 -->
+    <div class="living-extension"></div>
 
-  <div class="living-rug"></div>
-
-  <div class="living-coffee-table">
-    <div class="strawberry-milk">
-      <span></span>
-    </div>
-  </div>
-
-  <div class="living-tv-stand">
-    <div class="living-tv-screen"></div>
-    <div class="living-tv-drawer"></div>
-  </div>
-</section>
+    <!-- 卫生间 -->
     <section class="room bathroom">
-  <span class="room-name">🫧 BATHROOM</span>
+      <span class="room-name">🫧 BATHROOM</span>
 
-  <!-- 镜子和洗手台 -->
-  <div class="pixel-mirror"></div>
-  <div class="pixel-sink">
-    <div class="sink-basin"></div>
-    <div class="sink-tap"></div>
-  </div>
+      <div class="pixel mirror"></div>
+      <div class="pixel sink"></div>
+      <div class="pixel bathtub"></div>
+      <div class="pixel basket"></div>
+    </section>
 
-  <!-- 护肤品 -->
-  <div class="skincare">
-    <span class="bottle pink"></span>
-    <span class="bottle cream"></span>
-  </div>
-
-  <!-- 浴缸 -->
-  <div class="pixel-bathtub">
-    <div class="bath-water"></div>
-    <div class="bath-bubbles">♡ ♡</div>
-  </div>
-
-  <!-- 洗衣篮和毛巾 -->
-  <div class="pixel-basket">
-    <div class="basket-clothes"></div>
-  </div>
-  <div class="pixel-towel"></div>
-
-  <!-- 地垫和兔子 -->
-  <div class="bath-mat"></div>
-  <div class="bunny-decor">
-    <span class="bunny-ear left"></span>
-    <span class="bunny-ear right"></span>
-    <span class="bunny-face">•ᴗ•</span>
-  </div>
-</section>
   </div>
 </div>
+
 </body>
 </html>
