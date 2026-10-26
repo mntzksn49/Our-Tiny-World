@@ -627,6 +627,38 @@ h1 {
   font-size: 26px;
   cursor: pointer;
 }
+  .wardrobe {
+  cursor: pointer;
+}
+
+.wardrobe:hover {
+  filter: brightness(1.08);
+}
+
+.outfit-options {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.outfit-option {
+  background: #f9dce5;
+  border: 3px solid #b87c91;
+  padding: 15px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.outfit-option:hover {
+  background: #edb8cb;
+}
+
+#outfitResult {
+  min-height: 60px;
+  margin-top: 18px;
+  line-height: 1.8;
+}
 </style>
 </head>
 
@@ -647,7 +679,7 @@ h1 {
 
       <div class="pixel window"></div>
       <div class="pixel bed" onclick="openBedMemory()" title="Click to explore ♡"></div>
-      <div class="pixel wardrobe"></div>
+      <div class="pixel wardrobe" onclick="openWardrobe()" title="Choose an outfit ♡"></div>
       <div class="pixel bedside"></div>
     </section>
 
@@ -735,6 +767,44 @@ function closeBedMemory() {
   audio.currentTime = 0;
 }
 </script>
+<!-- 衣柜互动 -->
+<div class="memory-overlay" id="wardrobeMemory" onclick="closeWardrobe()">
+  <div class="memory-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeWardrobe()">×</button>
 
+    <h2>♡ Dress Up ♡</h2>
+    <p>今天约会穿什么好呢？</p>
+
+    <div class="outfit-options">
+      <button class="outfit-option" onclick="chooseOutfit(1)">👗</button>
+      <button class="outfit-option" onclick="chooseOutfit(2)">🎀</button>
+      <button class="outfit-option" onclick="chooseOutfit(3)">🧥</button>
+    </div>
+
+    <div id="outfitResult"></div>
+  </div>
+</div>
+
+<script>
+function openWardrobe() {
+  document.getElementById("wardrobeMemory").style.display = "flex";
+  document.getElementById("outfitResult").innerHTML = "";
+}
+
+function closeWardrobe() {
+  document.getElementById("wardrobeMemory").style.display = "none";
+}
+
+function chooseOutfit(number) {
+  const dialogues = {
+    1: "🍓：这条裙子很适合我们宝宝。<p>🎀：真的吗？那就穿这件！</p>",
+    2: "🎀：姐姐，你看这个蝴蝶结！<p>🍓：好可爱，跟你一样。</p>",
+    3: "🎀：今天有点冷呢。<p>🍓：那穿暖和一点，我牵着你。</p>"
+  };
+
+  document.getElementById("outfitResult").innerHTML =
+    "<p>" + dialogues[number] + "</p>";
+}
+</script>
 </body>
 </html>
