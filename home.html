@@ -1327,6 +1327,121 @@ h1 {
     opacity: 1;
   }
 }
+  
+/* ===== Dinner Date Mini Game ===== */
+
+.dinner-window {
+  width: min(92vw, 500px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.date-table-scene {
+  padding: 28px 15px;
+  margin: 20px 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #e9c5aa 0 25px,
+    #dcb195 25px 29px
+  );
+  border: 5px solid #9b7068;
+}
+
+.date-table-top {
+  position: relative;
+  width: min(100%, 290px);
+  height: 175px;
+  margin: auto;
+  background: #d6a587;
+  border: 7px solid #9b7068;
+  box-shadow: 6px 6px 0 #785550;
+}
+
+.date-decoration {
+  display: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.date-decoration.visible {
+  display: block;
+}
+
+.date-decoration.tablecloth {
+  inset: 8px;
+  background: #f7d5df;
+  border: 5px solid #e9a9c0;
+  z-index: 1;
+}
+
+.date-decoration.cake {
+  top: 35%;
+  left: 39%;
+  font-size: 43px;
+}
+
+.date-decoration.candle {
+  top: 12%;
+  right: 13%;
+  font-size: 34px;
+}
+
+.date-decoration.flowers {
+  bottom: 10%;
+  left: 10%;
+  font-size: 34px;
+}
+
+.date-decoration-menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.date-decoration-menu button {
+  padding: 12px 3px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.date-decoration-menu button span {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+}
+
+.date-decoration-menu button.added {
+  background: #eeb8cb;
+  border-color: #b8758d;
+}
+
+.date-start-button,
+.date-reset-button {
+  margin: 12px auto;
+  padding: 12px 18px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.date-start-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+#dateProgressText {
+  color: #b8758d;
+  font-size: 13px;
+}
+
 </style>
 </head>
 
@@ -1978,45 +2093,108 @@ function takeFridgeFood(food) {
     fridgeNotes[food];
 }
 </script>
+
 <!-- 餐桌互动 -->
 <div class="memory-overlay" id="dinnerMemory"
      onclick="closeDinner()">
 
-  <div class="memory-window"
+  <div class="memory-window dinner-window"
        onclick="event.stopPropagation()">
 
     <button class="memory-close"
             onclick="closeDinner()">×</button>
 
     <h2>♡ Our Dinner Date ♡</h2>
-    <p>Where shall we go today?</p>
+    <p>Let's make our little table pretty!</p>
 
-    <div class="dinner-options">
-      <button class="dinner-option"
-              onclick="chooseDinner('Home')">
-        <span class="dinner-emoji">🏠</span>
-        At Home
+    <!-- 可以布置的餐桌 -->
+    <div class="date-table-scene">
+      <div class="date-table-top" id="dateTableTop">
+
+        <div class="date-decoration tablecloth"
+             id="dateTablecloth"></div>
+
+        <div class="date-decoration cake"
+             id="dateCake">🍰</div>
+
+        <div class="date-decoration candle"
+             id="dateCandle">🕯️</div>
+
+        <div class="date-decoration flowers"
+             id="dateFlowers">💐</div>
+
+      </div>
+    </div>
+
+    <!-- 装饰选择 -->
+    <div class="date-decoration-menu">
+      <button onclick="addDateDecoration('tablecloth', this)">
+        🎀<span>Tablecloth</span>
       </button>
 
-      <button class="dinner-option"
-              onclick="chooseDinner('Restaurant')">
-        <span class="dinner-emoji">🍽️</span>
-        Restaurant
+      <button onclick="addDateDecoration('cake', this)">
+        🍰<span>Cake</span>
       </button>
 
-      <button class="dinner-option"
-              onclick="chooseDinner('Midnight')">
-        <span class="dinner-emoji">🌙</span>
-        Midnight Snack
+      <button onclick="addDateDecoration('candle', this)">
+        🕯️<span>Candle</span>
+      </button>
+
+      <button onclick="addDateDecoration('flowers', this)">
+        💐<span>Flowers</span>
       </button>
     </div>
 
-    <div class="dinner-story" id="dinnerStory">
-      ♡ Choose our little date ♡
+    <p id="dateProgressText">
+      ♡ 0 / 4 decorations ♡
+    </p>
+
+    <button class="date-start-button"
+            id="dateStartButton"
+            onclick="startOurDate()"
+            disabled>
+      ♡ Start Our Date ♡
+    </button>
+
+    <!-- 布置完成后出现 -->
+    <div id="dateStorySection" style="display:none">
+
+      <p>Where shall we go today?</p>
+
+      <div class="dinner-options">
+        <button class="dinner-option"
+                onclick="chooseDinner('Home')">
+          <span class="dinner-emoji">🏠</span>
+          At Home
+        </button>
+
+        <button class="dinner-option"
+                onclick="chooseDinner('Restaurant')">
+          <span class="dinner-emoji">🍽️</span>
+          Restaurant
+        </button>
+
+        <button class="dinner-option"
+                onclick="chooseDinner('Midnight')">
+          <span class="dinner-emoji">🌙</span>
+          Midnight Snack
+        </button>
+      </div>
+
+      <div class="dinner-story" id="dinnerStory">
+        ♡ Choose our little date ♡
+      </div>
+
+      <button class="date-reset-button"
+              onclick="resetDateTable()">
+        ♡ Decorate Again ♡
+      </button>
+
     </div>
 
   </div>
 </div>
+
 
 <script>
 const dinnerStories = {
@@ -2027,20 +2205,81 @@ const dinnerStories = {
   Midnight: "🌙 凌晨十二点，厨房的灯又亮了。\n\n🎀：姐姐，我有一点点饿了……\n\n🍓：不是刚刚才说要睡觉吗？\n\n🎀：最后一次嘛！♡"
 };
 
+
+const dateDecorations = new Set();
+
 function openDinner() {
   document.getElementById("dinnerMemory").style.display = "flex";
-  document.getElementById("dinnerStory").textContent =
-    "♡ Choose our little date ♡";
+  resetDateTable();
 }
 
 function closeDinner() {
   document.getElementById("dinnerMemory").style.display = "none";
 }
 
+function addDateDecoration(item, button) {
+  dateDecorations.add(item);
+
+  const ids = {
+    tablecloth: "dateTablecloth",
+    cake: "dateCake",
+    candle: "dateCandle",
+    flowers: "dateFlowers"
+  };
+
+  document.getElementById(ids[item]).classList.add("visible");
+  button.classList.add("added");
+
+  document.getElementById("dateProgressText").textContent =
+    "♡ " + dateDecorations.size + " / 4 decorations ♡";
+
+  if (dateDecorations.size === 4) {
+    document.getElementById("dateStartButton").disabled = false;
+  }
+}
+
+function startOurDate() {
+  if (dateDecorations.size !== 4) return;
+
+  document.getElementById("dateStorySection").style.display = "block";
+  document.getElementById("dateStartButton").style.display = "none";
+  document.querySelector(".date-decoration-menu").style.display = "none";
+
+  document.getElementById("dateProgressText").textContent =
+    "♡ Our little table is ready! ♡";
+}
+
+function resetDateTable() {
+  dateDecorations.clear();
+
+  document.querySelectorAll(".date-decoration").forEach(item => {
+    item.classList.remove("visible");
+  });
+
+  document.querySelectorAll(".date-decoration-menu button").forEach(button => {
+    button.classList.remove("added");
+  });
+
+  document.querySelector(".date-decoration-menu").style.display = "grid";
+
+  const startButton = document.getElementById("dateStartButton");
+  startButton.disabled = true;
+  startButton.style.display = "block";
+
+  document.getElementById("dateProgressText").textContent =
+    "♡ 0 / 4 decorations ♡";
+
+  document.getElementById("dateStorySection").style.display = "none";
+
+  document.getElementById("dinnerStory").textContent =
+    "♡ Choose our little date ♡";
+}
+
 function chooseDinner(place) {
   document.getElementById("dinnerStory").textContent =
     dinnerStories[place];
 }
+
 </script>
 
 </body>
