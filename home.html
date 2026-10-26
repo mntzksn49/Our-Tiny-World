@@ -489,6 +489,59 @@ h1 {
     padding: 4px 5px;
   }
 }
+  /* ===== 不规则小屋布局 V2 ===== */
+
+/* 卧室：右下角留出凹位 */
+.bedroom {
+  left: 0;
+  top: 0;
+  width: 65%;
+  height: 43%;
+  clip-path: polygon(
+    0 0, 100% 0,
+    100% 76%, 88% 76%,
+    88% 100%, 0 100%
+  );
+}
+
+/* 客厅：扩大到右侧，形成 L 形 */
+.living {
+  left: 0;
+  top: 43%;
+  width: 75%;
+  height: 57%;
+  clip-path: polygon(
+    0 0, 86.67% 0,
+    86.67% 30%, 100% 30%,
+    100% 100%, 0 100%
+  );
+}
+
+/* 厨房：左下角向内收 */
+.kitchen {
+  left: 65%;
+  top: 0;
+  width: 35%;
+  height: 60%;
+  clip-path: polygon(
+    0 0, 100% 0,
+    100% 100%, 0 100%,
+    0 76%
+  );
+}
+
+/* 卫生间：保留右下角的小空间 */
+.bathroom {
+  left: 75%;
+  top: 60%;
+  width: 25%;
+  height: 40%;
+}
+
+/* 移除旧版客厅延伸块，避免重复墙壁 */
+.living-extension {
+  display: none;
+}
 </style>
 </head>
 
