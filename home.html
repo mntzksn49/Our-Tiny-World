@@ -703,24 +703,38 @@ h1 {
   <div class="memory-window" onclick="event.stopPropagation()">
     <button class="memory-close" onclick="closeBedMemory()">×</button>
 
+    
     <h2>♡ Sweet Dreams ♡</h2>
 
-    <p>🥛 Jiwoo: 姐姐，还不睡吗？</p>
-    <p>🍓 Haram: 再陪我一会儿嘛。</p>
-    <p>🥛 Jiwoo: 好，那我陪你。</p>
+    <p>🍓: 我们宝宝还不睡吗？快过来躺下</p>
+    <p>🎀: 我还想再玩一会～</p>
+    <p>🍓: 好，那我陪着你。</p>
 
     <p>♡ Good night, my love ♡</p>
   </div>
 </div>
 
+<audio id="bedAudio" src="bedroom.mp3" preload="auto"></audio>
+
 <script>
 function openBedMemory() {
   document.getElementById("bedMemory").style.display = "flex";
+
+  const audio = document.getElementById("bedAudio");
+  audio.currentTime = 0;
+  audio.play().catch(error => {
+    console.log("音频播放失败：", error);
+  });
 }
 
 function closeBedMemory() {
   document.getElementById("bedMemory").style.display = "none";
+
+  const audio = document.getElementById("bedAudio");
+  audio.pause();
+  audio.currentTime = 0;
 }
 </script>
+
 </body>
 </html>
