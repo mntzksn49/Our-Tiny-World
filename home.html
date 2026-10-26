@@ -885,6 +885,63 @@ h1 {
   color: #865e6c;
 }
 
+/* 餐桌互动 */
+.dining-table {
+  cursor: pointer;
+}
+
+.dining-table:hover {
+  filter: brightness(1.08);
+}
+
+.dinner-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.dinner-option {
+  padding: 15px 5px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dinner-option:hover {
+  background: #f7d5df;
+}
+
+.dinner-emoji {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 9px;
+}
+
+.dinner-story {
+  min-height: 110px;
+  padding: 20px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  color: #865e6c;
+  line-height: 2;
+  white-space: pre-line;
+}
+
+@media (max-width: 480px) {
+  .dinner-options {
+    gap: 5px;
+  }
+
+  .dinner-option {
+    font-size: 10px;
+    padding: 12px 3px;
+  }
+}
+
 </style>
 </head>
 
@@ -925,9 +982,11 @@ h1 {
      onclick="openFridge()"
      title="Open the fridge ♡"></div>
 
-      <div class="pixel dining-table">
-        <div class="strawberry"></div>
-      </div>
+      <div class="pixel dining-table"
+     onclick="openDinner()"
+     title="Our Dinner Date ♡">
+  <div class="strawberry"></div>
+</div>
     </section>
 
     <!-- ===== 客厅 ===== -->
@@ -1264,6 +1323,71 @@ function closeFridge() {
 function showFridgeNote(item) {
   document.getElementById("fridgeNote").textContent =
     fridgeNotes[item];
+}
+</script>
+
+<!-- 餐桌互动 -->
+<div class="memory-overlay" id="dinnerMemory"
+     onclick="closeDinner()">
+
+  <div class="memory-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeDinner()">×</button>
+
+    <h2>♡ Our Dinner Date ♡</h2>
+    <p>Where shall we go today?</p>
+
+    <div class="dinner-options">
+      <button class="dinner-option"
+              onclick="chooseDinner('Home')">
+        <span class="dinner-emoji">🏠</span>
+        At Home
+      </button>
+
+      <button class="dinner-option"
+              onclick="chooseDinner('Restaurant')">
+        <span class="dinner-emoji">🍽️</span>
+        Restaurant
+      </button>
+
+      <button class="dinner-option"
+              onclick="chooseDinner('Midnight')">
+        <span class="dinner-emoji">🌙</span>
+        Midnight Snack
+      </button>
+    </div>
+
+    <div class="dinner-story" id="dinnerStory">
+      ♡ Choose our little date ♡
+    </div>
+
+  </div>
+</div>
+
+<script>
+const dinnerStories = {
+  Home: "🏠 今天在家吃晚饭。\n\n🎀：姐姐，我来帮你吧！\n\n🍓：那河岚帮我摆一下餐具好不好？\n\n🎀：保证完成任务！♡",
+
+  Restaurant: "🍽️ 今天出去约会啦！\n\n🍓：河岚想吃什么？\n\n🎀：只要跟姐姐一起，吃什么都好。\n\n🍓：那以后也一直一起吃饭吧♡",
+
+  Midnight: "🌙 凌晨十二点，厨房的灯又亮了。\n\n🎀：姐姐，我有一点点饿了……\n\n🍓：不是刚刚才说要睡觉吗？\n\n🎀：最后一次嘛！♡"
+};
+
+function openDinner() {
+  document.getElementById("dinnerMemory").style.display = "flex";
+  document.getElementById("dinnerStory").textContent =
+    "♡ Choose our little date ♡";
+}
+
+function closeDinner() {
+  document.getElementById("dinnerMemory").style.display = "none";
+}
+
+function chooseDinner(place) {
+  document.getElementById("dinnerStory").textContent =
+    dinnerStories[place];
 }
 </script>
 
