@@ -719,6 +719,254 @@ p{margin:0 0 20px;font-size:13px}
     transform-origin: top right;
   }
 }
+/* ===== PIXEL BATHROOM ===== */
+
+.bathroom {
+  position: relative;
+}
+
+/* 镜子 */
+.pixel-mirror {
+  position: absolute;
+  width: 60px;
+  height: 76px;
+  left: 12%;
+  top: 22%;
+  background: #b9e4e9;
+  border: 7px solid #b88784;
+  box-shadow: 4px 4px 0 #865d5b;
+}
+
+.pixel-mirror::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 35px;
+  left: 10px;
+  top: 8px;
+  background: #eaffff;
+}
+
+/* 洗手台 */
+.pixel-sink {
+  position: absolute;
+  width: 90px;
+  height: 49px;
+  left: 9%;
+  top: 58%;
+  background: #e7aabb;
+  border: 6px solid #ad7b80;
+  box-shadow: 4px 4px 0 #865d5b;
+}
+
+.sink-basin {
+  position: absolute;
+  width: 54px;
+  height: 18px;
+  left: 12px;
+  top: 4px;
+  background: #f9f7ef;
+  border: 4px solid #b9d8d8;
+}
+
+.sink-tap {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  background: #8faeb6;
+  left: 34px;
+  top: -18px;
+}
+
+/* 护肤品 */
+.skincare {
+  position: absolute;
+  left: 12%;
+  top: 49%;
+  display: flex;
+  gap: 7px;
+}
+
+.bottle {
+  display: block;
+  width: 13px;
+  height: 23px;
+  border: 3px solid #a67c81;
+}
+
+.bottle.pink {
+  background: #f6a4c0;
+}
+
+.bottle.cream {
+  background: #fff3d5;
+  height: 19px;
+  margin-top: 4px;
+}
+
+/* 浴缸 */
+.pixel-bathtub {
+  position: absolute;
+  width: 43%;
+  height: 36%;
+  right: 8%;
+  top: 25%;
+  background: #fff5ed;
+  border: 8px solid #b88784;
+  box-shadow: 5px 5px 0 #865d5b;
+}
+
+.bath-water {
+  position: absolute;
+  inset: 8px;
+  background: #bce4e5;
+  border: 5px solid #e6f9f7;
+}
+
+.bath-bubbles {
+  position: absolute;
+  top: -19px;
+  left: 20%;
+  font-size: 21px;
+  color: #fff;
+  text-shadow: 2px 2px #9dcbd2;
+}
+
+/* 洗衣篮 */
+.pixel-basket {
+  position: absolute;
+  width: 60px;
+  height: 47px;
+  right: 10%;
+  bottom: 10%;
+  background: repeating-linear-gradient(
+    90deg,
+    #d3a27f 0 9px,
+    #b98366 9px 13px
+  );
+  border: 5px solid #926b60;
+  box-shadow: 4px 4px 0 #865d5b;
+}
+
+.basket-clothes {
+  position: absolute;
+  width: 38px;
+  height: 14px;
+  left: 5px;
+  top: -12px;
+  background: linear-gradient(
+    90deg,
+    #f6b9c8 50%,
+    #fff0d8 50%
+  );
+}
+
+/* 毛巾 */
+.pixel-towel {
+  position: absolute;
+  width: 32px;
+  height: 43px;
+  right: 30%;
+  bottom: 13%;
+  background: #f4b1c5;
+  border: 5px solid #fff0eb;
+  box-shadow: 4px 4px 0 #ad8080;
+}
+
+/* 地垫 */
+.bath-mat {
+  position: absolute;
+  width: 75px;
+  height: 32px;
+  left: 37%;
+  bottom: 8%;
+  background: #f2b6c7;
+  border: 5px solid #e19eb4;
+}
+
+/* 兔子装饰 */
+.bunny-decor {
+  position: absolute;
+  width: 30px;
+  height: 27px;
+  right: 9%;
+  top: 12%;
+  background: #fff8f3;
+  border: 3px solid #b88784;
+}
+
+.bunny-ear {
+  position: absolute;
+  width: 9px;
+  height: 17px;
+  background: #fff8f3;
+  border: 3px solid #b88784;
+  top: -18px;
+}
+
+.bunny-ear.left {
+  left: 2px;
+}
+
+.bunny-ear.right {
+  right: 2px;
+}
+
+.bunny-face {
+  font-size: 9px;
+  color: #a67b84;
+  line-height: 21px;
+}
+
+/* 手机适配 */
+@media (max-width: 560px) {
+  .pixel-mirror {
+    width: 37px;
+    height: 49px;
+    border-width: 4px;
+  }
+
+  .pixel-sink {
+    width: 53px;
+    height: 35px;
+    border-width: 4px;
+  }
+
+  .sink-basin {
+    width: 32px;
+    height: 12px;
+    left: 6px;
+    border-width: 2px;
+  }
+
+  .sink-tap {
+    left: 20px;
+  }
+
+  .pixel-bathtub {
+    border-width: 5px;
+  }
+
+  .pixel-basket {
+    width: 36px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  .pixel-towel {
+    width: 22px;
+    height: 28px;
+  }
+
+  .bath-mat {
+    width: 43px;
+    height: 22px;
+  }
+
+  .bunny-decor {
+    transform: scale(.75);
+  }
+}
 </style>
 </head>
 <body>
@@ -810,11 +1058,41 @@ p{margin:0 0 20px;font-size:13px}
   </div>
 </section>
     <section class="room bathroom">
-      <span class="room-name">🫧 BATHROOM</span>
-      <div class="furniture bath">🛁</div>
-      <div class="furniture sink">🪞</div>
-      <div class="furniture laundry">🧺</div>
-    </section>
+  <span class="room-name">🫧 BATHROOM</span>
+
+  <!-- 镜子和洗手台 -->
+  <div class="pixel-mirror"></div>
+  <div class="pixel-sink">
+    <div class="sink-basin"></div>
+    <div class="sink-tap"></div>
+  </div>
+
+  <!-- 护肤品 -->
+  <div class="skincare">
+    <span class="bottle pink"></span>
+    <span class="bottle cream"></span>
+  </div>
+
+  <!-- 浴缸 -->
+  <div class="pixel-bathtub">
+    <div class="bath-water"></div>
+    <div class="bath-bubbles">♡ ♡</div>
+  </div>
+
+  <!-- 洗衣篮和毛巾 -->
+  <div class="pixel-basket">
+    <div class="basket-clothes"></div>
+  </div>
+  <div class="pixel-towel"></div>
+
+  <!-- 地垫和兔子 -->
+  <div class="bath-mat"></div>
+  <div class="bunny-decor">
+    <span class="bunny-ear left"></span>
+    <span class="bunny-ear right"></span>
+    <span class="bunny-face">•ᴗ•</span>
+  </div>
+</section>
   </div>
 </div>
 </body>
