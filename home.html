@@ -782,6 +782,63 @@ h1 {
   cursor: default;
 }
 
+/* 厨房料理台互动 */
+.counter {
+  cursor: pointer;
+}
+
+.counter:hover {
+  filter: brightness(1.08);
+}
+
+.cooking-menu {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.food-option {
+  background: #fff0eb;
+  border: 3px solid #d8a3ad;
+  padding: 16px 5px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #865e6c;
+  font-size: 13px;
+}
+
+.food-option:hover {
+  background: #f7d5df;
+}
+
+.food-emoji {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.cooking-result {
+  min-height: 100px;
+  padding: 20px 10px;
+  background: #fff8f4;
+  border: 3px dashed #e3b4c2;
+  color: #865e6c;
+  line-height: 2;
+  white-space: pre-line;
+}
+
+@media (max-width: 480px) {
+  .cooking-menu {
+    gap: 6px;
+  }
+
+  .food-option {
+    font-size: 11px;
+    padding: 12px 3px;
+  }
+}
+
 </style>
 </head>
 
@@ -815,7 +872,9 @@ h1 {
     <section class="room kitchen">
       <span class="room-name">🥛 KITCHEN</span>
 
-      <div class="pixel counter"></div>
+      <div class="pixel counter"
+     onclick="openCooking()"
+     title="Let's Cook ♡"></div>
       <div class="pixel fridge"></div>
 
       <div class="pixel dining-table">
@@ -1026,6 +1085,70 @@ function renderDiary() {
 
   document.getElementById("diaryNext").disabled =
     diaryPage === diaryPages.length - 1;
+}
+</script>
+
+<!-- 厨房料理台互动 -->
+<div class="memory-overlay" id="cookingMemory"
+     onclick="closeCooking()">
+  <div class="memory-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeCooking()">×</button>
+
+    <h2>♡ Let's Cook Together ♡</h2>
+    <p>What should we make today?</p>
+
+    <div class="cooking-menu">
+  <button class="food-option"
+          onclick="cookFood('Taiyaki')">
+    <span class="food-emoji">🐟</span>
+    Taiyaki
+  </button>
+
+  <button class="food-option"
+          onclick="cookFood('Cake')">
+    <span class="food-emoji">🍰</span>
+    Strawberry Tart
+  </button>
+
+  <button class="food-option"
+          onclick="cookFood('Shabu-shabu')">
+    <span class="food-emoji">🍲</span>
+    Shabu-shabu
+  </button>
+</div>
+
+<div class="cooking-result" id="cookingResult">
+  ♡ Choose something to cook ♡
+</div>
+
+  </div>
+</div>
+
+<script>
+const cookingStories = {
+  Taiyaki: "🐟 鲷鱼烧做好啦！\n\n🎀：姐姐你快来尝尝！\n\n🍓：河岚呀...好像没熟呢。",
+
+  Cake: "🍰 噔噔噔～草莓塔新鲜出炉！\n\n🍓：宝宝快来尝尝\n\n🎀：哇姐姐完全是我的天野莓啊♡",
+
+  "Shabu-shabu": "🍲 今天晚上想吃什么？\n\n🎀：我们去吃涮涮锅吧！\n\n🍓：看来河岚跟我又共享神经元了呢♡"
+};
+
+function openCooking() {
+  document.getElementById("cookingMemory").style.display = "flex";
+  document.getElementById("cookingResult").textContent =
+    "♡ Choose something to cook ♡";
+}
+
+function closeCooking() {
+  document.getElementById("cookingMemory").style.display = "none";
+}
+
+function cookFood(food) {
+  document.getElementById("cookingResult").textContent =
+    cookingStories[food];
 }
 </script>
 
