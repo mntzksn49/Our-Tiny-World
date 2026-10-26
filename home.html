@@ -573,6 +573,60 @@ h1 {
     margin-right: 0;
   }
 }
+  /* 床铺点击互动 */
+.bed {
+  cursor: pointer;
+}
+
+.bed:hover {
+  filter: brightness(1.06);
+}
+
+/* 像素风弹窗 */
+.memory-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(65, 42, 49, 0.55);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.memory-window {
+  position: relative;
+  width: min(90vw, 420px);
+  background: #fff7f3;
+  border: 5px solid #b87c91;
+  box-shadow: 8px 8px 0 #e5bac7;
+  padding: 38px 24px 30px;
+  text-align: center;
+  color: #865e6c;
+}
+
+.memory-window h2 {
+  margin: 0 0 22px;
+  color: #c47790;
+  font-size: 23px;
+}
+
+.memory-window p {
+  font-size: 15px;
+  line-height: 2;
+  margin: 12px 0;
+}
+
+.memory-close {
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  background: none;
+  border: none;
+  color: #b87c91;
+  font-size: 26px;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -592,7 +646,7 @@ h1 {
       <span class="room-name">🥛 BEDROOM</span>
 
       <div class="pixel window"></div>
-      <div class="pixel bed"></div>
+      <div class="pixel bed" onclick="openBedMemory()" title="Click to explore ♡"></div>
       <div class="pixel wardrobe"></div>
       <div class="pixel bedside"></div>
     </section>
@@ -644,6 +698,29 @@ h1 {
 
   </main>
 </div>
+<!-- 卧室床铺互动弹窗 -->
+<div class="memory-overlay" id="bedMemory" onclick="closeBedMemory()">
+  <div class="memory-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeBedMemory()">×</button>
 
+    <h2>♡ Sweet Dreams ♡</h2>
+
+    <p>🥛 Jiwoo: 姐姐，还不睡吗？</p>
+    <p>🍓 Haram: 再陪我一会儿嘛。</p>
+    <p>🥛 Jiwoo: 好，那我陪你。</p>
+
+    <p>♡ Good night, my love ♡</p>
+  </div>
+</div>
+
+<script>
+function openBedMemory() {
+  document.getElementById("bedMemory").style.display = "flex";
+}
+
+function closeBedMemory() {
+  document.getElementById("bedMemory").style.display = "none";
+}
+</script>
 </body>
 </html>
