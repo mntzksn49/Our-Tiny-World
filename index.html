@@ -1,12 +1,15 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Tiny World 🍓</title>
+  <title>Our Tiny World</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -14,147 +17,132 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f9e9e5;
-      font-family: monospace;
-      color: #795b63;
+      background: #f9eae6;
+      font-family: "Courier New", monospace;
+      color: #c47790;
+      padding: 20px;
     }
 
-    .start-screen {
-      width: min(90vw, 430px);
-      padding: 48px 24px;
+    .game-card {
+      width: min(100%, 520px);
+      background: #fff9f5;
+      border: 5px solid #d99cab;
+      box-shadow: 9px 9px 0 #edcbd0;
+      padding: 48px 22px 38px;
       text-align: center;
-      background: #fff8f3;
-      border: 4px solid #dba9ad;
-      box-shadow: 8px 8px 0 #e9c7c6;
     }
 
-    
-.decorations {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 90px;
-  height: 100px;
-  margin-bottom: 30px;
-}
+    .decorations {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
 
-/* 用小方格组成真正的像素图案 */
-.pixel-strawberry,
-.pixel-bow {
-  display: block;
-  position: relative;
-  width: 8px;
-  height: 8px;
-  transform: scale(2);
-  transform-origin: center;
-  image-rendering: pixelated;
-}
-
-.pixel-strawberry {
-  background: #e96b78;
-  box-shadow:
-    -8px -24px #62a66e,
-    0 -32px #62a66e,
-    8px -24px #62a66e,
-    -16px -16px #e96b78,
-    -8px -16px #e96b78,
-    0 -16px #e96b78,
-    8px -16px #e96b78,
-    16px -16px #e96b78,
-    -16px -8px #e96b78,
-    -8px -8px #ffd9a4,
-    8px -8px #ffd9a4,
-    16px -8px #e96b78,
-    -8px 0 #e96b78,
-    8px 0 #e96b78,
-    -8px 8px #e96b78,
-    0 8px #ffd9a4,
-    8px 8px #e96b78,
-    0 16px #e96b78;
-}
-
-.pixel-bow {
-  background: #f8c2d0;
-  box-shadow:
-    -24px -16px #e98aa7,
-    -16px -16px #e98aa7,
-    16px -16px #e98aa7,
-    24px -16px #e98aa7,
-    -32px -8px #e98aa7,
-    -24px -8px #f8c2d0,
-    -16px -8px #f8c2d0,
-    -8px -8px #e98aa7,
-    8px -8px #e98aa7,
-    16px -8px #f8c2d0,
-    24px -8px #f8c2d0,
-    32px -8px #e98aa7,
-    -32px 0 #e98aa7,
-    -24px 0 #f8c2d0,
-    -16px 0 #f8c2d0,
-    -8px 0 #e98aa7,
-    8px 0 #e98aa7,
-    16px 0 #f8c2d0,
-    24px 0 #f8c2d0,
-    32px 0 #e98aa7,
-    -24px 8px #e98aa7,
-    -16px 8px #e98aa7,
-    -8px 8px #e98aa7,
-    8px 8px #e98aa7,
-    16px 8px #e98aa7,
-    24px 8px #e98aa7,
-    -16px 16px #e98aa7,
-    16px 16px #e98aa7;
-}
-
+    .decorations img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
 
     h1 {
-      font-size: clamp(25px, 7vw, 36px);
-      margin: 12px 0;
-      color: #c57c8e;
+      font-size: clamp(27px, 6vw, 42px);
+      letter-spacing: 1px;
+      margin: 0 0 14px;
     }
 
     .subtitle {
-      font-size: 14px;
-      margin-bottom: 36px;
+      font-size: 16px;
+      color: #84616c;
+      margin-bottom: 42px;
     }
 
-    button {
-      background: #e7a8b6;
+    .start-button {
+      display: inline-block;
+      border: 4px solid #b8758d;
+      background: #e8a8ba;
+      box-shadow: 5px 5px 0 #eacbd0;
+      padding: 16px 30px;
       color: white;
-      border: 3px solid #b8798b;
-      padding: 14px 38px;
-      font: bold 18px monospace;
+      font-family: inherit;
+      font-size: 21px;
+      font-weight: bold;
       cursor: pointer;
-      box-shadow: 4px 4px 0 #d7bcc0;
     }
 
-    button:active {
-      transform: translate(3px, 3px);
-      box-shadow: 1px 1px 0 #d7bcc0;
+    .start-button:hover {
+      background: #dc91a8;
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0 #eacbd0;
     }
 
-    #message {
-      margin-top: 25px;
-      min-height: 24px;
+    .footer {
+      margin-top: 42px;
       font-size: 14px;
+      color: #896772;
+    }
+
+    #game {
+      display: none;
+      text-align: center;
+    }
+
+    #game h2 {
+      font-size: 26px;
+    }
+
+    @media (max-width: 480px) {
+      .game-card {
+        padding: 40px 12px 32px;
+      }
+
+      .decorations img {
+        width: 72px;
+        height: 72px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
-<body>
-  <main class="start-screen">
-    <div class="decorations">   <span class="pixel-strawberry"></span>   <span class="pixel-bow"></span> </div>
-    <h1>Our Tiny World</h1>
-    <p class="subtitle">Jiwoo & Haram's Little Home</p>
 
-    <button id="start">START GAME</button>
-    <p id="message">♡ A little world, just for us ♡</p>
+<body>
+  <main class="game-card">
+
+    <section id="welcome">
+      <div class="decorations">
+        <img src="strawberry.png" alt="Pixel strawberry">
+        <img src="bow.png" alt="Pixel pink bow">
+      </div>
+
+      <h1>Our Tiny World</h1>
+      <p class="subtitle">Jiwoo & Haram's Little Home</p>
+
+      <button class="start-button" onclick="startGame()">
+        ♡ START GAME ♡
+      </button>
+
+      <p class="footer">
+        ♡ A little world, just for us ♡
+      </p>
+    </section>
+
+    <section id="game">
+      <h2>♡ Welcome Home ♡</h2>
+      <p>Jiwoo & Haram's little world is waiting...</p>
+    </section>
+
   </main>
 
   <script>
-    document.getElementById("start").addEventListener("click", () => {
-      document.getElementById("message").textContent =
-        "Welcome home! ♡";
-    });
+    function startGame() {
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("game").style.display = "block";
+    }
   </script>
 </body>
 </html>
