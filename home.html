@@ -3185,14 +3185,14 @@ top: 120px;
   <div class="walking-character jiwoo-character"
        id="walkingJiwoo"
        onclick="event.stopPropagation()">
-    <img src="jiwoo-walk.png" alt="Jiwoo">
+    <img src="jiwoo-front.png" alt="Jiwoo">
     <span class="walking-name">🍓 Jiwoo</span>
   </div>
 
   <div class="walking-character haram-character"
        id="walkingHaram"
        onclick="event.stopPropagation()">
-    <img src="haram-walk.png" alt="Haram">
+    <img src="haram-front.png" alt="Haram">
     <span class="walking-name">🎀 Haram</span>
   </div>
 
@@ -7423,15 +7423,80 @@ const walkingHouse = document.querySelector(".house");
 const walkingJiwoo = document.getElementById("walkingJiwoo");
 const walkingHaram = document.getElementById("walkingHaram");
 const walkingHeart = document.getElementById("walkingHeart");
+    /* ===== Four Direction Character Sprites ===== */
+
+const walkingSprites = {
+  jiwoo: {
+    front: "jiwoo-front.png",
+    back: "jiwoo-back.png",
+    left: "jiwoo-left.png",
+    right: "jiwoo-right.png"
+  },
+
+  haram: {
+    front: "haram-front.png",
+    back: "haram-back.png",
+    left: "haram-left.png",
+    right: "haram-right.png"
+  }
+};
+
+function setWalkingDirection(character, direction) {
+  const name = character.id === "walkingJiwoo" ? "jiwoo" : "haram";
+  const image = character.querySelector("img");
+
+  if (!image) return;
+
+  image.src = walkingSprites[name][direction];
+}
 
 let walkingTogether = false;
 let walkingTimers = new WeakMap();
 
 function moveWalkingCharacter(character, x, y) {
-  const previousTimer = walkingTimers.get(character);
-  if (previousTimer) clearTimeout(previousTimer);
 
+  const previousTimer = walkingTimers.get(character);
+
+  if (previousTimer) {
+    clearTimeout(previousTimer);
+  }
+
+  // 获取人物目前的位置
+  const currentX = parseFloat(getComputedStyle(character).left);
+  const currentY = parseFloat(getComputedStyle(character).top);
+
+  // 计算移动方向
+  const dx = x - currentX;
+  const dy = y - currentY;
+
+  let direction = "front";
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+
+    if (dx > 0) {
+      direction = "right";
+    } else {
+      direction = "left";
+    }
+
+  } else {
+
+    if (dy > 0) {
+      direction = "front";
+    } else {
+      direction = "back";
+    }
+
+  }
+
+  // 切换对应方向的人物图片
+  if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+    setWalkingDirection(character, direction);
+  }
+
+  // 保留原来的走路动画
   character.classList.add("walking");
+
   character.style.left = x + "px";
   character.style.top = y + "px";
 
