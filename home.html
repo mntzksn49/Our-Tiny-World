@@ -4141,16 +4141,7 @@ function resetBubbleBath() {
   🥀 <span>Cold War</span>
 </button>
     </div>
-    <!-- Temporary Secret Letters Test -->
-<div class="movie-controls" id="secretLettersTestButtons">
-  <button onclick="openSecretLetters('horror')">
-    💌 Test Horror Letters
-  </button>
-
-  <button onclick="openSecretLetters('coldwar')">
-    💌 Test Cold War Letter
-  </button>
-</div>
+    
 <!-- ♡ Movie Video Player ♡ -->
 <div class="movie-video-section" id="movieVideoSection" style="display:none">
 
@@ -4495,6 +4486,8 @@ const movieStories = {
 };
 let horrorWatchCount = 0;
 let horrorEasterEggTriggered = false;
+    let coldWarWatchCount = 0;
+let coldWarEasterEggTriggered = false;
     /* ===== Our Movie Clips ===== */
 
 const movieClips = {
@@ -4579,8 +4572,11 @@ function chooseMovie(type) {
     movieStories[type];
 
   document.getElementById("movieOptions").style.display = "none";
-showMovieClips(type);
-  // ♡ Horror hidden easter egg ♡
+
+  // 显示对应分类的视频
+  showMovieClips(type);
+
+  // ♡ Horror Secret ♡
   if (type === "Horror") {
     horrorWatchCount++;
 
@@ -4602,6 +4598,26 @@ showMovieClips(type);
         "♡ A Secret Cuddle Moment ♡";
 
       screen.className = "movie-tv-screen romance";
+
+      // 弹出两封生日信
+      openSecretLetters("horror");
+    }
+  }
+
+  // ♡ Cold War Secret ♡
+  if (type === "ColdWar") {
+    coldWarWatchCount++;
+
+    if (coldWarWatchCount === 3 && !coldWarEasterEggTriggered) {
+      coldWarEasterEggTriggered = true;
+
+      document.getElementById("movieStory").textContent =
+        "♡ A LETTER FROM HARAM ♡\n\n" +
+        "有些话，即使在闹别扭的时候，\n" +
+        "也一直藏在心里。♡";
+
+      // 弹出河岚写给志宇的生日信
+      openSecretLetters("coldwar");
     }
   }
 }
