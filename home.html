@@ -5959,7 +5959,7 @@ function playPlaylistSong(index) {
   const song = playlistSongs[index];
   const audio = document.getElementById("playlistAudio");
 
-  audio.src = song.file;
+  audio.src = song.file + "?v=20261028";
   audio.load();
 
   document.getElementById("playlistSongTitle").textContent = song.title;
