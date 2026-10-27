@@ -1441,7 +1441,143 @@ h1 {
   color: #b8758d;
   font-size: 13px;
 }
+/* ===== Movie Night ===== */
 
+.movie-night-window {
+  width: min(92vw, 480px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.movie-tv-frame {
+  margin: 20px auto;
+  width: min(100%, 330px);
+}
+
+.movie-tv-screen {
+  height: 205px;
+  border: 12px solid #b77b91;
+  border-radius: 15px;
+  background: #302a42;
+  box-shadow: 6px 6px 0 #895c71;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: background 0.4s;
+}
+
+.movie-screen-content {
+  font-size: 75px;
+  line-height: 1.5;
+  animation: movieFloat 2s ease-in-out infinite;
+}
+
+.movie-screen-caption {
+  color: #fff2f6;
+  font-size: 12px;
+  text-align: center;
+}
+
+.movie-tv-stand {
+  width: 75px;
+  height: 13px;
+  background: #b77b91;
+  margin: auto;
+  box-shadow: 0 6px 0 #895c71;
+}
+
+.movie-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 20px 0;
+}
+
+.movie-options button {
+  background: #fff0f4;
+  border: 3px solid #d8a0b5;
+  padding: 12px 4px;
+  font-family: inherit;
+  font-size: 25px;
+  color: #93667a;
+  cursor: pointer;
+}
+
+.movie-options button span {
+  display: block;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.movie-options button:hover {
+  background: #f6d2e0;
+}
+
+.movie-story {
+  background: #fff6f7;
+  border: 3px solid #e3b6c5;
+  padding: 15px;
+  color: #865e70;
+  white-space: pre-line;
+  line-height: 1.8;
+  font-size: 13px;
+  min-height: 85px;
+}
+
+.movie-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.movie-controls button {
+  background: #e9b2c6;
+  border: 3px solid #b97c94;
+  color: white;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.movie-tv-screen.horror {
+  background: #292239;
+}
+
+.movie-tv-screen.romance {
+  background: #f4a7c3;
+}
+
+.movie-tv-screen.cartoon {
+  background: #b7d9e7;
+}
+
+.movie-tv-screen.horror .movie-screen-content {
+  animation: horrorShake 0.3s infinite alternate;
+}
+
+.movie-tv-screen.romance .movie-screen-content {
+  animation: movieHeartbeat 1s infinite;
+}
+
+@keyframes movieFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes horrorShake {
+  from { transform: translateX(-4px); }
+  to { transform: translateX(4px); }
+}
+
+@keyframes movieHeartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
 </style>
 </head>
 
@@ -1500,7 +1636,7 @@ h1 {
       <div class="pixel coffee-table"
      onclick="openCoffeeTable()"
      title="Our Little Moments ♡"></div>
-      <div class="pixel tv"
+      <div class="pixel tv" onclick="openMovieNight()" title="Movie Night ♡">
      onclick="openLittleTV()"
      title="Our Little TV ♡"></div>
       <div class="pixel picture"
@@ -3825,6 +3961,50 @@ function resetBubbleBath() {
     "♡ Our little bath is waiting ♡";
 }
 </script>
+  <!-- 客厅电视 Movie Night -->
+<div class="memory-overlay" id="movieNightMemory" onclick="closeMovieNight()">
+  <div class="memory-window movie-night-window" onclick="event.stopPropagation()">
+
+    <button class="memory-close" onclick="closeMovieNight()">×</button>
+
+    <h2>♡ Movie Night ♡</h2>
+    <p>What should we watch tonight?</p>
+
+    <div class="movie-tv-frame">
+      <div class="movie-tv-screen" id="movieTvScreen">
+        <div class="movie-screen-content" id="movieScreenContent">
+          📺
+        </div>
+        <div class="movie-screen-caption" id="movieScreenCaption">
+          ♡ Pick a movie ♡
+        </div>
+      </div>
+      <div class="movie-tv-stand"></div>
+    </div>
+
+    <div class="movie-options" id="movieOptions">
+      <button onclick="chooseMovie('Horror')">
+        👻 <span>Horror</span>
+      </button>
+      <button onclick="chooseMovie('Romance')">
+        💗 <span>Romance</span>
+      </button>
+      <button onclick="chooseMovie('Cartoon')">
+        🐱 <span>Cartoon</span>
+      </button>
+    </div>
+
+    <div class="movie-story" id="movieStory">
+      ♡ Our movie night is about to begin ♡
+    </div>
+
+    <div class="movie-controls">
+      <button onclick="resetMovieNight()">♡ Next Movie ♡</button>
+      <button onclick="turnOffMovieTV()">♡ Turn Off TV ♡</button>
+    </div>
+
+  </div>
+</div>
   <!-- 浴室双人换装互动 -->
 <div class="memory-overlay" id="coupleMirrorMemory" onclick="closeCoupleMirror()">
   <div class="memory-window couple-mirror-window" onclick="event.stopPropagation()">
@@ -3996,6 +4176,91 @@ document.getElementById("haramMirrorOutfit").textContent = "♡";
 
 document.getElementById("haramMirrorImage").src =
   coupleMirrorImages.Base.haram;
+}
+    /* ===== Movie Night ===== */
+
+const movieStories = {
+  Horror:
+    "👻 恐怖电影开始了，客厅的灯也暗了下来。\n\n" +
+    "🎀：姐姐，你害怕吗？\n\n" +
+    "🍓：我才不怕呢。\n\n" +
+    "🎀：那姐姐为什么一直抓着我的手？\n\n" +
+    "🍓：……因为你的手很暖和嘛。♡",
+
+  Romance:
+    "💗 电影里的男女主角终于在一起了。\n\n" +
+    "🎀：姐姐，你觉得他们会一直幸福吗？\n\n" +
+    "🍓：应该会吧。\n\n" +
+    "🎀：那我们呢？\n\n" +
+    "🍓：我们当然也会呀。♡",
+
+  Cartoon:
+    "🐱 电视里出现了一只圆滚滚的小猫。\n\n" +
+    "🍓：河岚，你看它是不是很像你？\n\n" +
+    "🎀：哪里像啦！\n\n" +
+    "🍓：都一样可爱呀。\n\n" +
+    "🎀：姐姐又在逗我！♡"
+};
+
+const movieVisuals = {
+  Horror: {
+    emoji: "👻",
+    caption: "A spooky little night..."
+  },
+  Romance: {
+    emoji: "💗",
+    caption: "Love is in the air ♡"
+  },
+  Cartoon: {
+    emoji: "🐱",
+    caption: "Meow meow!"
+  }
+};
+
+function openMovieNight() {
+  document.getElementById("movieNightMemory").style.display = "flex";
+  resetMovieNight();
+}
+
+function closeMovieNight() {
+  document.getElementById("movieNightMemory").style.display = "none";
+}
+
+function chooseMovie(type) {
+  const screen = document.getElementById("movieTvScreen");
+
+  screen.className = "movie-tv-screen " + type.toLowerCase();
+
+  document.getElementById("movieScreenContent").textContent =
+    movieVisuals[type].emoji;
+
+  document.getElementById("movieScreenCaption").textContent =
+    movieVisuals[type].caption;
+
+  document.getElementById("movieStory").textContent =
+    movieStories[type];
+
+  document.getElementById("movieOptions").style.display = "none";
+}
+
+function resetMovieNight() {
+  document.getElementById("movieTvScreen").className =
+    "movie-tv-screen";
+
+  document.getElementById("movieScreenContent").textContent = "📺";
+
+  document.getElementById("movieScreenCaption").textContent =
+    "♡ Pick a movie ♡";
+
+  document.getElementById("movieStory").textContent =
+    "♡ Our movie night is about to begin ♡";
+
+  document.getElementById("movieOptions").style.display = "grid";
+}
+
+function turnOffMovieTV() {
+  resetMovieNight();
+  closeMovieNight();
 }
 </script>
   <!-- 浴室护肤互动 -->
