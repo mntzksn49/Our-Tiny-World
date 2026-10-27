@@ -3029,6 +3029,109 @@ top: 120px;
   font-size: 12px;
   cursor: pointer;
 }
+  /* ===== Together at Home · Walking Characters ===== */
+
+.house {
+  position: relative;
+}
+
+.walking-characters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.walking-character {
+  position: absolute;
+  width: 65px;
+  height: 100px;
+  pointer-events: none;
+  transition: left 1.5s linear, top 1.5s linear;
+  transform: translate(-50%, -100%);
+  text-align: center;
+}
+
+.walking-character img {
+  width: 100%;
+  height: 85px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.walking-name {
+  display: block;
+  font-size: 10px;
+  color: #986c7a;
+  background: #fff0ed;
+  border: 2px solid #d9a5b5;
+  white-space: nowrap;
+}
+
+.jiwoo-character {
+  left: 280px;
+  top: 620px;
+  width: 70px;
+}
+
+.haram-character {
+  left: 350px;
+  top: 620px;
+  width: 64px;
+}
+
+.walking-character.walking img {
+  animation: littleWalk 0.3s infinite alternate;
+}
+
+@keyframes littleWalk {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
+.walking-heart {
+  position: absolute;
+  display: none;
+  color: #e68ba9;
+  font-size: 25px;
+  pointer-events: none;
+  animation: walkingHeartFloat 1.5s ease-out forwards;
+}
+
+@keyframes walkingHeartFloat {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-45px);
+  }
+}
+  /* ===== Walking Controls ===== */
+
+.walking-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px auto;
+  flex-wrap: wrap;
+}
+
+.walking-controls button {
+  padding: 12px 18px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #986c7a;
+}
+
+.walking-controls button:hover {
+  background: #d98da7;
+}
 </style>
   
 </head>
@@ -3043,6 +3146,26 @@ top: 120px;
 
 <div class="viewport">
   <main class="house">
+    <!-- ===== Together at Home · Walking Characters ===== -->
+<div class="walking-characters" id="walkingCharacters">
+
+  <div class="walking-character jiwoo-character"
+       id="walkingJiwoo"
+       onclick="event.stopPropagation()">
+    <img src="jiwoo-walk.png" alt="Jiwoo">
+    <span class="walking-name">🍓 Jiwoo</span>
+  </div>
+
+  <div class="walking-character haram-character"
+       id="walkingHaram"
+       onclick="event.stopPropagation()">
+    <img src="haram-walk.png" alt="Haram">
+    <span class="walking-name">🎀 Haram</span>
+  </div>
+
+  <div class="walking-heart" id="walkingHeart">♡ ♡</div>
+
+</div>
     <!-- ===== Love Mailbox · House Decoration ===== -->
 
 <div class="love-mailbox"
@@ -3167,6 +3290,18 @@ top: 120px;
     <div class="door door-entry"></div>
 
   </main>
+  <!-- ===== Walking Controls ===== -->
+<div class="walking-controls">
+
+  <button onclick="walkTogetherMode()">
+    ♡ Walk Together ♡
+  </button>
+
+  <button onclick="comeCloser()">
+    ♡ Come Closer ♡
+  </button>
+
+</div>
 </div>
 <!-- 卧室床铺互动弹窗 -->
 <div class="memory-overlay" id="bedMemory" onclick="closeBedMemory()">
@@ -7243,6 +7378,88 @@ function resetLoveMailbox() {
 
   updateLoveMailProgress();
 }
+</script>
+  <script>
+/* ===== Together at Home · Walking System ===== */
+
+const walkingHouse = document.querySelector(".house");
+const walkingJiwoo = document.getElementById("walkingJiwoo");
+const walkingHaram = document.getElementById("walkingHaram");
+const walkingHeart = document.getElementById("walkingHeart");
+
+let walkingTogether = false;
+let walkingTimers = new WeakMap();
+
+function moveWalkingCharacter(character, x, y) {
+  const previousTimer = walkingTimers.get(character);
+  if (previousTimer) clearTimeout(previousTimer);
+
+  character.classList.add("walking");
+  character.style.left = x + "px";
+  character.style.top = y + "px";
+
+  const timer = setTimeout(() => {
+    character.classList.remove("walking");
+  }, 1500);
+
+  walkingTimers.set(character, timer);
+}
+
+function walkTogetherMode() {
+  walkingTogether = !walkingTogether;
+
+  alert(
+    walkingTogether
+      ? "♡ Walk Together mode is ON! Click the floor ♡"
+      : "♡ Walk Together mode is OFF ♡"
+  );
+}
+
+function comeCloser() {
+  const jiwooX = parseFloat(walkingJiwoo.style.left) || 280;
+  const jiwooY = parseFloat(walkingJiwoo.style.top) || 620;
+
+  moveWalkingCharacter(walkingHaram, jiwooX + 42, jiwooY);
+
+  setTimeout(() => {
+    walkingHeart.style.left = (jiwooX + 15) + "px";
+    walkingHeart.style.top = (jiwooY - 110) + "px";
+
+    walkingHeart.style.display = "block";
+    walkingHeart.style.animation = "none";
+
+    void walkingHeart.offsetWidth;
+
+    walkingHeart.style.animation =
+      "walkingHeartFloat 1.5s ease-out forwards";
+
+    setTimeout(() => {
+      walkingHeart.style.display = "none";
+    }, 1500);
+  }, 1500);
+}
+
+walkingHouse.addEventListener("click", function(event) {
+
+  if (!walkingTogether) return;
+
+  // 点击家具时，不触发移动
+  if (event.target.closest(
+    ".pixel, button, .treasure-item, .treasure-hidden"
+  )) return;
+
+  const rect = walkingHouse.getBoundingClientRect();
+
+  const x = (event.clientX - rect.left) *
+            (walkingHouse.offsetWidth / rect.width);
+
+  const y = (event.clientY - rect.top) *
+            (walkingHouse.offsetHeight / rect.height);
+
+  moveWalkingCharacter(walkingJiwoo, x - 35, y);
+  moveWalkingCharacter(walkingHaram, x + 35, y);
+});
+
 </script>
 </body>
 </html>
