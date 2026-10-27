@@ -2555,6 +2555,140 @@ top: 120px;
   cursor: pointer;
   box-shadow: 4px 4px 0 #986c7a;
 }
+  /* ===== Pixel Bubble Bath Decorations ===== */
+
+/* 透明像素泡泡 */
+.bath-pixel-bubble {
+  display: inline-block;
+  width: 23px;
+  height: 23px;
+  border: 3px solid #8ec4d2;
+  background: rgba(222, 250, 255, 0.48);
+  box-shadow:
+    inset 4px 4px 0 rgba(255,255,255,0.8),
+    3px 3px 0 rgba(110,175,190,0.25);
+  image-rendering: pixelated;
+  animation: bathBubbleFloat 2.2s ease-in-out infinite alternate;
+}
+
+.bath-pixel-bubble:nth-child(2) {
+  width: 16px;
+  height: 16px;
+  animation-delay: 0.4s;
+}
+
+.bath-pixel-bubble:nth-child(3) {
+  width: 29px;
+  height: 29px;
+  animation-delay: 0.8s;
+}
+
+.bath-pixel-bubble:nth-child(4) {
+  width: 18px;
+  height: 18px;
+  animation-delay: 1.2s;
+}
+
+.bath-pixel-bubble:nth-child(5) {
+  width: 22px;
+  height: 22px;
+  animation-delay: 0.6s;
+}
+
+@keyframes bathBubbleFloat {
+  from { transform: translateY(6px); }
+  to { transform: translateY(-9px); }
+}
+
+/* 花瓣、爱心和洗发水的共同布局 */
+#bubbleBathDecoration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+/* 粉色像素花朵 */
+.bath-pixel-flower {
+  width: 17px;
+  height: 17px;
+  background: #ffe5a0;
+  border: 3px solid #d99caf;
+  box-shadow:
+    0 -13px 0 #f2a9c5,
+    0 13px 0 #f2a9c5,
+    -13px 0 0 #f2a9c5,
+    13px 0 0 #f2a9c5;
+  margin: 15px 10px;
+}
+
+/* 粉色像素爱心 */
+.bath-pixel-heart {
+  width: 22px;
+  height: 22px;
+  background: #e99bb8;
+  transform: rotate(-45deg);
+  position: relative;
+  margin: 14px;
+}
+
+.bath-pixel-heart::before,
+.bath-pixel-heart::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #e99bb8;
+}
+
+.bath-pixel-heart::before {
+  top: -11px;
+  left: 0;
+}
+
+.bath-pixel-heart::after {
+  left: 11px;
+  top: 0;
+}
+
+/* 像素洗发水瓶 */
+.bath-pixel-shampoo {
+  width: 42px;
+  height: 57px;
+  background: #f4b8cc;
+  border: 4px solid #b8758d;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bath-shampoo-cap {
+  position: absolute;
+  width: 23px;
+  height: 10px;
+  background: #b8758d;
+  top: -13px;
+  left: 6px;
+}
+
+.bath-shampoo-label {
+  background: #fff6f3;
+  color: #c77d99;
+  padding: 3px 7px;
+  font-size: 16px;
+}
+
+.bath-pixel-sparkle {
+  color: #f3c8d5;
+  font-size: 35px;
+  animation: bathSparkle 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes bathSparkle {
+  from { opacity: 0.4; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1.15); }
+}
 </style>
   
 </head>
@@ -4787,7 +4921,13 @@ function renderGallery() {
     <div class="bubble-bath-scene">
       <div class="bubble-bath-tub">
         <div class="bubble-bath-water" id="bubbleBathWater"></div>
-        <div class="bubble-bath-foam" id="bubbleBathFoam">🫧 🫧 🫧</div>
+        <div class="bubble-bath-foam" id="bubbleBathFoam">
+  <span class="bath-pixel-bubble"></span>
+  <span class="bath-pixel-bubble"></span>
+  <span class="bath-pixel-bubble"></span>
+  <span class="bath-pixel-bubble"></span>
+  <span class="bath-pixel-bubble"></span>
+</div>
         <div class="bubble-bath-decoration" id="bubbleBathDecoration"></div>
         <div class="bubble-bath-tub-front">♡ ♡ ♡</div>
       </div>
@@ -4861,13 +5001,29 @@ function finishBubbleBath(choice) {
   if (bubbleBathStep !== 2) return;
 
   const decorations = {
-  HairWash: "🍓 🫧 🎀",
-  Flowers: "🌸 🌸 🌸",
-  Hearts: "💗 💗 💗"
+  HairWash: `
+    <div class="bath-pixel-shampoo">
+      <div class="bath-shampoo-cap"></div>
+      <div class="bath-shampoo-label">♡</div>
+    </div>
+    <div class="bath-pixel-sparkle">✧</div>
+  `,
+
+  Flowers: `
+    <div class="bath-pixel-flower"></div>
+    <div class="bath-pixel-flower"></div>
+    <div class="bath-pixel-flower"></div>
+  `,
+
+  Hearts: `
+    <div class="bath-pixel-heart"></div>
+    <div class="bath-pixel-heart"></div>
+    <div class="bath-pixel-heart"></div>
+  `
 };
 
-  document.getElementById("bubbleBathDecoration").textContent =
-    decorations[choice];
+document.getElementById("bubbleBathDecoration").innerHTML =
+  decorations[choice];
 
   document.getElementById("bubbleBathStory").textContent =
     bubbleBathStories[choice];
