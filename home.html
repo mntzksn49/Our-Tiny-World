@@ -1638,6 +1638,51 @@ h1 {
   font-family: inherit;
   cursor: pointer;
 }
+  /* ===== 16:9 TV Video Screen ===== */
+
+.movie-tv-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  overflow: hidden;
+}
+
+.movie-main-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #211b2d;
+  z-index: 10;
+}
+  /* ===== 16:9 Movie TV ===== */
+
+.movie-tv-frame {
+  width: 100%;
+  max-width: 650px;
+  margin: 20px auto;
+}
+
+.movie-tv-screen {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.movie-main-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #211a29;
+  z-index: 10;
+}
 </style>
 </head>
 
@@ -3939,6 +3984,14 @@ function resetBubbleBath() {
         <div class="movie-screen-caption" id="movieScreenCaption">
           ♡ Pick a movie ♡
         </div>
+        <video
+  id="movieMainVideo"
+  class="movie-main-video"
+  controls
+  playsinline
+  preload="metadata"
+  style="display:none"
+></video>
       </div>
       <div class="movie-tv-stand"></div>
     </div>
@@ -3961,14 +4014,7 @@ function resetBubbleBath() {
 
   <div class="movie-video-list" id="movieVideoList"></div>
 
-  <video
-    id="movieVideoPlayer"
-    class="movie-video-player"
-    controls
-    playsinline
-    preload="metadata"
-    style="display:none">
-  </video>
+  
 
   <p class="movie-video-title" id="movieVideoTitle"></p>
 
@@ -4329,7 +4375,7 @@ function showMovieClips(category) {
 
   const section = document.getElementById("movieVideoSection");
   const list = document.getElementById("movieVideoList");
-  const player = document.getElementById("movieVideoPlayer");
+  const player = document.getElementById("movieMainVideo");
 
   player.pause();
   player.removeAttribute("src");
@@ -4361,14 +4407,22 @@ function playMovieClip(index) {
   currentMovieClipIndex = index;
 
   const clip = clips[index];
-  const player = document.getElementById("movieVideoPlayer");
+  const player = document.getElementById("movieMainVideo");
 
+  const screenContent = document.getElementById("movieScreenContent");
+  const screenCaption = document.getElementById("movieScreenCaption");
+
+  // 隐藏原来的电视图案和文字
+  screenContent.style.display = "none";
+  screenCaption.style.display = "none";
+
+  // 在电视屏幕内播放视频
   player.src = clip.file;
   player.style.display = "block";
   player.load();
 
   player.play().catch(() => {
-    // 浏览器阻止自动播放时，可以手动点击播放键
+    // 如果浏览器阻止自动播放，可以手动点击播放
   });
 
   document.getElementById("movieVideoTitle").textContent =
@@ -4392,12 +4446,16 @@ function playNextMovieClip() {
 }
 
 function stopMovieClips() {
-  const player = document.getElementById("movieVideoPlayer");
+  const player = document.getElementById("movieMainVideo");
 
   player.pause();
   player.removeAttribute("src");
   player.load();
   player.style.display = "none";
+
+  // 恢复电视原本的图案和文字
+  document.getElementById("movieScreenContent").style.display = "";
+  document.getElementById("movieScreenCaption").style.display = "";
 
   document.getElementById("movieVideoSection").style.display = "none";
   document.getElementById("movieVideoTitle").textContent = "";
