@@ -4690,7 +4690,35 @@ function chooseMovie(type) {
     }
   }
 }
+/* ===== Movie Secret Envelope Functions ===== */
 
+let currentMovieSecretGroup = null;
+
+function showMovieSecretEnvelope(group) {
+  currentMovieSecretGroup = group;
+
+  const envelope = document.getElementById("movieSecretEnvelope");
+
+  if (envelope) {
+    envelope.style.display = "flex";
+  }
+}
+
+function hideMovieSecretEnvelope() {
+  currentMovieSecretGroup = null;
+
+  const envelope = document.getElementById("movieSecretEnvelope");
+
+  if (envelope) {
+    envelope.style.display = "none";
+  }
+}
+
+function openMovieSecretEnvelope() {
+  if (!currentMovieSecretGroup) return;
+
+  openSecretLetters(currentMovieSecretGroup);
+}
 function resetMovieNight() {
   stopMovieClips();
   hideMovieSecretEnvelope();
