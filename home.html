@@ -2539,7 +2539,6 @@ top: 120px;
   65% { transform: scale(1.2); opacity: 1; }
   100% { transform: scale(1); }
 }
-</style>
   /* ===== Treasure Collection Button ===== */
 
 .treasure-open-button {
@@ -2556,6 +2555,8 @@ top: 120px;
   cursor: pointer;
   box-shadow: 4px 4px 0 #986c7a;
 }
+</style>
+  
 </head>
 
 <body>
@@ -2568,7 +2569,27 @@ top: 120px;
 
 <div class="viewport">
   <main class="house">
+<!-- ===== Little Treasure Hunt · Hidden Items ===== -->
 
+<div class="treasure-item treasure-ring"
+     onclick="findTreasure('ring')"
+     title="A little treasure ♡">💍</div>
+
+<div class="treasure-item treasure-photo"
+     onclick="findTreasure('photo')"
+     title="A little treasure ♡">📸</div>
+
+<div class="treasure-item treasure-strawberry"
+     onclick="findTreasure('strawberry')"
+     title="A little treasure ♡">🍓</div>
+
+<div class="treasure-item treasure-note"
+     onclick="findTreasure('note')"
+     title="A little treasure ♡">💌</div>
+
+<div class="treasure-item treasure-teddy"
+     onclick="findTreasure('teddy')"
+     title="A little treasure ♡">🧸</div>
     <!-- ===== 卧室 ===== -->
     <section class="room bedroom">
       <span class="room-name">🥛 BEDROOM</span>
@@ -6160,27 +6181,7 @@ document.getElementById("playlistAudio").addEventListener("ended", function () {
   nextPlaylistSong();
 });
 </script>
-  <!-- ===== Little Treasure Hunt · Hidden Items ===== -->
-
-<div class="treasure-item treasure-ring"
-     onclick="findTreasure('ring')"
-     title="A little secret ♡">💍</div>
-
-<div class="treasure-item treasure-photo"
-     onclick="findTreasure('photo')"
-     title="A little secret ♡">📸</div>
-
-<div class="treasure-item treasure-strawberry"
-     onclick="findTreasure('strawberry')"
-     title="A little secret ♡">🍓</div>
-
-<div class="treasure-item treasure-note"
-     onclick="findTreasure('note')"
-     title="A little secret ♡">💌</div>
-
-<div class="treasure-item treasure-teddy"
-     onclick="findTreasure('teddy')"
-     title="A little secret ♡">🧸</div>
+  
   <!-- ===== Little Treasure Hunt · Collection ===== -->
 
 <div class="memory-overlay" id="treasureMemory"
