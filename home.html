@@ -1494,7 +1494,9 @@ h1 {
       <span class="room-name">🥛 LIVING ROOM</span>
 
       <div class="rug"></div>
-      <div class="pixel sofa"></div>
+      <div class="pixel sofa"
+     onclick="openMovieNight()"
+     title="Movie Night ♡"></div>
       <div class="pixel coffee-table"></div>
       <div class="pixel tv"></div>
       <div class="pixel picture">♡ ♡</div>
@@ -2280,6 +2282,120 @@ function chooseDinner(place) {
     dinnerStories[place];
 }
 
+</script>
+
+<!-- 沙发互动：Movie Night -->
+<div class="memory-overlay" id="movieMemory" onclick="closeMovieNight()">
+  <div class="memory-window movie-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeMovieNight()">×</button>
+
+    <h2>♡ Movie Night ♡</h2>
+    <p>What should we watch tonight?</p>
+
+    <div class="movie-screen" id="movieScreen">🎬</div>
+
+    <div class="movie-options">
+      <button onclick="chooseMovie('Horror')">👻 Horror</button>
+      <button onclick="chooseMovie('Romance')">💕 Romance</button>
+      <button onclick="chooseMovie('Animation')">🍰 Yumeiro Patissiere</button>
+    </div>
+
+    <div class="movie-snacks" id="movieSnacks">♡ Our cozy little night ♡</div>
+    <div class="movie-story" id="movieStory">♡ Choose a movie ♡</div>
+  </div>
+</div>
+
+<style>
+.sofa {
+  cursor: pointer;
+}
+
+.sofa:hover {
+  filter: brightness(1.08);
+}
+
+.movie-window {
+  width: min(92vw, 460px);
+}
+
+.movie-screen {
+  display: grid;
+  place-items: center;
+  height: 125px;
+  background: #f5dce5;
+  border: 5px solid #a77b8b;
+  font-size: 55px;
+  margin: 18px 0;
+}
+
+.movie-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.movie-options button {
+  background: #fff0eb;
+  border: 3px solid #d8a3ad;
+  padding: 12px 3px;
+  color: #865e6c;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.movie-options button:hover {
+  background: #f7d5df;
+}
+
+.movie-snacks {
+  padding: 12px;
+  background: #fce8eb;
+  margin-bottom: 12px;
+}
+
+.movie-story {
+  min-height: 95px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+}
+</style>
+
+<script>
+const movieStories = {
+  Horror: "👻 恐怖电影开始了。\n\n🎀：其实我不害怕的...你知道吧\n\n🍓：嗯嗯是我怕，河岚保护我吧",
+  Romance: "💕 今天看爱情电影。\n\n🎀：姐姐一直看我干嘛？\n\n🍓：想亲亲♡",
+  Animation: "🍰 今天一起看《梦色糕点师》。\n\n🍓：河岚想不想吃草莓之心？\n\n🎀：我不是已经拥有了吗？姐姐的心。"
+};
+
+const movieIcons = {
+  Horror: "👻",
+  Romance: "💕",
+  Animation: "🍰"
+};
+
+function openMovieNight() {
+  document.getElementById("movieMemory").style.display = "flex";
+  document.getElementById("movieScreen").textContent = "🎬";
+  document.getElementById("movieSnacks").textContent =
+    "♡ Our cozy little night ♡";
+  document.getElementById("movieStory").textContent =
+    "♡ Choose a movie ♡";
+}
+
+function closeMovieNight() {
+  document.getElementById("movieMemory").style.display = "none";
+}
+
+function chooseMovie(type) {
+  document.getElementById("movieScreen").textContent = movieIcons[type];
+  document.getElementById("movieSnacks").textContent =
+    "🍿 Popcorn  ♡  🧸 Cozy Blanket";
+  document.getElementById("movieStory").textContent = movieStories[type];
+}
 </script>
 
 </body>
