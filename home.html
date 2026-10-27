@@ -1842,6 +1842,70 @@ h1 {
     transform: translateY(0) scale(1);
   }
 }
+  /* ===== Secret Memories Collection ===== */
+
+.secret-collection-entry {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: #f4c5d5;
+  color: #87576d;
+  border: 3px solid #b77b93;
+  box-shadow: 4px 4px 0 #98677c;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.secret-collection-window {
+  width: min(90vw, 480px);
+  text-align: center;
+}
+
+.secret-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.secret-collection-card {
+  min-height: 150px;
+  padding: 18px 8px;
+  background: #f9edf1;
+  border: 3px solid #d8a6b8;
+  color: #936a7c;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.secret-collection-card .collection-icon {
+  display: block;
+  font-size: 35px;
+  margin-bottom: 12px;
+}
+
+.secret-collection-card strong,
+.secret-collection-card small {
+  display: block;
+  margin-top: 8px;
+}
+
+.secret-collection-card.locked {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.secret-collection-card.unlocked {
+  background: #f5c8d9;
+  border-color: #b77b93;
+}
+
+.secret-collection-footer {
+  font-size: 12px;
+  color: #b77b93;
+}
 </style>
 </head>
 
@@ -4467,6 +4531,7 @@ From. 🍓`
 let currentSecretLetterGroup = null;
 
 function openSecretLetters(group) {
+  unlockSecretMemory(group);
   const letters = secretBirthdayLetters[group];
   if (!letters) return;
 
@@ -4965,6 +5030,130 @@ function resetSkincare() {
   document.getElementById("skincareStory").textContent =
     "♡ Our little night routine is waiting ♡";
 }
+</script>
+  <!-- ♡ Secret Memories Collection ♡ -->
+<div class="memory-overlay" id="secretCollectionMemory"
+     onclick="closeSecretCollection()">
+
+  <div class="memory-window secret-collection-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeSecretCollection()">×</button>
+
+    <h2>♡ Secret Memories Collection ♡</h2>
+    <p>Every little memory stays with us ♡</p>
+
+    <div class="secret-collection-grid">
+
+      <button class="secret-collection-card"
+              id="collectionHorror"
+              onclick="openCollectedLetters('Horror')">
+        <span class="collection-icon">🔒</span>
+        <strong>Horror Letters</strong>
+        <small>???</small>
+      </button>
+
+      <button class="secret-collection-card"
+              id="collectionColdWar"
+              onclick="openCollectedLetters('ColdWar')">
+        <span class="collection-icon">🔒</span>
+        <strong>Cold War Letter</strong>
+        <small>???</small>
+      </button>
+
+    </div>
+
+    <p class="secret-collection-footer">
+      ♡ Some memories are waiting to be discovered ♡
+    </p>
+
+  </div>
+</div>
+
+<!-- 收藏册入口 -->
+<button class="secret-collection-entry"
+        onclick="openSecretCollection()">
+  💌 Secret Memories
+</button>
+  <script>
+/* ===== Secret Memories Collection ===== */
+
+const secretCollectionKey = "ourTinyWorldSecretMemories";
+
+function getSecretCollection() {
+  try {
+    return JSON.parse(localStorage.getItem(secretCollectionKey)) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function unlockSecretMemory(group) {
+  const memories = getSecretCollection();
+
+  memories[group] = true;
+
+  try {
+    localStorage.setItem(
+      secretCollectionKey,
+      JSON.stringify(memories)
+    );
+  } catch (error) {
+    console.warn("Could not save secret memory:", error);
+  }
+
+  updateSecretCollection();
+}
+
+function openSecretCollection() {
+  updateSecretCollection();
+
+  document.getElementById("secretCollectionMemory").style.display = "flex";
+}
+
+function closeSecretCollection() {
+  document.getElementById("secretCollectionMemory").style.display = "none";
+}
+
+function updateSecretCollection() {
+  const memories = getSecretCollection();
+
+  const cards = {
+    Horror: document.getElementById("collectionHorror"),
+    ColdWar: document.getElementById("collectionColdWar")
+  };
+
+  Object.keys(cards).forEach(group => {
+    const card = cards[group];
+    if (!card) return;
+
+    const unlocked = memories[group] === true;
+
+    card.classList.toggle("unlocked", unlocked);
+    card.classList.toggle("locked", !unlocked);
+
+    card.querySelector(".collection-icon").textContent =
+      unlocked ? "💌" : "🔒";
+
+    card.querySelector("small").textContent =
+      unlocked
+        ? "♡ Unlocked · Read Again ♡"
+        : "??? · Locked";
+  });
+}
+
+function openCollectedLetters(group) {
+  const memories = getSecretCollection();
+
+  if (!memories[group]) return;
+
+  closeSecretCollection();
+
+  openSecretLetters(group);
+}
+
+updateSecretCollection();
 </script>
 </body>
 </html>
