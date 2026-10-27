@@ -7126,6 +7126,7 @@ const loveSecretLetter = {
 const loveMailRead = new Set();
 let loveMailCurrent = null;
 let loveMailSecretOpened = false;
+let loveMailSecondSecretOpened = false;
 
 function openLoveMailbox() {
   document.getElementById("loveMailboxMemory").style.display = "flex";
@@ -7150,9 +7151,13 @@ function openLoveEnvelope() {
     loveMailRead.add(chosenIndex);
     letter = loveLetters[chosenIndex];
 
-  } else if (!loveMailSecretOpened) {
+    } else if (!loveMailSecretOpened) {
     letter = loveSecretLetter;
     loveMailSecretOpened = true;
+
+  } else if (!loveMailSecondSecretOpened) {
+    letter = loveSecondSecretLetter;
+    loveMailSecondSecretOpened = true;
 
   } else {
     document.getElementById("loveMailHint").textContent =
@@ -7179,7 +7184,7 @@ function openLoveEnvelope() {
   document.getElementById("loveMailPaper").style.display = "block";
 
   document.getElementById("loveMailHint").textContent =
-    letter === loveSecretLetter
+    (letter === loveSecretLetter || letter === loveSecondSecretLetter)
       ? "♡ A secret letter, just for you ♡"
       : "♡ A little letter has arrived ♡";
 
@@ -7193,13 +7198,19 @@ function nextLoveLetter() {
   envelope.classList.remove("opened");
 
   if (loveMailRead.size === loveLetters.length &&
-      loveMailSecretOpened) {
-    document.getElementById("loveMailHint").textContent =
-      "♡ Every letter has found its way home ♡";
-  } else {
-    document.getElementById("loveMailHint").textContent =
-      "♡ Tap the envelope to read another letter ♡";
-  }
+    loveMailSecretOpened &&
+    loveMailSecondSecretOpened) {
+  document.getElementById("loveMailHint").textContent =
+    "♡ Every letter has found its way home ♡";
+} else if (loveMailRead.size === loveLetters.length &&
+           loveMailSecretOpened &&
+           !loveMailSecondSecretOpened) {
+  document.getElementById("loveMailHint").textContent =
+    "♡ One more secret letter is waiting for you ♡";
+} else {
+  document.getElementById("loveMailHint").textContent =
+    "♡ Tap the envelope to read another letter ♡";
+}
 }
 
 function updateLoveMailProgress() {
@@ -7208,16 +7219,22 @@ function updateLoveMailProgress() {
     loveLetters.length + " letters discovered ♡";
 
   if (loveMailRead.size === loveLetters.length &&
-      !loveMailSecretOpened) {
-    document.getElementById("loveMailHint").textContent =
-      "♡ A secret letter is waiting for you ♡";
-  }
+    !loveMailSecretOpened) {
+  document.getElementById("loveMailHint").textContent =
+    "♡ The first secret letter is waiting for you ♡";
+} else if (loveMailRead.size === loveLetters.length &&
+           loveMailSecretOpened &&
+           !loveMailSecondSecretOpened) {
+  document.getElementById("loveMailHint").textContent =
+    "♡ The second secret letter is waiting for you ♡";
+}
 }
 
 function resetLoveMailbox() {
   loveMailRead.clear();
   loveMailCurrent = null;
   loveMailSecretOpened = false;
+  loveMailSecondSecretOpened = false;
 
   document.getElementById("loveMailPaper").style.display = "none";
   document.getElementById("loveMailEnvelope").classList.remove("opened");
