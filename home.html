@@ -3256,9 +3256,9 @@ function chooseDinner(place) {
 
 .couple-mirror-avatar {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
-  height: 190px;
+  height: 200px;
   margin-bottom: 8px;
 }
 
@@ -3266,9 +3266,18 @@ function chooseDinner(place) {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 180px;
   object-fit: contain;
   image-rendering: pixelated;
+}
+
+/* 🍓 志宇：170cm */
+.couple-mirror-person:first-child .couple-mirror-character-img {
+  height: 190px;
+}
+
+/* 🎀 河岚：164cm */
+.couple-mirror-person:last-child .couple-mirror-character-img {
+  height: 183px;
 }
 
 .couple-mirror-outfit {
