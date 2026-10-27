@@ -4003,9 +4003,9 @@ function resetBubbleBath() {
       <button onclick="chooseMovie('Romance')">
         💗 <span>Romance</span>
       </button>
-      <button onclick="chooseMovie('Cartoon')">
-        🐱 <span>Cartoon</span>
-      </button>
+      <button onclick="chooseMovie('ColdWar')">
+  🥀 <span>Cold War</span>
+</button>
     </div>
 <!-- ♡ Movie Video Player ♡ -->
 <div class="movie-video-section" id="movieVideoSection" style="display:none">
@@ -4223,12 +4223,12 @@ const movieStories = {
     "🎀：那我们呢？\n\n" +
     "🍓：我们当然也会呀。♡",
 
-  Cartoon:
-    "🐱 电视里出现了一只圆滚滚的小猫。\n\n" +
-    "🍓：河岚，你看它是不是很像你？\n\n" +
-    "🎀：哪里像啦！\n\n" +
-    "🍓：都一样可爱呀。\n\n" +
-    "🎀：又在逗我！♡"
+  ColdWar:
+  "🥀 明明坐在同一个房间里，两个人却谁也没有先开口。\n\n" +
+  "🎀：你今天都不理我。\n\n" +
+  "🍓：明明是河岚先不跟我说话的。\n\n" +
+  "🎀：…那姐姐就不能先哄哄我吗？\n\n" +
+  "🍓：过来吧，给姐姐抱一下。♡"
 };
 let horrorWatchCount = 0;
 let horrorEasterEggTriggered = false;
@@ -4266,20 +4266,11 @@ const movieClips = {
     }
   ],
 
-  Cartoon: [
-    {
-      title: "🐱 Cute Moment 01",
-      file: "cartoon1.mp4"
-    },
-    {
-      title: "🐱 Cute Moment 02",
-      file: "cartoon2.mp4"
-    },
-    {
-      title: "🐱 Cute Moment 03",
-      file: "cartoon3.mp4"
-    }
-  ]
+  ColdWar: [
+  { title: "🥀 Silent Moment 01", file: "coldwar1.mp4" },
+  { title: "🥀 Silent Moment 02", file: "coldwar2.mp4" },
+  { title: "🥀 Silent Moment 03", file: "coldwar3.mp4" }
+]
 
 };
 
@@ -4294,10 +4285,10 @@ const movieVisuals = {
     emoji: "💗",
     caption: "Love is in the air ♡"
   },
-  Cartoon: {
-    emoji: "🐱",
-    caption: "Meow meow!"
-  }
+  ColdWar: {
+  emoji: "🥀",
+  caption: "So close, yet so far..."
+}
 };
 
 function openMovieNight() {
