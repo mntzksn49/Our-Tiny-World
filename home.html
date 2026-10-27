@@ -2689,6 +2689,151 @@ top: 120px;
   from { opacity: 0.4; transform: scale(0.8); }
   to { opacity: 1; transform: scale(1.15); }
 }
+  /* ===== Secret Pixel Bunny ===== */
+
+#bubbleBathFoam.visible {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* 小兔子整体 */
+.bath-secret-bunny {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 35px;
+  width: 66px;
+  height: 84px;
+  transform: translateX(-50%);
+  z-index: 8;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+.bath-secret-bunny.visible {
+  display: block;
+  animation: bathBunnyAppear 0.6s ease-out both;
+}
+
+/* 长耳朵 */
+.bath-bunny-ear {
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 38px;
+  background: #fff7f4;
+  border: 4px solid #c48fa4;
+  box-shadow: inset 0 0 0 4px #f7c5d7;
+}
+
+.bath-bunny-ear-left {
+  left: 9px;
+  transform: rotate(-8deg);
+}
+
+.bath-bunny-ear-right {
+  right: 9px;
+  transform: rotate(8deg);
+}
+
+/* 脑袋 */
+.bath-bunny-head {
+  position: absolute;
+  top: 28px;
+  left: 7px;
+  width: 52px;
+  height: 43px;
+  background: #fff7f4;
+  border: 4px solid #c48fa4;
+  z-index: 2;
+}
+
+/* 眼睛 */
+.bath-bunny-eye {
+  position: absolute;
+  top: 15px;
+  width: 5px;
+  height: 7px;
+  background: #765963;
+}
+
+.bath-bunny-eye.left {
+  left: 10px;
+}
+
+.bath-bunny-eye.right {
+  right: 10px;
+}
+
+/* 小鼻子 */
+.bath-bunny-nose {
+  position: absolute;
+  top: 23px;
+  left: 21px;
+  width: 7px;
+  height: 5px;
+  background: #ed9eb8;
+}
+
+/* 腮红 */
+.bath-bunny-cheek {
+  position: absolute;
+  top: 24px;
+  width: 10px;
+  height: 5px;
+  background: #f7cad8;
+}
+
+.bath-bunny-cheek.left {
+  left: 4px;
+}
+
+.bath-bunny-cheek.right {
+  right: 4px;
+}
+
+/* 身体 */
+.bath-bunny-body {
+  position: absolute;
+  bottom: 0;
+  left: 13px;
+  width: 40px;
+  height: 30px;
+  background: #fff7f4;
+  border: 4px solid #c48fa4;
+}
+
+/* 从水里冒出来 */
+@keyframes bathBunnyAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* 点击兔子，害羞地晃一晃 */
+.bath-secret-bunny.happy {
+  animation: bathBunnyHappy 0.5s ease-in-out;
+}
+
+@keyframes bathBunnyHappy {
+  0%, 100% {
+    transform: translateX(-50%) rotate(0);
+  }
+
+  25% {
+    transform: translateX(-50%) rotate(-10deg);
+  }
+
+  75% {
+    transform: translateX(-50%) rotate(10deg);
+  }
+}
 </style>
   
 </head>
@@ -4921,14 +5066,37 @@ function renderGallery() {
     <div class="bubble-bath-scene">
       <div class="bubble-bath-tub">
         <div class="bubble-bath-water" id="bubbleBathWater"></div>
-        <div class="bubble-bath-foam" id="bubbleBathFoam">
+        <div class="bubble-bath-foam" id="bubbleBathFoam"
+     onclick="tapBubbleBathFoam()"
+     title="Pop the bubbles ♡">
+
   <span class="bath-pixel-bubble"></span>
   <span class="bath-pixel-bubble"></span>
   <span class="bath-pixel-bubble"></span>
   <span class="bath-pixel-bubble"></span>
   <span class="bath-pixel-bubble"></span>
+
 </div>
         <div class="bubble-bath-decoration" id="bubbleBathDecoration"></div>
+        <!-- ===== Secret Pixel Bunny ===== -->
+<div class="bath-secret-bunny" id="bathSecretBunny"
+     onclick="event.stopPropagation(); tapSecretBunny()"
+     title="A tiny bunny ♡">
+
+  <div class="bath-bunny-ear bath-bunny-ear-left"></div>
+  <div class="bath-bunny-ear bath-bunny-ear-right"></div>
+
+  <div class="bath-bunny-head">
+    <span class="bath-bunny-eye left"></span>
+    <span class="bath-bunny-eye right"></span>
+    <span class="bath-bunny-nose"></span>
+    <span class="bath-bunny-cheek left"></span>
+    <span class="bath-bunny-cheek right"></span>
+  </div>
+
+  <div class="bath-bunny-body"></div>
+
+</div>
         <div class="bubble-bath-tub-front">♡ ♡ ♡</div>
       </div>
     </div>
@@ -4952,7 +5120,8 @@ function renderGallery() {
 </div>
   <script>
 let bubbleBathStep = 0;
-
+let bubbleBathTapCount = 0;
+let bubbleBathDuckUnlocked = false;
 const bubbleBathStories = {
   HairWash: "🫧 姐姐正在给河岚洗头发。\n\n🍓：宝宝闭眼睛哦，小心泡泡跑进眼睛里。\n\n🎀：姐姐再帮我揉揉嘛。\n\n🍓：好好好♡",
   Flowers: "🌸 浴缸里飘满了粉色花瓣。\n\n🍓：河岚喜欢这个味道吗？\n\n🎀：喜欢！姐姐身上也是香香的♡",
@@ -5034,10 +5203,53 @@ document.getElementById("bubbleBathDecoration").innerHTML =
   document.getElementById("bubbleBathOptions").style.display = "none";
   bubbleBathStep = 3;
 }
+/* ===== Secret Bunny Easter Egg ===== */
 
+function tapBubbleBathFoam() {
+  if (bubbleBathStep !== 3 || bubbleBathDuckUnlocked) return;
+
+  bubbleBathTapCount++;
+
+  if (bubbleBathTapCount >= 3) {
+    bubbleBathDuckUnlocked = true;
+
+    document.getElementById("bathSecretBunny").classList.add("visible");
+
+    document.getElementById("bubbleBathProgress").textContent =
+      "♡ A little bunny has appeared! ♡";
+
+    document.getElementById("bubbleBathStory").textContent =
+      "🐰 一只粉白色的小兔子从泡泡里探出了脑袋。\n\n" +
+      "🎀：姐姐！你看！这里有一只小兔子！\n\n" +
+      "🍓：怎么跟河岚一样可爱呀。\n\n" +
+      "🎀：那姐姐更喜欢谁？\n\n" +
+      "🍓：当然是河岚啦。♡";
+  }
+}
+
+function tapSecretBunny() {
+  if (!bubbleBathDuckUnlocked) return;
+
+  const bunny = document.getElementById("bathSecretBunny");
+
+  bunny.classList.remove("happy");
+  void bunny.offsetWidth;
+  bunny.classList.add("happy");
+
+  document.getElementById("bubbleBathStory").textContent =
+    "🐰 小兔子害羞地晃了晃长耳朵。\n\n" +
+    "🎀：姐姐，它是不是在跟我们打招呼？\n\n" +
+    "🍓：嗯，它说最喜欢河岚了。\n\n" +
+    "🎀：那姐姐呢？\n\n" +
+    "🍓：姐姐也最喜欢河岚。♡";
+}
 function resetBubbleBath() {
   bubbleBathStep = 0;
+  bubbleBathTapCount = 0;
+bubbleBathDuckUnlocked = false;
 
+document.getElementById("bathSecretBunny").classList.remove("visible", "happy");
+  
   document.getElementById("bubbleBathWater").classList.remove("filled");
   document.getElementById("bubbleBathFoam").classList.remove("visible");
   document.getElementById("bubbleBathDecoration").textContent = "";
