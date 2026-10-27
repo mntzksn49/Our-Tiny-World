@@ -1515,7 +1515,9 @@ h1 {
       <div class="pixel mirror"
      onclick="openCoupleMirror()"
      title="Mirror Mirror · Couple Dress Up ♡"></div>
-      <div class="pixel sink"></div>
+      <div class="pixel sink"
+     onclick="openSkincare()"
+     title="Our Night Routine ♡"></div>
       <div class="pixel bathtub"
      onclick="openBubbleBath()"
      title="Our Bubble Time ♡"></div>
@@ -3123,6 +3125,133 @@ function chooseDinner(place) {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.2); }
 }
+  /* ===== Little Skincare Mini Game ===== */
+
+.sink {
+  cursor: pointer;
+}
+
+.sink:hover {
+  filter: brightness(1.08);
+}
+
+.skincare-window {
+  width: min(92vw, 470px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.skincare-scene {
+  position: relative;
+  padding: 25px 12px 18px;
+  margin: 18px 0;
+  background: #f9e0e9;
+  border: 5px solid #d69aaf;
+  box-shadow: 5px 5px 0 #e6bac9;
+}
+
+.skincare-people {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 140px;
+  background: #fff5fa;
+  border: 4px solid #e9b6c9;
+}
+
+.skincare-person {
+  flex: 1;
+  text-align: center;
+}
+
+.skincare-face {
+  font-size: 52px;
+  transition: transform 0.3s;
+}
+
+.skincare-face.skincare-bounce {
+  animation: skincareBounce 0.5s ease;
+}
+
+.skincare-person-name {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #b8758d;
+}
+
+.skincare-heart {
+  color: #d58da9;
+  font-size: 30px;
+}
+
+.skincare-product {
+  margin-top: 15px;
+  font-size: 35px;
+  animation: skincareFloat 2s ease-in-out infinite;
+}
+
+.skincare-progress {
+  color: #b8758d;
+  font-size: 13px;
+}
+
+.skincare-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.skincare-actions button {
+  min-width: 145px;
+  padding: 12px 10px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.skincare-actions button span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.skincare-actions button:hover {
+  background: #f7d5df;
+}
+
+.skincare-story {
+  min-height: 105px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 13px;
+}
+
+.skincare-reset {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@keyframes skincareBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@keyframes skincareFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
 </style>
 
 <script>
@@ -3784,6 +3913,136 @@ function resetCoupleMirror() {
 
   document.getElementById("coupleMirrorStory").textContent =
     "♡ Our outfits are waiting ♡";
+}
+</script>
+  <!-- 浴室护肤互动 -->
+<div class="memory-overlay" id="skincareMemory" onclick="closeSkincare()">
+  <div class="memory-window skincare-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeSkincare()">×</button>
+
+    <h2>♡ Our Night Routine ♡</h2>
+    <p>Let's get ready for bed together!</p>
+
+    <div class="skincare-scene">
+      <div class="skincare-people">
+        <div class="skincare-person">
+          <div class="skincare-face" id="skincareJiwooFace">🍓</div>
+          <div class="skincare-person-name">JIWOO</div>
+        </div>
+
+        <div class="skincare-heart">♡</div>
+
+        <div class="skincare-person">
+          <div class="skincare-face" id="skincareHaramFace">🎀</div>
+          <div class="skincare-person-name">HARAM</div>
+        </div>
+      </div>
+
+      <div class="skincare-product" id="skincareProduct">🧴</div>
+    </div>
+
+    <p class="skincare-progress" id="skincareProgress">
+      ♡ Step 1 / 3 · Wash our faces ♡
+    </p>
+
+    <div class="skincare-actions" id="skincareActions">
+      <button onclick="nextSkincareStep()">💦<span>Face Wash</span></button>
+    </div>
+
+    <div class="skincare-story" id="skincareStory">
+      ♡ Our little night routine is waiting ♡
+    </div>
+
+    <button class="skincare-reset" onclick="resetSkincare()">
+      ♡ Start Again ♡
+    </button>
+  </div>
+</div>
+  <script>
+let skincareStep = 0;
+
+const skincareStories = [
+  "💦 洗脸时间。\n\n🎀：姐姐，水好凉！\n\n🍓：那我帮你调暖一点♡",
+
+  "🎭 两个人一起敷面膜。\n\n🎀：你现在好像一只小幽灵ㅋㅋㅋ\n\n🍓：河岚也一样呀！",
+
+  "🧴 睡前护肤完成啦。\n\n🍓：河岚，脸伸过来。\n\n🎀：怎么啦？\n\n🍓：啵啵，晚安♡"
+];
+
+function openSkincare() {
+  document.getElementById("skincareMemory").style.display = "flex";
+  resetSkincare();
+}
+
+function closeSkincare() {
+  document.getElementById("skincareMemory").style.display = "none";
+}
+
+function nextSkincareStep() {
+  if (skincareStep >= 3) return;
+
+  const jiwoo = document.getElementById("skincareJiwooFace");
+  const haram = document.getElementById("skincareHaramFace");
+  const product = document.getElementById("skincareProduct");
+  const progress = document.getElementById("skincareProgress");
+  const actions = document.getElementById("skincareActions");
+
+  jiwoo.classList.remove("skincare-bounce");
+  haram.classList.remove("skincare-bounce");
+  void jiwoo.offsetWidth;
+  jiwoo.classList.add("skincare-bounce");
+  haram.classList.add("skincare-bounce");
+
+  document.getElementById("skincareStory").textContent =
+    skincareStories[skincareStep];
+
+  skincareStep++;
+
+  if (skincareStep === 1) {
+    jiwoo.textContent = "🍓💦";
+    haram.textContent = "🎀💦";
+    product.textContent = "🫧";
+
+    progress.textContent = "♡ Step 2 / 3 · Face masks ♡";
+    actions.innerHTML =
+      '<button onclick="nextSkincareStep()">🎭<span>Face Mask</span></button>';
+
+  } else if (skincareStep === 2) {
+    jiwoo.textContent = "👻🍓";
+    haram.textContent = "👻🎀";
+    product.textContent = "🎭";
+
+    progress.textContent = "♡ Step 3 / 3 · Moisturizer ♡";
+    actions.innerHTML =
+      '<button onclick="nextSkincareStep()">🧴<span>Moisturizer</span></button>';
+
+  } else {
+    jiwoo.textContent = "🍓✨";
+    haram.textContent = "🎀✨";
+    product.textContent = "💗";
+
+    progress.textContent = "♡ Our night routine is complete! ♡";
+    actions.style.display = "none";
+  }
+}
+
+function resetSkincare() {
+  skincareStep = 0;
+
+  document.getElementById("skincareJiwooFace").textContent = "🍓";
+  document.getElementById("skincareHaramFace").textContent = "🎀";
+  document.getElementById("skincareProduct").textContent = "🧴";
+
+  document.getElementById("skincareProgress").textContent =
+    "♡ Step 1 / 3 · Wash our faces ♡";
+
+  const actions = document.getElementById("skincareActions");
+  actions.style.display = "flex";
+  actions.innerHTML =
+    '<button onclick="nextSkincareStep()">💦<span>Face Wash</span></button>';
+
+  document.getElementById("skincareStory").textContent =
+    "♡ Our little night routine is waiting ♡";
 }
 </script>
 </body>
