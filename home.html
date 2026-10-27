@@ -3838,7 +3838,7 @@ function resetBubbleBath() {
 
         <div class="couple-mirror-person">
           <div class="couple-mirror-avatar">
-  <img src="jiwoo-base.png" class="couple-mirror-character-img" alt="Jiwoo">
+  <img src="jiwoo-base.png" id="jiwooMirrorImage" class="couple-mirror-character-img" alt="Jiwoo">
 </div>
 <div class="couple-mirror-outfit" id="jiwooMirrorOutfit">♡</div>
           <div class="couple-mirror-name">JIWOO</div>
@@ -3848,7 +3848,7 @@ function resetBubbleBath() {
 
         <div class="couple-mirror-person">
           <div class="couple-mirror-avatar">
-  <img src="haram-base.png" class="couple-mirror-character-img" alt="Haram">
+  <img src="haram-base.png" id="haramMirrorImage" class="couple-mirror-character-img" alt="Haram">
 </div>
 <div class="couple-mirror-outfit" id="haramMirrorOutfit">♡</div>
           <div class="couple-mirror-name">HARAM</div>
@@ -3910,7 +3910,16 @@ function openCoupleMirror() {
 function closeCoupleMirror() {
   document.getElementById("coupleMirrorMemory").style.display = "none";
 }
-
+const coupleMirrorImages = {
+  Base: {
+    jiwoo: "jiwoo-base.png",
+    haram: "haram-base.png"
+  },
+  Sweet: {
+    jiwoo: "jiwoo-sweet.png",
+    haram: "haram-sweet.png"
+  }
+};
 function chooseMirrorOutfit(style) {
   if (coupleMirrorStep >= 2) return;
 
@@ -3922,12 +3931,18 @@ function chooseMirrorOutfit(style) {
 
     document.getElementById("coupleMirrorStep").textContent =
       "♡ Choose Haram's outfit ♡";
-
+if (style === "Sweet") {
+  document.getElementById("jiwooMirrorImage").src =
+    coupleMirrorImages.Sweet.jiwoo;
+}
     coupleMirrorStep = 1;
   } else {
     document.getElementById("haramMirrorOutfit").textContent =
   "♡ " + style + " ♡";
-
+if (style === "Sweet") {
+  document.getElementById("haramMirrorImage").src =
+    coupleMirrorImages.Sweet.haram;
+}
     coupleMirrorStep = 2;
     finishCoupleMirror();
   }
@@ -3962,6 +3977,11 @@ document.getElementById("haramMirrorOutfit").textContent = "♡";
 
   document.getElementById("coupleMirrorStory").textContent =
     "♡ Our outfits are waiting ♡";
+  document.getElementById("jiwooMirrorImage").src =
+  coupleMirrorImages.Base.jiwoo;
+
+document.getElementById("haramMirrorImage").src =
+  coupleMirrorImages.Base.haram;
 }
 </script>
   <!-- 浴室护肤互动 -->
