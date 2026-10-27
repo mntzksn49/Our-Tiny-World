@@ -1503,7 +1503,9 @@ h1 {
       <div class="pixel tv"
      onclick="openLittleTV()"
      title="Our Little TV ♡"></div>
-      <div class="pixel picture">♡ ♡</div>
+      <div class="pixel picture"
+     onclick="openGallery()"
+     title="Our Little Gallery ♡">♡ ♡</div>
     </section>
 
     <!-- ===== 卫生间 ===== -->
@@ -2736,6 +2738,103 @@ function chooseDinner(place) {
   from { transform: scale(0.4); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+  /* ===== Our Little Gallery ===== */
+
+.picture {
+  cursor: pointer;
+}
+
+.picture:hover {
+  filter: brightness(1.08);
+}
+
+.gallery-window {
+  width: min(92vw, 460px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.gallery-photo-frame {
+  padding: 15px;
+  margin: 20px auto;
+  width: min(100%, 290px);
+  background: #fffaf6;
+  border: 5px solid #d9a5b5;
+  box-shadow: 6px 6px 0 #e5bac7;
+}
+
+.gallery-photo {
+  height: 200px;
+  display: grid;
+  place-items: center;
+  background: #f1cbd9;
+  border: 4px solid #c58b9e;
+  transition: background 0.3s;
+}
+
+.gallery-photo span {
+  font-size: 43px;
+  animation: galleryFloat 2s ease-in-out infinite;
+}
+
+.gallery-photo-label {
+  margin-top: 14px;
+  color: #b8758d;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.gallery-story {
+  min-height: 110px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 13px;
+}
+
+.gallery-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.gallery-controls button {
+  padding: 9px 13px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.gallery-controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+#galleryPageNumber {
+  font-size: 12px;
+  color: #b8758d;
+}
+
+.gallery-secret {
+  margin-top: 18px;
+  padding: 12px;
+  background: #f7d5df;
+  border: 3px solid #d9a5b5;
+  color: #b8758d;
+  font-size: 12px;
+  animation: galleryFloat 2s ease-in-out infinite;
+}
+
+@keyframes galleryFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
 </style>
 
 <script>
@@ -3047,6 +3146,95 @@ function resetCoffeeTable() {
 
   document.getElementById("coffeeStory").textContent =
     "♡ Our tea time is waiting ♡";
+}
+</script>
+  <!-- 客厅相框互动 -->
+<div class="memory-overlay" id="galleryMemory" onclick="closeGallery()">
+  <div class="memory-window gallery-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeGallery()">×</button>
+
+    <h2>♡ Our Little Gallery ♡</h2>
+    <p>Every little moment with you ♡</p>
+
+    <div class="gallery-photo-frame">
+      <div class="gallery-photo" id="galleryPhoto">
+        <span id="galleryPhotoEmoji">🍓 ♡ 🎀</span>
+      </div>
+      <div class="gallery-photo-label" id="galleryPhotoLabel">OUR FIRST MEMORY</div>
+    </div>
+
+    <div class="gallery-story" id="galleryStory"></div>
+
+    <div class="gallery-controls">
+      <button id="galleryPrev" onclick="changeGalleryPage(-1)">← PREV</button>
+      <span id="galleryPageNumber">01 / 03</span>
+      <button id="galleryNext" onclick="changeGalleryPage(1)">NEXT →</button>
+    </div>
+
+    <div class="gallery-secret" id="gallerySecret" style="display:none">
+      ♡ To be continued, forever and ever ♡
+    </div>
+  </div>
+</div>
+  <script>
+const galleryPages = [
+  {
+    emoji: "🎡 🍓 🎀",
+    label: "OUR LITTLE ADVENTURE",
+    background: "#f1cbd9",
+    story: "🎡 今天一起去游乐园。\n\n🎀：姐姐姐姐姐姐姐姐\n\n🍓：不怕不怕我抓着你的手呢♡"
+  },
+  {
+    emoji: "🌷 🍓 🎀",
+    label: "A SUNNY DAY",
+    background: "#f8ddc9",
+    story: "🌷 春天的某个下午。\n\n🍓：河岚，过来拍照！\n\n🎀：要把我拍得好看一点哦♡"
+  },
+  {
+    emoji: "🌙 🍓 🎀",
+    label: "OUR FOREVER",
+    background: "#b9a4d9",
+    story: "🌙 夜晚，两个人靠在一起。\n\n🎀：姐姐，以后也要一直在一起。\n\n🍓：嗯，约好了♡"
+  }
+];
+
+let galleryPage = 0;
+
+function openGallery() {
+  galleryPage = 0;
+  renderGallery();
+  document.getElementById("galleryMemory").style.display = "flex";
+}
+
+function closeGallery() {
+  document.getElementById("galleryMemory").style.display = "none";
+}
+
+function changeGalleryPage(direction) {
+  galleryPage += direction;
+  galleryPage = Math.max(0, Math.min(galleryPage, galleryPages.length - 1));
+  renderGallery();
+}
+
+function renderGallery() {
+  const page = galleryPages[galleryPage];
+
+  document.getElementById("galleryPhotoEmoji").textContent = page.emoji;
+  document.getElementById("galleryPhotoLabel").textContent = page.label;
+  document.getElementById("galleryPhoto").style.background = page.background;
+  document.getElementById("galleryStory").textContent = page.story;
+
+  document.getElementById("galleryPageNumber").textContent =
+    String(galleryPage + 1).padStart(2, "0") +
+    " / " +
+    String(galleryPages.length).padStart(2, "0");
+
+  document.getElementById("galleryPrev").disabled = galleryPage === 0;
+  document.getElementById("galleryNext").disabled =
+    galleryPage === galleryPages.length - 1;
+
+  document.getElementById("gallerySecret").style.display =
+    galleryPage === galleryPages.length - 1 ? "block" : "none";
 }
 </script>
 </body>
