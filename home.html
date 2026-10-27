@@ -1578,6 +1578,66 @@ h1 {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.15); }
 }
+  /* ===== Movie Night Video Player ===== */
+
+.movie-video-section {
+  margin: 20px 0;
+  padding: 16px;
+  border: 3px dashed #e3afc0;
+  background: #fff7f5;
+  text-align: center;
+}
+
+.movie-video-heading {
+  color: #a86d83;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.movie-video-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.movie-video-list button {
+  padding: 12px 6px;
+  background: #f4c7d6;
+  border: 3px solid #b77d94;
+  color: #80566a;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.movie-video-list button.active {
+  background: #b77d94;
+  color: white;
+}
+
+.movie-video-player {
+  width: 100%;
+  max-height: 280px;
+  background: #30252d;
+  border: 5px solid #b77d94;
+  box-sizing: border-box;
+}
+
+.movie-video-title {
+  margin: 12px 0;
+  color: #a86d83;
+  font-size: 12px;
+}
+
+.movie-video-controls button {
+  padding: 10px 16px;
+  background: #e8b1c5;
+  border: 3px solid #b77d94;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -3894,7 +3954,29 @@ function resetBubbleBath() {
         🐱 <span>Cartoon</span>
       </button>
     </div>
+<!-- ♡ Movie Video Player ♡ -->
+<div class="movie-video-section" id="movieVideoSection" style="display:none">
 
+  <p class="movie-video-heading">♡ Choose a little clip ♡</p>
+
+  <div class="movie-video-list" id="movieVideoList"></div>
+
+  <video
+    id="movieVideoPlayer"
+    class="movie-video-player"
+    controls
+    playsinline
+    preload="metadata"
+    style="display:none">
+  </video>
+
+  <p class="movie-video-title" id="movieVideoTitle"></p>
+
+  <div class="movie-video-controls">
+    <button onclick="playNextMovieClip()">♡ Next Clip ♡</button>
+  </div>
+
+</div>
     <div class="movie-story" id="movieStory">
       ♡ Our movie night is about to begin ♡
     </div>
@@ -4104,6 +4186,59 @@ const movieStories = {
 };
 let horrorWatchCount = 0;
 let horrorEasterEggTriggered = false;
+    /* ===== Our Movie Clips ===== */
+
+const movieClips = {
+
+  Horror: [
+    {
+      title: "👻 Spooky Moment 01",
+      file: "horror1.mp4"
+    },
+    {
+      title: "👻 Spooky Moment 02",
+      file: "horror2.mp4"
+    },
+    {
+      title: "👻 Spooky Moment 03",
+      file: "horror3.mp4"
+    }
+  ],
+
+  Romance: [
+    {
+      title: "💗 Sweet Moment 01",
+      file: "romance1.mp4"
+    },
+    {
+      title: "💗 Sweet Moment 02",
+      file: "romance2.mp4"
+    },
+    {
+      title: "💗 Sweet Moment 03",
+      file: "romance3.mp4"
+    }
+  ],
+
+  Cartoon: [
+    {
+      title: "🐱 Cute Moment 01",
+      file: "cartoon1.mp4"
+    },
+    {
+      title: "🐱 Cute Moment 02",
+      file: "cartoon2.mp4"
+    },
+    {
+      title: "🐱 Cute Moment 03",
+      file: "cartoon3.mp4"
+    }
+  ]
+
+};
+
+let currentMovieCategory = null;
+let currentMovieClipIndex = -1;
 const movieVisuals = {
   Horror: {
     emoji: "👻",
@@ -4125,6 +4260,7 @@ function openMovieNight() {
 }
 
 function closeMovieNight() {
+  stopMovieClips();
   document.getElementById("movieNightMemory").style.display = "none";
 }
 
@@ -4143,7 +4279,7 @@ function chooseMovie(type) {
     movieStories[type];
 
   document.getElementById("movieOptions").style.display = "none";
-
+showMovieClips(type);
   // ♡ Horror hidden easter egg ♡
   if (type === "Horror") {
     horrorWatchCount++;
@@ -4171,6 +4307,7 @@ function chooseMovie(type) {
 }
 
 function resetMovieNight() {
+  stopMovieClips();
   document.getElementById("movieTvScreen").className =
     "movie-tv-screen";
 
@@ -4184,7 +4321,90 @@ function resetMovieNight() {
 
   document.getElementById("movieOptions").style.display = "grid";
 }
+/* ===== Movie Video Functions ===== */
 
+function showMovieClips(category) {
+  currentMovieCategory = category;
+  currentMovieClipIndex = -1;
+
+  const section = document.getElementById("movieVideoSection");
+  const list = document.getElementById("movieVideoList");
+  const player = document.getElementById("movieVideoPlayer");
+
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  player.style.display = "none";
+
+  document.getElementById("movieVideoTitle").textContent = "";
+
+  section.style.display = "block";
+  list.innerHTML = "";
+
+  movieClips[category].forEach((clip, index) => {
+    const button = document.createElement("button");
+    button.textContent = clip.title;
+
+    button.onclick = function () {
+      playMovieClip(index);
+    };
+
+    list.appendChild(button);
+  });
+}
+
+function playMovieClip(index) {
+  const clips = movieClips[currentMovieCategory];
+
+  if (!clips || !clips[index]) return;
+
+  currentMovieClipIndex = index;
+
+  const clip = clips[index];
+  const player = document.getElementById("movieVideoPlayer");
+
+  player.src = clip.file;
+  player.style.display = "block";
+  player.load();
+
+  player.play().catch(() => {
+    // 浏览器阻止自动播放时，可以手动点击播放键
+  });
+
+  document.getElementById("movieVideoTitle").textContent =
+    "♡ Now Playing: " + clip.title + " ♡";
+
+  document.querySelectorAll("#movieVideoList button").forEach((button, i) => {
+    button.classList.toggle("active", i === index);
+  });
+}
+
+function playNextMovieClip() {
+  if (!currentMovieCategory) return;
+
+  const clips = movieClips[currentMovieCategory];
+
+  if (!clips || clips.length === 0) return;
+
+  const nextIndex = (currentMovieClipIndex + 1) % clips.length;
+
+  playMovieClip(nextIndex);
+}
+
+function stopMovieClips() {
+  const player = document.getElementById("movieVideoPlayer");
+
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  player.style.display = "none";
+
+  document.getElementById("movieVideoSection").style.display = "none";
+  document.getElementById("movieVideoTitle").textContent = "";
+
+  currentMovieCategory = null;
+  currentMovieClipIndex = -1;
+}
 function turnOffMovieTV() {
   resetMovieNight();
   closeMovieNight();
