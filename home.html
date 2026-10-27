@@ -2197,6 +2197,44 @@ h1 {
   font-family: inherit;
   cursor: pointer;
 }
+  /* ===== Cuddle Pixel Characters ===== */
+
+.cuddle-scene {
+  height: 320px;
+  background: #fff0ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cuddle-sprite {
+  display: block;
+  position: relative;
+  z-index: 6;
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  animation: cuddleSpriteAppear 0.35s ease;
+}
+
+/* 隐藏原来的表情符号人物和 CSS 沙发 */
+.cuddle-scene .cuddle-people,
+.cuddle-scene .cuddle-sofa,
+.cuddle-scene .cuddle-blanket {
+  display: none !important;
+}
+
+@keyframes cuddleSpriteAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 </style>
 </head>
 
@@ -5477,6 +5515,12 @@ updateSecretCollection();
     <p>Our favorite place is next to each other ♡</p>
 
     <div class="cuddle-scene">
+      <img
+  id="cuddleSprite"
+  class="cuddle-sprite"
+  src="cuddle-default.png"
+  alt="Jiwoo and Haram cuddling"
+>
       <div class="cuddle-hearts" id="cuddleHearts">♡ ♡ ♡</div>
 
       <div class="cuddle-people" id="cuddlePeople">
@@ -5549,7 +5593,23 @@ function openCuddleTime() {
 function closeCuddleTime() {
   document.getElementById("cuddleMemory").style.display = "none";
 }
+function changeCuddleSprite(action) {
+  const sprite = document.getElementById("cuddleSprite");
 
+  const images = {
+    Default: "cuddle-default.png",
+    Hug: "cuddle-hug.png",
+    Lean: "cuddle-lean.png",
+    Blanket: "cuddle-blanket.png",
+    Kiss: "cuddle-kiss.png"
+  };
+
+  sprite.src = images[action];
+
+  sprite.style.animation = "none";
+  void sprite.offsetWidth;
+  sprite.style.animation = "cuddleSpriteAppear 0.35s ease";
+}
 function chooseCuddle(action) {
   const people = document.getElementById("cuddlePeople");
   const hearts = document.getElementById("cuddleHearts");
@@ -5593,13 +5653,26 @@ function chooseCuddle(action) {
   }
 
   if (action === "Blanket") {
-    blanket.classList.add("show");
-    document.getElementById("cuddleStatus").textContent =
-      "♡ Warm & Cozy ♡";
-  }
+  blanket.classList.add("show");
+  document.getElementById("cuddleStatus").textContent =
+    "♡ Warm & Cozy ♡";
+}
+
+// 根据选择切换像素人物图片
+if (
+  action === "Hug" &&
+  cuddleHugCount === 3 &&
+  cuddleSecretUnlocked
+) {
+  changeCuddleSprite("Kiss");
+} else {
+  changeCuddleSprite(action);
+}
+
 }
 
 function resetCuddleTime() {
+    changeCuddleSprite("Default");
   document.getElementById("cuddlePeople").className =
     "cuddle-people";
 
