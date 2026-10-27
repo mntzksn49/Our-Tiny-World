@@ -4649,7 +4649,7 @@ function chooseMovie(type) {
   if (type === "Horror") {
     horrorWatchCount++;
 
-    if (horrorWatchCount === 3 && !horrorEasterEggTriggered) {
+    if (horrorWatchCount === 2 && !horrorEasterEggTriggered) {
       horrorEasterEggTriggered = true;
 
       document.getElementById("movieStory").textContent =
@@ -4677,7 +4677,7 @@ function chooseMovie(type) {
   if (type === "ColdWar") {
     coldWarWatchCount++;
 
-    if (coldWarWatchCount === 3 && !coldWarEasterEggTriggered) {
+    if (coldWarWatchCount === 2 && !coldWarEasterEggTriggered) {
       coldWarEasterEggTriggered = true;
 
       document.getElementById("movieStory").textContent =
