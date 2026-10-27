@@ -3080,13 +3080,32 @@ top: 120px;
   width: 64px;
 }
 
-.walking-character.walking img {
-  animation: littleWalk 0.3s infinite alternate;
+/* ===== Pixel Character Walking Animation ===== */
+
+.walking-character img {
+  width: 100%;
+  height: 85px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  transform-origin: center bottom;
 }
 
-@keyframes littleWalk {
-  from { transform: translateY(0); }
-  to { transform: translateY(-5px); }
+.walking-character.walking img {
+  animation: pixelWalking 0.22s steps(2) infinite;
+}
+
+@keyframes pixelWalking {
+  0% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-5px) rotate(3deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
 }
 
 .walking-heart {
@@ -7453,50 +7472,58 @@ function setWalkingDirection(character, direction) {
 let walkingTogether = false;
 let walkingTimers = new WeakMap();
 
+/* ===== Four Direction Walking System ===== */
+
+const characterSprites = {
+  walkingJiwoo: {
+    front: "jiwoo-front.png",
+    back: "jiwoo-back.png",
+    left: "jiwoo-left.png",
+    right: "jiwoo-right.png"
+  },
+  walkingHaram: {
+    front: "haram-front.png",
+    back: "haram-back.png",
+    left: "haram-left.png",
+    right: "haram-right.png"
+  }
+};
+
 function moveWalkingCharacter(character, x, y) {
 
   const previousTimer = walkingTimers.get(character);
+  if (previousTimer) clearTimeout(previousTimer);
 
-  if (previousTimer) {
-    clearTimeout(previousTimer);
-  }
+  // 读取人物当前位置
+  const oldX = parseFloat(getComputedStyle(character).left);
+  const oldY = parseFloat(getComputedStyle(character).top);
 
-  // 获取人物目前的位置
-  const currentX = parseFloat(getComputedStyle(character).left);
-  const currentY = parseFloat(getComputedStyle(character).top);
+  const dx = x - oldX;
+  const dy = y - oldY;
 
-  // 计算移动方向
-  const dx = x - currentX;
-  const dy = y - currentY;
-
+  // 根据移动方向选择图片
   let direction = "front";
 
-  if (Math.abs(dx) > Math.abs(dy)) {
-
-    if (dx > 0) {
-      direction = "right";
-    } else {
-      direction = "left";
-    }
-
+  if (Math.abs(dx) >= Math.abs(dy)) {
+    direction = dx >= 0 ? "right" : "left";
   } else {
-
-    if (dy > 0) {
-      direction = "front";
-    } else {
-      direction = "back";
-    }
-
+    direction = dy >= 0 ? "front" : "back";
   }
 
-  // 切换对应方向的人物图片
-  if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-    setWalkingDirection(character, direction);
+  // 切换人物素材
+  const image = character.querySelector("img");
+  const sprites = characterSprites[character.id];
+
+  if (image && sprites && (Math.abs(dx) > 1 || Math.abs(dy) > 1)) {
+    image.src = sprites[direction];
   }
 
-  // 保留原来的走路动画
+  // 重新启动走路动画
+  character.classList.remove("walking");
+  void character.offsetWidth;
   character.classList.add("walking");
 
+  // 移动到目标位置
   character.style.left = x + "px";
   character.style.top = y + "px";
 
