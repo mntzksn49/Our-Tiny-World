@@ -2010,6 +2010,193 @@ h1 {
     transform: scale(1);
   }
 }
+  /* ===== Cuddle Time ===== */
+
+.cuddle-window {
+  width: min(92vw, 520px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.cuddle-scene {
+  position: relative;
+  height: 245px;
+  margin: 22px auto;
+  overflow: hidden;
+  background: #fff0ec;
+  border: 5px solid #d9a5b5;
+}
+
+.cuddle-hearts {
+  position: absolute;
+  top: 16px;
+  width: 100%;
+  text-align: center;
+  color: #d889a7;
+  font-size: 25px;
+  opacity: 0;
+  z-index: 5;
+}
+
+.cuddle-hearts.show {
+  animation: cuddleFloat 1.4s ease-in-out infinite;
+}
+
+@keyframes cuddleFloat {
+  0% { transform: translateY(12px); opacity: 0; }
+  45% { opacity: 1; }
+  100% { transform: translateY(-12px); opacity: 0; }
+}
+
+.cuddle-sofa {
+  position: absolute;
+  left: 12%;
+  bottom: 15px;
+  width: 76%;
+  height: 110px;
+  background: #e8a8ba;
+  border: 7px solid #b8758d;
+  box-shadow: 7px 7px 0 #946174;
+}
+
+.cuddle-sofa::before,
+.cuddle-sofa::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  width: 18px;
+  height: 65px;
+  background: #c98ca2;
+}
+
+.cuddle-sofa::before { left: 0; }
+.cuddle-sofa::after { right: 0; }
+
+.cuddle-people {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 63px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  z-index: 3;
+  transition: gap 0.4s ease;
+}
+
+.cuddle-person {
+  width: 82px;
+  height: 100px;
+  background: #f7d9e2;
+  border: 4px solid #b8758d;
+  text-align: center;
+  padding-top: 10px;
+  box-sizing: border-box;
+  transition: transform 0.4s ease;
+}
+
+.cuddle-face {
+  font-size: 37px;
+}
+
+.cuddle-person span {
+  display: block;
+  margin-top: 6px;
+  color: #946174;
+  font-size: 10px;
+}
+
+.cuddle-people.hug {
+  gap: 0;
+}
+
+.cuddle-people.hug .cuddle-jiwoo {
+  transform: rotate(8deg);
+}
+
+.cuddle-people.hug .cuddle-haram {
+  transform: rotate(-8deg);
+}
+
+.cuddle-people.lean {
+  gap: 12px;
+}
+
+.cuddle-people.lean .cuddle-haram {
+  transform: translate(-10px, 7px) rotate(-17deg);
+}
+
+.cuddle-blanket {
+  display: none;
+  position: absolute;
+  left: 27%;
+  bottom: 32px;
+  width: 46%;
+  height: 82px;
+  background: #f7c8d8;
+  border: 5px solid #b8758d;
+  color: #fff;
+  text-align: center;
+  padding-top: 15px;
+  box-sizing: border-box;
+  z-index: 4;
+}
+
+.cuddle-blanket.show {
+  display: block;
+}
+
+.cuddle-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.cuddle-options button {
+  padding: 12px 5px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.cuddle-options button span {
+  display: block;
+  margin-top: 7px;
+  font-size: 11px;
+}
+
+.cuddle-options button:hover {
+  background: #f7d5df;
+}
+
+.cuddle-status {
+  color: #b8758d;
+  font-size: 13px;
+}
+
+.cuddle-story {
+  white-space: pre-line;
+  padding: 20px;
+  margin: 18px 0;
+  background: #fff7f4;
+  border: 3px dashed #e2b5c4;
+  color: #865e6c;
+  line-height: 2;
+  font-size: 13px;
+}
+
+.cuddle-reset {
+  padding: 12px 18px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -2063,6 +2250,8 @@ h1 {
 
       <div class="rug"></div>
       <div class="pixel sofa"
+     onclick="openCuddleTime()"
+     title="Cuddle Time ♡"></div>
      onclick="openMovieNight()"
      title="Movie Night ♡"></div>
       <div class="pixel coffee-table"
@@ -5274,6 +5463,152 @@ function openCollectedLetters(group) {
 }
 
 updateSecretCollection();
+</script>
+  <!-- ♡ Living Room Cuddle Time ♡ -->
+<div class="memory-overlay" id="cuddleMemory" onclick="closeCuddleTime()">
+  <div class="memory-window cuddle-window" onclick="event.stopPropagation()">
+
+    <button class="memory-close" onclick="closeCuddleTime()">×</button>
+
+    <h2>♡ Cuddle Time ♡</h2>
+    <p>Our favorite place is next to each other ♡</p>
+
+    <div class="cuddle-scene">
+      <div class="cuddle-hearts" id="cuddleHearts">♡ ♡ ♡</div>
+
+      <div class="cuddle-people" id="cuddlePeople">
+        <div class="cuddle-person cuddle-jiwoo" id="cuddleJiwoo">
+          <div class="cuddle-face">🍓</div>
+          <span>JIWOO</span>
+        </div>
+
+        <div class="cuddle-person cuddle-haram" id="cuddleHaram">
+          <div class="cuddle-face">🎀</div>
+          <span>HARAM</span>
+        </div>
+      </div>
+
+      <div class="cuddle-blanket" id="cuddleBlanket">♡ ♡ ♡</div>
+      <div class="cuddle-sofa"></div>
+    </div>
+
+    <p class="cuddle-status" id="cuddleStatus">
+      ♡ What shall we do together? ♡
+    </p>
+
+    <div class="cuddle-options">
+      <button onclick="chooseCuddle('Hug')">🧸<span>Hug</span></button>
+      <button onclick="chooseCuddle('Lean')">💗<span>Lean On Me</span></button>
+      <button onclick="chooseCuddle('Blanket')">🛋️<span>Blanket</span></button>
+    </div>
+
+    <div class="cuddle-story" id="cuddleStory">
+      ♡ Two little hearts, one cozy sofa ♡
+    </div>
+
+    <button class="cuddle-reset" onclick="resetCuddleTime()">
+      ♡ Sit Together Again ♡
+    </button>
+
+  </div>
+</div>
+  <script>
+/* ===== Cuddle Time ===== */
+
+let cuddleHugCount = 0;
+let cuddleSecretUnlocked = false;
+
+const cuddleStories = {
+  Hug:
+    "🧸 两个人在沙发上抱在一起。\n\n" +
+    "🎀：姐姐，再抱紧一点嘛。\n\n" +
+    "🍓：已经抱得很紧啦。\n\n" +
+    "🎀：可是还想再近一点。♡",
+
+  Lean:
+    "💗 河岚轻轻靠在志宇肩膀上。\n\n" +
+    "🍓：河岚困了吗？\n\n" +
+    "🎀：没有，就是想靠着姐姐。\n\n" +
+    "🍓：那就一直靠着吧。♡",
+
+  Blanket:
+    "🛋️ 两个人一起钻进暖暖的小毯子。\n\n" +
+    "🎀：姐姐，毯子分你一半！\n\n" +
+    "🍓：那河岚不冷吗？\n\n" +
+    "🎀：靠近一点就不冷啦。♡"
+};
+
+function openCuddleTime() {
+  document.getElementById("cuddleMemory").style.display = "flex";
+  resetCuddleTime();
+}
+
+function closeCuddleTime() {
+  document.getElementById("cuddleMemory").style.display = "none";
+}
+
+function chooseCuddle(action) {
+  const people = document.getElementById("cuddlePeople");
+  const hearts = document.getElementById("cuddleHearts");
+  const blanket = document.getElementById("cuddleBlanket");
+
+  people.className = "cuddle-people";
+  hearts.classList.remove("show");
+  blanket.classList.remove("show");
+
+  document.getElementById("cuddleStory").textContent =
+    cuddleStories[action];
+
+  if (action === "Hug") {
+    people.classList.add("hug");
+    hearts.classList.add("show");
+    cuddleHugCount++;
+
+    if (cuddleHugCount === 3 && !cuddleSecretUnlocked) {
+      cuddleSecretUnlocked = true;
+
+      document.getElementById("cuddleStory").textContent =
+        "♡ SECRET KISS UNLOCKED ♡\n\n" +
+        "🎀：姐姐，过来一点。\n\n" +
+        "🍓：嗯？怎么啦？\n\n" +
+        "🎀：啵！\n\n" +
+        "🍓：……河岚怎么突然亲我？\n\n" +
+        "🎀：因为抱抱三次以后，就可以亲亲了呀。♡";
+
+      document.getElementById("cuddleStatus").textContent =
+        "♡ A Secret Kiss ♡";
+    } else {
+      document.getElementById("cuddleStatus").textContent =
+        "♡ Hug Hug ♡";
+    }
+  }
+
+  if (action === "Lean") {
+    people.classList.add("lean");
+    document.getElementById("cuddleStatus").textContent =
+      "♡ Stay Close ♡";
+  }
+
+  if (action === "Blanket") {
+    blanket.classList.add("show");
+    document.getElementById("cuddleStatus").textContent =
+      "♡ Warm & Cozy ♡";
+  }
+}
+
+function resetCuddleTime() {
+  document.getElementById("cuddlePeople").className =
+    "cuddle-people";
+
+  document.getElementById("cuddleHearts").classList.remove("show");
+  document.getElementById("cuddleBlanket").classList.remove("show");
+
+  document.getElementById("cuddleStatus").textContent =
+    "♡ What shall we do together? ♡";
+
+  document.getElementById("cuddleStory").textContent =
+    "♡ Two little hearts, one cozy sofa ♡";
+}
 </script>
 </body>
 </html>
