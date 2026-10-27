@@ -1512,7 +1512,9 @@ h1 {
     <section class="room bathroom">
       <span class="room-name">🫧 BATHROOM</span>
 
-      <div class="pixel mirror"></div>
+      <div class="pixel mirror"
+     onclick="openCoupleMirror()"
+     title="Mirror Mirror · Couple Dress Up ♡"></div>
       <div class="pixel sink"></div>
       <div class="pixel bathtub"
      onclick="openBubbleBath()"
@@ -2998,6 +3000,129 @@ function chooseDinner(place) {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
 }
+  /* ===== Mirror Mirror · Couple Dress Up ===== */
+
+.mirror {
+  cursor: pointer;
+}
+
+.mirror:hover {
+  filter: brightness(1.08);
+}
+
+.couple-mirror-window {
+  width: min(92vw, 500px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.couple-mirror-frame {
+  margin: 20px auto;
+  padding: 20px 12px;
+  background: #f9e0e9;
+  border: 8px solid #d69aaf;
+  box-shadow: 6px 6px 0 #b8758d;
+}
+
+.couple-mirror-characters {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 8px;
+  min-height: 220px;
+  background: #fff5fa;
+  border: 4px solid #e9b6c9;
+}
+
+.couple-mirror-person {
+  flex: 1;
+  text-align: center;
+}
+
+.couple-mirror-avatar {
+  font-size: 50px;
+  margin-bottom: 8px;
+}
+
+.couple-mirror-outfit {
+  font-size: 58px;
+  min-height: 72px;
+  animation: mirrorOutfitFloat 2s ease-in-out infinite;
+}
+
+.couple-mirror-name {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #b8758d;
+}
+
+.couple-mirror-heart {
+  font-size: 30px;
+  color: #d58da9;
+  animation: mirrorHeartBeat 1.5s ease-in-out infinite;
+}
+
+.couple-mirror-step {
+  font-size: 13px;
+  color: #b8758d;
+}
+
+.couple-mirror-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.couple-mirror-options button {
+  padding: 12px 5px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.couple-mirror-options button span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.couple-mirror-options button:hover {
+  background: #f7d5df;
+}
+
+.couple-mirror-story {
+  min-height: 105px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 13px;
+}
+
+.couple-mirror-reset {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@keyframes mirrorOutfitFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes mirrorHeartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
 </style>
 
 <script>
@@ -3524,6 +3649,141 @@ function resetBubbleBath() {
 
   document.getElementById("bubbleBathStory").textContent =
     "♡ Our little bath is waiting ♡";
+}
+</script>
+  <!-- 浴室双人换装互动 -->
+<div class="memory-overlay" id="coupleMirrorMemory" onclick="closeCoupleMirror()">
+  <div class="memory-window couple-mirror-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeCoupleMirror()">×</button>
+
+    <h2>♡ Mirror Mirror ♡</h2>
+    <p>Let's dress up together!</p>
+
+    <div class="couple-mirror-frame">
+      <div class="couple-mirror-characters">
+
+        <div class="couple-mirror-person">
+          <div class="couple-mirror-avatar">🍓</div>
+          <div class="couple-mirror-outfit" id="jiwooMirrorOutfit">👗</div>
+          <div class="couple-mirror-name">JIWOO</div>
+        </div>
+
+        <div class="couple-mirror-heart">♡</div>
+
+        <div class="couple-mirror-person">
+          <div class="couple-mirror-avatar">🎀</div>
+          <div class="couple-mirror-outfit" id="haramMirrorOutfit">👗</div>
+          <div class="couple-mirror-name">HARAM</div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="couple-mirror-step" id="coupleMirrorStep">
+      ♡ Choose Jiwoo's outfit ♡
+    </p>
+
+    <div class="couple-mirror-options" id="coupleMirrorOptions">
+      <button onclick="chooseMirrorOutfit('Sweet')">🎀<span>Sweet</span></button>
+      <button onclick="chooseMirrorOutfit('Cozy')">🧸<span>Cozy</span></button>
+      <button onclick="chooseMirrorOutfit('Cool')">🖤<span>Cool</span></button>
+    </div>
+
+    <div class="couple-mirror-story" id="coupleMirrorStory">
+      ♡ Our outfits are waiting ♡
+    </div>
+
+    <button class="couple-mirror-reset" onclick="resetCoupleMirror()">
+      ♡ Dress Up Again ♡
+    </button>
+  </div>
+</div>
+  <script>
+const coupleMirrorOutfits = {
+  Sweet: {
+    jiwoo: "👚",
+    haram: "👗"
+  },
+  Cozy: {
+    jiwoo: "🧥",
+    haram: "🧸"
+  },
+  Cool: {
+    jiwoo: "🖤",
+    haram: "🕶️"
+  }
+};
+
+const coupleMirrorStories = {
+  Sweet: "🎀：我们穿情侣装出去约会吧\n\n🍓：好呀，今天想去哪里？♡",
+  Cozy: "🍓：河岚穿这套睡衣好可爱。\n\n🎀：不许笑我！\n\n🍓：没有笑，是喜欢♡",
+  Cool: "🎀：我这样是不是很帅？\n\n🍓：嗯，很帅气哦河岚小姐♡",
+  Mixed: "🎀：姐姐，我们穿得好像不太一样。\n\n🍓：没关系，站在一起脸很配就够啦♡"
+};
+
+let coupleMirrorStep = 0;
+let coupleMirrorChoices = [];
+
+function openCoupleMirror() {
+  document.getElementById("coupleMirrorMemory").style.display = "flex";
+  resetCoupleMirror();
+}
+
+function closeCoupleMirror() {
+  document.getElementById("coupleMirrorMemory").style.display = "none";
+}
+
+function chooseMirrorOutfit(style) {
+  if (coupleMirrorStep >= 2) return;
+
+  coupleMirrorChoices.push(style);
+
+  if (coupleMirrorStep === 0) {
+    document.getElementById("jiwooMirrorOutfit").textContent =
+      coupleMirrorOutfits[style].jiwoo;
+
+    document.getElementById("coupleMirrorStep").textContent =
+      "♡ Choose Haram's outfit ♡";
+
+    coupleMirrorStep = 1;
+  } else {
+    document.getElementById("haramMirrorOutfit").textContent =
+      coupleMirrorOutfits[style].haram;
+
+    coupleMirrorStep = 2;
+    finishCoupleMirror();
+  }
+}
+
+function finishCoupleMirror() {
+  const jiwooStyle = coupleMirrorChoices[0];
+  const haramStyle = coupleMirrorChoices[1];
+
+  const matched = jiwooStyle === haramStyle;
+
+  document.getElementById("coupleMirrorStep").textContent =
+    matched ? "♡ PERFECT MATCH ♡" : "♡ Our Unique Style ♡";
+
+  document.getElementById("coupleMirrorStory").textContent =
+    matched ? coupleMirrorStories[jiwooStyle] : coupleMirrorStories.Mixed;
+
+  document.getElementById("coupleMirrorOptions").style.display = "none";
+}
+
+function resetCoupleMirror() {
+  coupleMirrorStep = 0;
+  coupleMirrorChoices = [];
+
+  document.getElementById("jiwooMirrorOutfit").textContent = "👗";
+  document.getElementById("haramMirrorOutfit").textContent = "👗";
+
+  document.getElementById("coupleMirrorStep").textContent =
+    "♡ Choose Jiwoo's outfit ♡";
+
+  document.getElementById("coupleMirrorOptions").style.display = "grid";
+
+  document.getElementById("coupleMirrorStory").textContent =
+    "♡ Our outfits are waiting ♡";
 }
 </script>
 </body>
