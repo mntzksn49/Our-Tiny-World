@@ -1514,7 +1514,9 @@ h1 {
 
       <div class="pixel mirror"></div>
       <div class="pixel sink"></div>
-      <div class="pixel bathtub"></div>
+      <div class="pixel bathtub"
+     onclick="openBubbleBath()"
+     title="Our Bubble Time ♡"></div>
       <div class="pixel basket"></div>
     </section>
 
@@ -2842,6 +2844,160 @@ function chooseDinner(place) {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+  /* ===== Bubble Bath Mini Game ===== */
+
+.bathtub {
+  cursor: pointer;
+}
+
+.bathtub:hover {
+  filter: brightness(1.08);
+}
+
+.bubble-bath-window {
+  width: min(92vw, 470px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.bubble-bath-scene {
+  padding: 35px 15px;
+  margin: 18px 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #fbe5e8 0 28px,
+    #f5d4df 28px 32px
+  );
+  border: 4px solid #d9a5b5;
+}
+
+.bubble-bath-tub {
+  position: relative;
+  width: min(100%, 290px);
+  height: 155px;
+  margin: auto;
+  background: #fffaf8;
+  border: 7px solid #c78fa5;
+  border-radius: 12px 12px 45px 45px;
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 0 #d5a9ba;
+}
+
+.bubble-bath-water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: #a8dce8;
+  transition: height 1.2s ease;
+}
+
+.bubble-bath-water.filled {
+  height: 78%;
+}
+
+.bubble-bath-foam {
+  display: none;
+  position: absolute;
+  top: 22px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+  z-index: 2;
+  animation: bubbleBathFloat 1.5s ease-in-out infinite;
+}
+
+.bubble-bath-foam.visible {
+  display: block;
+}
+
+.bubble-bath-decoration {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 42px;
+  z-index: 3;
+  animation: bubbleBathFloat 2s ease-in-out infinite;
+}
+
+.bubble-bath-tub-front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: #fff1f5;
+  border-top: 5px solid #c78fa5;
+  color: #d69aaf;
+  text-align: center;
+  line-height: 25px;
+  letter-spacing: 12px;
+  z-index: 4;
+}
+
+.bubble-bath-progress {
+  color: #b8758d;
+  font-size: 13px;
+}
+
+.bubble-bath-options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.bubble-bath-options button {
+  min-width: 95px;
+  padding: 12px 8px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.bubble-bath-options button span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.bubble-bath-options button:hover {
+  background: #f7d5df;
+}
+
+.bubble-bath-story {
+  min-height: 100px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 13px;
+}
+
+.bubble-bath-reset {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@keyframes bubbleBathFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
 </style>
 
 <script>
@@ -3247,6 +3403,127 @@ function renderGallery() {
 
   document.getElementById("gallerySecret").style.display =
     galleryPage === galleryPages.length - 1 ? "block" : "none";
+}
+</script>
+  <!-- 浴室泡泡浴互动 -->
+<div class="memory-overlay" id="bubbleBathMemory" onclick="closeBubbleBath()">
+  <div class="memory-window bubble-bath-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeBubbleBath()">×</button>
+
+    <h2>♡ Our Bubble Time ♡</h2>
+    <p>Let's make a cozy bubble bath!</p>
+
+    <div class="bubble-bath-scene">
+      <div class="bubble-bath-tub">
+        <div class="bubble-bath-water" id="bubbleBathWater"></div>
+        <div class="bubble-bath-foam" id="bubbleBathFoam">🫧 🫧 🫧</div>
+        <div class="bubble-bath-decoration" id="bubbleBathDecoration"></div>
+        <div class="bubble-bath-tub-front">♡ ♡ ♡</div>
+      </div>
+    </div>
+
+    <p class="bubble-bath-progress" id="bubbleBathProgress">
+      ♡ Step 1 · Fill the bathtub ♡
+    </p>
+
+    <div class="bubble-bath-options" id="bubbleBathOptions">
+      <button onclick="fillBubbleBath()">🚿<span>Fill Water</span></button>
+    </div>
+
+    <div class="bubble-bath-story" id="bubbleBathStory">
+      ♡ Our little bath is waiting ♡
+    </div>
+
+    <button class="bubble-bath-reset" onclick="resetBubbleBath()">
+      ♡ Make Another Bubble Bath ♡
+    </button>
+  </div>
+</div>
+  <script>
+let bubbleBathStep = 0;
+
+const bubbleBathStories = {
+  HairWash: "🫧 姐姐正在给河岚洗头发。\n\n🍓：宝宝闭眼睛哦，小心泡泡跑进眼睛里。\n\n🎀：姐姐再帮我揉揉嘛。\n\n🍓：好好好♡",
+  Flowers: "🌸 浴缸里飘满了粉色花瓣。\n\n🍓：河岚喜欢这个味道吗？\n\n🎀：喜欢！姐姐身上也是香香的♡",
+  Hearts: "💗 泡泡里藏着好多小爱心。\n\n🎀：姐姐，我抓到一颗爱心！\n\n🍓：那送给我好不好？\n\n🎀：本来就是给姐姐的♡"
+};
+
+function openBubbleBath() {
+  document.getElementById("bubbleBathMemory").style.display = "flex";
+  resetBubbleBath();
+}
+
+function closeBubbleBath() {
+  document.getElementById("bubbleBathMemory").style.display = "none";
+}
+
+function fillBubbleBath() {
+  if (bubbleBathStep !== 0) return;
+
+  document.getElementById("bubbleBathWater").classList.add("filled");
+  bubbleBathStep = 1;
+
+  document.getElementById("bubbleBathProgress").textContent =
+    "♡ Step 2 · Add some bubbles ♡";
+
+  document.getElementById("bubbleBathOptions").innerHTML =
+    '<button onclick="addBubbleBathFoam()">🫧<span>Add Bubbles</span></button>';
+}
+
+function addBubbleBathFoam() {
+  if (bubbleBathStep !== 1) return;
+
+  document.getElementById("bubbleBathFoam").classList.add("visible");
+  bubbleBathStep = 2;
+
+  document.getElementById("bubbleBathProgress").textContent =
+    "♡ Step 3 · Choose a decoration ♡";
+
+  document.getElementById("bubbleBathOptions").innerHTML = `
+    <button onclick="finishBubbleBath('HairWash')">🧴<span>Hair Wash</span></button>
+    <button onclick="finishBubbleBath('Flowers')">🌸<span>Flowers</span></button>
+    <button onclick="finishBubbleBath('Hearts')">💗<span>Hearts</span></button>
+  `;
+}
+
+function finishBubbleBath(choice) {
+  if (bubbleBathStep !== 2) return;
+
+  const decorations = {
+  HairWash: "🍓 🫧 🎀",
+  Flowers: "🌸 🌸 🌸",
+  Hearts: "💗 💗 💗"
+};
+
+  document.getElementById("bubbleBathDecoration").textContent =
+    decorations[choice];
+
+  document.getElementById("bubbleBathStory").textContent =
+    bubbleBathStories[choice];
+
+  document.getElementById("bubbleBathProgress").textContent =
+    "♡ Our bubble bath is ready! ♡";
+
+  document.getElementById("bubbleBathOptions").style.display = "none";
+  bubbleBathStep = 3;
+}
+
+function resetBubbleBath() {
+  bubbleBathStep = 0;
+
+  document.getElementById("bubbleBathWater").classList.remove("filled");
+  document.getElementById("bubbleBathFoam").classList.remove("visible");
+  document.getElementById("bubbleBathDecoration").textContent = "";
+
+  document.getElementById("bubbleBathProgress").textContent =
+    "♡ Step 1 · Fill the bathtub ♡";
+
+  document.getElementById("bubbleBathOptions").style.display = "flex";
+  document.getElementById("bubbleBathOptions").innerHTML =
+    '<button onclick="fillBubbleBath()">🚿<span>Fill Water</span></button>';
+
+  document.getElementById("bubbleBathStory").textContent =
+    "♡ Our little bath is waiting ♡";
 }
 </script>
 </body>
