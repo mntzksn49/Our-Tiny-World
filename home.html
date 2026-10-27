@@ -3918,6 +3918,14 @@ const coupleMirrorImages = {
   Sweet: {
     jiwoo: "jiwoo-sweet.png",
     haram: "haram-sweet.png"
+  },
+  Cozy: {
+    jiwoo: "jiwoo_cozy.png",
+    haram: "haram_cozy.png"
+  },
+  Cool: {
+    jiwoo: "jiwoo-base.png",
+    haram: "haram-base.png"
   }
 };
 function chooseMirrorOutfit(style) {
@@ -3925,24 +3933,30 @@ function chooseMirrorOutfit(style) {
 
   coupleMirrorChoices.push(style);
 
+  const character = coupleMirrorStep === 0 ? "jiwoo" : "haram";
+
+  const imageId = character === "jiwoo"
+    ? "jiwooMirrorImage"
+    : "haramMirrorImage";
+
+  const outfitImage = coupleMirrorImages[style];
+
+  if (outfitImage) {
+    document.getElementById(imageId).src = outfitImage[character];
+  }
+
   if (coupleMirrorStep === 0) {
     document.getElementById("jiwooMirrorOutfit").textContent =
-  "♡ " + style + " ♡";
+      "♡ " + style + " ♡";
 
     document.getElementById("coupleMirrorStep").textContent =
       "♡ Choose Haram's outfit ♡";
-if (style === "Sweet") {
-  document.getElementById("jiwooMirrorImage").src =
-    coupleMirrorImages.Sweet.jiwoo;
-}
+
     coupleMirrorStep = 1;
   } else {
     document.getElementById("haramMirrorOutfit").textContent =
-  "♡ " + style + " ♡";
-if (style === "Sweet") {
-  document.getElementById("haramMirrorImage").src =
-    coupleMirrorImages.Sweet.haram;
-}
+      "♡ " + style + " ♡";
+
     coupleMirrorStep = 2;
     finishCoupleMirror();
   }
