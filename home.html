@@ -4100,7 +4100,7 @@ function resetCoffeeTable() {
 
     <div class="gallery-controls">
       <button id="galleryPrev" onclick="changeGalleryPage(-1)">← PREV</button>
-      <span id="galleryPageNumber">01 / 03</span>
+      <span id="galleryPageNumber">01 / 05</span>
       <button id="galleryNext" onclick="changeGalleryPage(1)">NEXT →</button>
     </div>
 
@@ -4131,7 +4131,21 @@ const galleryPages = [
     label: "OUR FOREVER",
     background: "#b9a4d9",
     story: "🌙 夜晚，两个人靠在一起。\n\n🎀：姐姐，以后也要一直在一起。\n\n🍓：嗯，约好了♡"
-  }
+  },
+  {
+    emoji: "🍓 ♡ 🎀",
+    image: "memory4.jpg",
+    label: "JUST THE TWO OF US",
+    background: "#f5d3df",
+    story: "♡ 平凡的日子里，也有好多值得收藏的小幸福。\n\n🎀：今天也要一起拍认证照！\n\n🍓：好呀，靠过来一点♡"
+  },
+  {
+  emoji: "📷 🍓 🎀",
+  image: "memory5.jpg",
+  label: "FIRST LOVE, FOREVER ♡",
+  background: "#f4d9df",
+  story: "📷 翻到很久以前的一张合照。\n\n🍓：看到这张照片，突然想起来河岚以前可是孩子们口中的初恋女呢。\n\n🎀：ㅋㅋㅋ 那姐姐呢？\n\n🍓：嗯？什么？\n\n🎀：对你来说，我也是初恋女吗？\n\n🍓：不只是初恋女，还是从小时候到现在一直让我心动的人。♡"
+}
 ];
 
 let galleryPage = 0;
@@ -4155,7 +4169,19 @@ function changeGalleryPage(direction) {
 function renderGallery() {
   const page = galleryPages[galleryPage];
 
-  document.getElementById("galleryPhotoImage").src = page.image;
+  const photo = document.getElementById("galleryPhotoImage");
+
+  photo.onerror = function () {
+    this.style.display = "none";
+  };
+
+  photo.onload = function () {
+    this.style.display = "block";
+  };
+
+  photo.style.display = "none";
+  photo.src = page.image;
+
   document.getElementById("galleryPhotoLabel").textContent = page.label;
   document.getElementById("galleryPhoto").style.background = page.background;
   document.getElementById("galleryStory").textContent = page.story;
@@ -4327,145 +4353,8 @@ function resetBubbleBath() {
 
   </div>
 </div>
-  <!-- ♡ Our Little Gallery ♡ -->
-<div class="memory-overlay" id="galleryMemory" onclick="closeGallery()">
-  <div class="memory-window gallery-window" onclick="event.stopPropagation()">
-
-    <button class="memory-close" onclick="closeGallery()">×</button>
-
-    <h2>♡ Our Little Gallery ♡</h2>
-    <p>Every picture tells our little story ♡</p>
-
-    <div class="gallery-polaroid">
-
-      <div class="gallery-photo-area">
-        <img
-          id="galleryPhoto"
-          src=""
-          alt="Our Memory"
-          style="display:none"
-        >
-
-        <div id="galleryPlaceholder">🍓 ♡ 🎀</div>
-      </div>
-
-      <div class="gallery-photo-caption" id="galleryCaption">
-        Our First Memory ♡
-      </div>
-
-    </div>
-
-    <div class="gallery-story" id="galleryStory">
-      ♡ Every moment with you is special ♡
-    </div>
-
-    <div class="gallery-page-number" id="galleryPageNumber">
-      1 / 5
-    </div>
-
-    <div class="gallery-controls">
-      <button onclick="previousGalleryPage()">♡ Previous</button>
-      <button onclick="nextGalleryPage()">Next ♡</button>
-    </div>
-
-  </div>
-</div>
-  <script>
-/* ===== Our Little Gallery ===== */
-
-const galleryMemories = [
-  {
-    image: "gallery-1.jpg",
-    caption: "♡ The Beginning ♡",
-    story: "🍓 ♡ 🎀\n\n我们的故事，从很久以前就开始了。"
-  },
-  {
-    image: "gallery-2.jpg",
-    caption: "♡ Little Moments ♡",
-    story: "有些瞬间虽然很普通，却想一直珍藏。♡"
-  },
-  {
-    image: "gallery-3.jpg",
-    caption: "♡ Always Together ♡",
-    story: "一起走过的每一天，都是最珍贵的回忆。"
-  },
-  {
-    image: "gallery-4.jpg",
-    caption: "♡ Just Us ♡",
-    story: "只要站在彼此身边，就已经很幸福了。♡"
-  },
-  {
-    image: "gallery-5.jpg",
-    caption: "♡ Our Secret ♡",
-    story: "🎀：姐姐，以后也要一直在一起哦。\n\n🍓：当然啦，河岚。♡"
-  }
-];
-
-let galleryCurrentPage = 0;
-
-function openGallery() {
-  document.getElementById("galleryMemory").style.display = "flex";
-  galleryCurrentPage = 0;
-  updateGalleryPage();
-}
-
-function closeGallery() {
-  document.getElementById("galleryMemory").style.display = "none";
-}
-
-function updateGalleryPage() {
-  const memory = galleryMemories[galleryCurrentPage];
-
-  const photo = document.getElementById("galleryPhoto");
-  const placeholder = document.getElementById("galleryPlaceholder");
-  const photoArea = document.querySelector(".gallery-photo-area");
-
-  document.getElementById("galleryCaption").textContent =
-    memory.caption;
-
-  document.getElementById("galleryStory").textContent =
-    memory.story;
-
-  document.getElementById("galleryPageNumber").textContent =
-    (galleryCurrentPage + 1) + " / " + galleryMemories.length;
-
-  photo.style.display = "none";
-  placeholder.style.display = "block";
-  placeholder.textContent = "🍓 ♡ 🎀";
-
-  photo.onload = function () {
-    if (galleryMemories[galleryCurrentPage] !== memory) return;
-    photo.style.display = "block";
-    placeholder.style.display = "none";
-  };
-
-  photo.onerror = function () {
-    photo.style.display = "none";
-    placeholder.style.display = "block";
-  };
-
-  photo.src = memory.image;
-
-  photoArea.classList.remove("gallery-flip");
-  void photoArea.offsetWidth;
-  photoArea.classList.add("gallery-flip");
-}
-
-function nextGalleryPage() {
-  galleryCurrentPage =
-    (galleryCurrentPage + 1) % galleryMemories.length;
-
-  updateGalleryPage();
-}
-
-function previousGalleryPage() {
-  galleryCurrentPage =
-    (galleryCurrentPage - 1 + galleryMemories.length) %
-    galleryMemories.length;
-
-  updateGalleryPage();
-}
-</script>
+  
+  
   <!-- 客厅电视 Movie Night -->
 <div class="memory-overlay" id="movieNightMemory" onclick="closeMovieNight()">
   <div class="memory-window movie-night-window" onclick="event.stopPropagation()">
