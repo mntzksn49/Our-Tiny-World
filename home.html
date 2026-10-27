@@ -1497,7 +1497,9 @@ h1 {
       <div class="pixel sofa"
      onclick="openMovieNight()"
      title="Movie Night ♡"></div>
-      <div class="pixel coffee-table"></div>
+      <div class="pixel coffee-table"
+     onclick="openCoffeeTable()"
+     title="Our Little Moments ♡"></div>
       <div class="pixel tv"
      onclick="openLittleTV()"
      title="Our Little TV ♡"></div>
@@ -2616,6 +2618,124 @@ function chooseDinner(place) {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
+  /* ===== Coffee Table Mini Game ===== */
+
+.coffee-table {
+  cursor: pointer;
+}
+
+.coffee-table:hover {
+  filter: brightness(1.08);
+}
+
+.coffee-window {
+  width: min(92vw, 470px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.coffee-table-scene {
+  padding: 30px 12px;
+  margin: 18px 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #f7ded7 0 24px,
+    #f1cbd2 24px 28px
+  );
+  border: 4px solid #d9a5b5;
+}
+
+.coffee-table-top {
+  position: relative;
+  height: 145px;
+  width: min(100%, 300px);
+  margin: auto;
+  background: #c9957c;
+  border: 7px solid #9b7068;
+  box-shadow: 6px 6px 0 #785550;
+}
+
+.coffee-item {
+  position: absolute;
+  font-size: 35px;
+  transition: transform 0.25s;
+}
+
+.coffee-drink-one {
+  top: 18px;
+  left: 28px;
+}
+
+.coffee-drink-two {
+  top: 18px;
+  right: 28px;
+}
+
+.coffee-dessert {
+  bottom: 18px;
+  left: 45%;
+}
+
+.coffee-item.appear {
+  animation: coffeeItemAppear 0.35s ease-out;
+}
+
+.coffee-step-title {
+  color: #b8758d;
+  font-size: 13px;
+}
+
+.coffee-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.coffee-options button {
+  padding: 12px 4px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.coffee-options button span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.coffee-options button:hover {
+  background: #f7d5df;
+}
+
+.coffee-story {
+  min-height: 105px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 13px;
+}
+
+.coffee-reset {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@keyframes coffeeItemAppear {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 </style>
 
 <script>
@@ -2790,6 +2910,143 @@ function updateLittleTVProgress() {
     document.getElementById("littleTVProgress").textContent =
       "♡ " + count + " / 3 channels discovered ♡";
   }
+}
+</script>
+  <!-- 客厅茶几互动 -->
+<div class="memory-overlay" id="coffeeMemory" onclick="closeCoffeeTable()">
+  <div class="memory-window coffee-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeCoffeeTable()">×</button>
+
+    <h2>♡ Our Little Moments ♡</h2>
+    <p>Let's have a little afternoon tea!</p>
+
+    <div class="coffee-table-scene">
+      <div class="coffee-table-top">
+        <span class="coffee-item coffee-drink-one" id="coffeeDrinkOne">♡</span>
+        <span class="coffee-item coffee-dessert" id="coffeeDessert">♡</span>
+        <span class="coffee-item coffee-drink-two" id="coffeeDrinkTwo">♡</span>
+      </div>
+    </div>
+
+    <p class="coffee-step-title" id="coffeeStepTitle">♡ Choose Jiwoo's drink ♡</p>
+
+    <div class="coffee-options" id="coffeeOptions">
+      <button onclick="chooseCoffeeItem('☕', 'Coffee')">☕<span>Coffee</span></button>
+      <button onclick="chooseCoffeeItem('🍵', 'Matcha')">🍵<span>Matcha</span></button>
+      <button onclick="chooseCoffeeItem('🧋', 'Milk Tea')">🧋<span>Milk Tea</span></button>
+    </div>
+
+    <div class="coffee-story" id="coffeeStory">♡ Our tea time is waiting ♡</div>
+
+    <button class="coffee-reset" onclick="resetCoffeeTable()">♡ Make Another Tea Date ♡</button>
+  </div>
+</div>
+  <script>
+let coffeeStep = 0;
+let coffeeSelections = [];
+
+const coffeeDesserts = [
+  { emoji: "🍮", name: "Pudding" },
+  { emoji: "🧁", name: "Cupcake" },
+  { emoji: "🍪", name: "Nuneddine" },
+];
+
+function openCoffeeTable() {
+  document.getElementById("coffeeMemory").style.display = "flex";
+  resetCoffeeTable();
+}
+
+function closeCoffeeTable() {
+  document.getElementById("coffeeMemory").style.display = "none";
+}
+
+function chooseCoffeeItem(emoji, name) {
+  if (coffeeStep >= 3) return;
+
+  coffeeSelections.push({ emoji, name });
+
+  const targets = ["coffeeDrinkOne", "coffeeDrinkTwo", "coffeeDessert"];
+  const item = document.getElementById(targets[coffeeStep]);
+
+  item.textContent = emoji;
+  item.classList.remove("appear");
+  void item.offsetWidth;
+  item.classList.add("appear");
+
+  coffeeStep++;
+
+  if (coffeeStep === 1) {
+    document.getElementById("coffeeStepTitle").textContent =
+      "♡ Choose Haram's drink ♡";
+  } else if (coffeeStep === 2) {
+    document.getElementById("coffeeStepTitle").textContent =
+      "♡ Choose a dessert to share ♡";
+
+    document.getElementById("coffeeOptions").innerHTML =
+      coffeeDesserts.map(dessert =>
+        `<button onclick="chooseCoffeeItem('${dessert.emoji}', '${dessert.name}')">
+          ${dessert.emoji}<span>${dessert.name}</span>
+        </button>`
+      ).join("");
+  } else {
+    finishCoffeeTable();
+  }
+}
+
+function finishCoffeeTable() {
+  document.getElementById("coffeeOptions").style.display = "none";
+  document.getElementById("coffeeStepTitle").textContent =
+    "♡ Our afternoon tea is ready! ♡";
+
+  const jiwoo = coffeeSelections[0];
+  const haram = coffeeSelections[1];
+  const dessert = coffeeSelections[2];
+
+  let story =
+    "🍓：河岚，下午茶准备好啦！\n\n" +
+    "🎀：姐姐，我要先尝一口甜点！\n\n" +
+    "🍓：慢慢吃，都是宝宝的♡";
+
+  if (jiwoo.name === haram.name) {
+    story =
+      "🎀：姐姐！我们又选了一样的饮料！\n\n" +
+      "🍓：看来我们真的共享神经元呢♡";
+  }
+
+  if (dessert.name === "Pudding") {
+  story += "\n\n🍮 今天的布丁甜甜的，像她们的下午。";
+} else if (dessert.name === "Cupcake") {
+  story += "\n\n🧁 两个人把小蛋糕分成了两半。";
+} else if (dessert.name === "Nuneddine") {
+  story += "\n\n🍪 最后一口 Nuneddine 留给了最喜欢的人。";
+}
+
+  document.getElementById("coffeeStory").textContent = story;
+}
+
+function resetCoffeeTable() {
+  coffeeStep = 0;
+  coffeeSelections = [];
+
+  ["coffeeDrinkOne", "coffeeDrinkTwo", "coffeeDessert"].forEach(id => {
+    const item = document.getElementById(id);
+    item.textContent = "♡";
+    item.classList.remove("appear");
+  });
+
+  document.getElementById("coffeeStepTitle").textContent =
+    "♡ Choose Jiwoo's drink ♡";
+
+  document.getElementById("coffeeOptions").style.display = "grid";
+
+  document.getElementById("coffeeOptions").innerHTML = `
+    <button onclick="chooseCoffeeItem('☕', 'Coffee')">☕<span>Coffee</span></button>
+    <button onclick="chooseCoffeeItem('🍵', 'Matcha')">🍵<span>Matcha</span></button>
+    <button onclick="chooseCoffeeItem('🧋', 'Milk Tea')">🧋<span>Milk Tea</span></button>
+  `;
+
+  document.getElementById("coffeeStory").textContent =
+    "♡ Our tea time is waiting ♡";
 }
 </script>
 </body>
