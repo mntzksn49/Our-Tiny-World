@@ -3252,6 +3252,34 @@ function chooseDinner(place) {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+  /* ===== Couple Mirror Pixel Characters ===== */
+
+.couple-mirror-avatar {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  height: 190px;
+  margin-bottom: 8px;
+}
+
+.couple-mirror-character-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 180px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.couple-mirror-outfit {
+  font-size: 20px;
+  min-height: 28px;
+  animation: none;
+}
+
+.couple-mirror-characters {
+  min-height: 260px;
+}
 </style>
 
 <script>
@@ -3792,16 +3820,20 @@ function resetBubbleBath() {
       <div class="couple-mirror-characters">
 
         <div class="couple-mirror-person">
-          <div class="couple-mirror-avatar">🍓</div>
-          <div class="couple-mirror-outfit" id="jiwooMirrorOutfit">👗</div>
+          <div class="couple-mirror-avatar">
+  <img src="jiwoo-base.png" class="couple-mirror-character-img" alt="Jiwoo">
+</div>
+<div class="couple-mirror-outfit" id="jiwooMirrorOutfit">♡</div>
           <div class="couple-mirror-name">JIWOO</div>
         </div>
 
         <div class="couple-mirror-heart">♡</div>
 
         <div class="couple-mirror-person">
-          <div class="couple-mirror-avatar">🎀</div>
-          <div class="couple-mirror-outfit" id="haramMirrorOutfit">👗</div>
+          <div class="couple-mirror-avatar">
+  <img src="haram-base.png" class="couple-mirror-character-img" alt="Haram">
+</div>
+<div class="couple-mirror-outfit" id="haramMirrorOutfit">♡</div>
           <div class="couple-mirror-name">HARAM</div>
         </div>
 
@@ -3869,7 +3901,7 @@ function chooseMirrorOutfit(style) {
 
   if (coupleMirrorStep === 0) {
     document.getElementById("jiwooMirrorOutfit").textContent =
-      coupleMirrorOutfits[style].jiwoo;
+  "♡ " + style + " ♡";
 
     document.getElementById("coupleMirrorStep").textContent =
       "♡ Choose Haram's outfit ♡";
@@ -3877,7 +3909,7 @@ function chooseMirrorOutfit(style) {
     coupleMirrorStep = 1;
   } else {
     document.getElementById("haramMirrorOutfit").textContent =
-      coupleMirrorOutfits[style].haram;
+  "♡ " + style + " ♡";
 
     coupleMirrorStep = 2;
     finishCoupleMirror();
@@ -3903,8 +3935,8 @@ function resetCoupleMirror() {
   coupleMirrorStep = 0;
   coupleMirrorChoices = [];
 
-  document.getElementById("jiwooMirrorOutfit").textContent = "👗";
-  document.getElementById("haramMirrorOutfit").textContent = "👗";
+  document.getElementById("jiwooMirrorOutfit").textContent = "♡";
+document.getElementById("haramMirrorOutfit").textContent = "♡";
 
   document.getElementById("coupleMirrorStep").textContent =
     "♡ Choose Jiwoo's outfit ♡";
