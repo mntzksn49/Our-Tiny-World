@@ -2409,7 +2409,153 @@ top: 120px;
   color: #b8758d;
   font-size: 12px;
 }
+  /* ===== Little Treasure Hunt ===== */
+
+/* 宝物小图标 */
+.treasure-item {
+  position: absolute;
+  z-index: 30;
+  font-size: 22px;
+  cursor: pointer;
+  user-select: none;
+  filter: drop-shadow(2px 3px 0 #a47782);
+  transition: transform 0.15s ease;
+}
+
+.treasure-item:hover {
+  transform: scale(1.3) rotate(-8deg);
+}
+
+.treasure-item.found {
+  display: none;
+}
+
+/* 宝物位置：相对于小屋整体 */
+.treasure-ring {
+  left: 590px;
+  top: 240px;
+}
+
+.treasure-photo {
+  left: 180px;
+  top: 420px;
+}
+
+.treasure-strawberry {
+  left: 870px;
+  top: 320px;
+}
+
+.treasure-note {
+  left: 430px;
+  top: 110px;
+}
+
+.treasure-teddy {
+  left: 460px;
+  top: 650px;
+}
+
+/* 收藏盒 */
+.treasure-window {
+  width: min(92vw, 540px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.treasure-progress {
+  margin: 22px 0;
+  padding: 12px;
+  color: #b8758d;
+  background: #fff0ed;
+  border: 3px dashed #e2b5c4;
+  font-size: 14px;
+}
+
+.treasure-collection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.treasure-card {
+  min-height: 110px;
+  padding: 15px 5px;
+  border: 4px solid #d9a5b5;
+  background: #fff0ed;
+  color: #865e6c;
+  text-align: center;
+}
+
+.treasure-card.locked {
+  opacity: 0.45;
+}
+
+.treasure-card-emoji {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.treasure-card-name {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.treasure-story,
+.treasure-found-story {
+  padding: 20px;
+  margin: 20px 0;
+  background: #fff8f5;
+  border: 3px dashed #e2b5c4;
+  color: #865e6c;
+  font-size: 13px;
+  line-height: 2;
+  white-space: pre-line;
+}
+
+.treasure-reset {
+  margin: 12px auto;
+  padding: 12px 18px;
+  background: #e8a8ba;
+  border: 4px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.treasure-found-window {
+  width: min(92vw, 450px);
+}
+
+.treasure-found-emoji {
+  margin: 22px 0;
+  font-size: 65px;
+  animation: treasureBounce 0.6s ease;
+}
+
+@keyframes treasureBounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  65% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
 </style>
+  /* ===== Treasure Collection Button ===== */
+
+.treasure-open-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  padding: 12px 18px;
+  background: #e8a8ba;
+  border: 4px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #986c7a;
+}
 </head>
 
 <body>
@@ -6014,5 +6160,239 @@ document.getElementById("playlistAudio").addEventListener("ended", function () {
   nextPlaylistSong();
 });
 </script>
+  <!-- ===== Little Treasure Hunt · Hidden Items ===== -->
+
+<div class="treasure-item treasure-ring"
+     onclick="findTreasure('ring')"
+     title="A little secret ♡">💍</div>
+
+<div class="treasure-item treasure-photo"
+     onclick="findTreasure('photo')"
+     title="A little secret ♡">📸</div>
+
+<div class="treasure-item treasure-strawberry"
+     onclick="findTreasure('strawberry')"
+     title="A little secret ♡">🍓</div>
+
+<div class="treasure-item treasure-note"
+     onclick="findTreasure('note')"
+     title="A little secret ♡">💌</div>
+
+<div class="treasure-item treasure-teddy"
+     onclick="findTreasure('teddy')"
+     title="A little secret ♡">🧸</div>
+  <!-- ===== Little Treasure Hunt · Collection ===== -->
+
+<div class="memory-overlay" id="treasureMemory"
+     onclick="closeTreasureCollection()">
+
+  <div class="memory-window treasure-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeTreasureCollection()">×</button>
+
+    <h2>♡ Little Treasure Hunt ♡</h2>
+    <p>Every little thing reminds me of you ♡</p>
+
+    <div class="treasure-progress" id="treasureProgress">
+      ♡ 0 / 5 treasures found ♡
+    </div>
+
+    <div class="treasure-collection" id="treasureCollection"></div>
+
+    <div class="treasure-story" id="treasureStory">
+      ♡ Let's find our little memories ♡
+    </div>
+
+    <button class="treasure-reset"
+            onclick="resetTreasureHunt()">
+      ♡ Play Again ♡
+    </button>
+
+  </div>
+</div>
+
+<!-- ===== Treasure Found Popup ===== -->
+
+<div class="memory-overlay" id="treasureFoundMemory"
+     onclick="closeTreasureFound()">
+
+  <div class="memory-window treasure-found-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeTreasureFound()">×</button>
+
+    <h2>♡ Treasure Found! ♡</h2>
+
+    <div class="treasure-found-emoji" id="treasureFoundEmoji">💍</div>
+
+    <h3 id="treasureFoundTitle">Couple Rings</h3>
+
+    <div class="treasure-found-story" id="treasureFoundStory"></div>
+
+    <button class="treasure-reset"
+            onclick="closeTreasureFound()">
+      ♡ Keep Exploring ♡
+    </button>
+
+  </div>
+</div>
+  <script>
+/* ===== Little Treasure Hunt ===== */
+
+const treasureData = {
+  ring: {
+    emoji: "💍",
+    name: "Couple Rings",
+    story:
+      "💍 两枚小小的戒指。\n\n" +
+      "🎀：姐姐，这个是不是很像情侣戒指？\n\n" +
+      "🍓：那我们一人戴一个。\n\n" +
+      "🎀：不可以弄丢哦！♡\n\n" +
+"🍓：是你要小心才对吧～"
+  },
+
+  photo: {
+    emoji: "📸",
+    name: "Our Polaroid",
+    story:
+      "📸 一张藏起来的拍立得。\n\n" +
+      "🍓：怎么被藏到这里了\n\n" +
+      "🎀：是我们去日本的时候！\n\n" +
+      "🍓：原来你还记得呀。♡"
+  },
+
+  strawberry: {
+    emoji: "🍓",
+    name: "Strawberry Clip",
+    story:
+      "🍓 一枚草莓发夹。\n\n" +
+      "🎀：姐姐，这个送给你！\n\n" +
+      "🍓：怎么突然送我礼物？\n\n" +
+      "🎀：因为很适合你呀。♡"
+  },
+
+  note: {
+    emoji: "💌",
+    name: "Little Love Note",
+    story:
+      "💌 一张折得整整齐齐的小纸条。\n\n" +
+      "🎀：姐姐写了什么？\n\n" +
+      "🍓：自己打开看嘛。\n\n" +
+      "纸条上写着：以后也要一直在一起。♡"
+  },
+
+    teddy: {
+    emoji: "🧸",
+    name: "Little Teddy",
+    story:
+      "🧸 一只软乎乎的小熊。\n\n" +
+      "🎀：姐姐，它是不是很像你？\n\n" +
+      "🍓：哪里像了？\n\n" +
+      "🎀：抱起来都很暖和呀。♡"
+  }
+};
+
+const treasureFound = new Set();
+
+function findTreasure(id) {
+  if (treasureFound.has(id)) return;
+
+  const treasure = treasureData[id];
+  if (!treasure) return;
+
+  treasureFound.add(id);
+
+  document.querySelectorAll(".treasure-item").forEach(item => {
+    if (item.classList.contains("treasure-" + id)) {
+      item.classList.add("found");
+    }
+  });
+
+  document.getElementById("treasureFoundEmoji").textContent =
+    treasure.emoji;
+
+  document.getElementById("treasureFoundTitle").textContent =
+    treasure.name;
+
+  document.getElementById("treasureFoundStory").textContent =
+    treasure.story;
+
+  document.getElementById("treasureFoundMemory").style.display = "flex";
+
+  updateTreasureCollection();
+}
+
+function closeTreasureFound() {
+  document.getElementById("treasureFoundMemory").style.display = "none";
+
+  if (treasureFound.size === 5) {
+    openTreasureCollection();
+  }
+}
+
+function openTreasureCollection() {
+  updateTreasureCollection();
+  document.getElementById("treasureMemory").style.display = "flex";
+}
+
+function closeTreasureCollection() {
+  document.getElementById("treasureMemory").style.display = "none";
+}
+
+function updateTreasureCollection() {
+  const collection = document.getElementById("treasureCollection");
+
+  collection.innerHTML = "";
+
+  Object.entries(treasureData).forEach(([id, treasure]) => {
+    const found = treasureFound.has(id);
+
+    const card = document.createElement("div");
+    card.className = "treasure-card" + (found ? "" : " locked");
+
+    card.innerHTML =
+      '<div class="treasure-card-emoji">' +
+      (found ? treasure.emoji : "🔒") +
+      '</div>' +
+      '<div class="treasure-card-name">' +
+      (found ? treasure.name : "??? · Locked") +
+      '</div>';
+
+    collection.appendChild(card);
+  });
+
+  document.getElementById("treasureProgress").textContent =
+    "♡ " + treasureFound.size + " / 5 treasures found ♡";
+document.querySelector(".treasure-open-button").textContent =
+  "🎁 " + treasureFound.size + " / 5";
+  document.getElementById("treasureStory").textContent =
+    treasureFound.size === 5
+      ? "♡ ALL TREASURES FOUND ♡\n\n" +
+        "🎀：我们把所有宝物都找到了！\n\n" +
+        "🍓：原来我们留下了这么多回忆。\n\n" +
+        "🎀：以后还会有更多更多的。\n\n" +
+        "🍓：嗯，全部都和河岚一起。♡"
+      : "♡ Some little memories are still waiting to be found ♡";
+}
+
+function resetTreasureHunt() {
+  treasureFound.clear();
+
+  document.querySelectorAll(".treasure-item").forEach(item => {
+    item.classList.remove("found");
+  });
+
+  updateTreasureCollection();
+  closeTreasureCollection();
+}
+</script>
+  <!-- ===== Treasure Collection Button ===== -->
+<button class="treasure-open-button"
+        onclick="openTreasureCollection()">
+  🎁 0 / 5
+</button>
 </body>
 </html>
