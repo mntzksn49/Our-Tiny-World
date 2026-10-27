@@ -3132,6 +3132,39 @@ top: 120px;
 .walking-controls button:hover {
   background: #d98da7;
 }
+  /* ===== Hold Hands Interaction ===== */
+
+.walking-dialogue {
+  position: absolute;
+  display: none;
+  max-width: 230px;
+  padding: 10px 14px;
+  background: #fff7f4;
+  border: 3px solid #d9a5b5;
+  box-shadow: 4px 4px 0 #b8758d;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.8;
+  white-space: pre-line;
+  text-align: center;
+  pointer-events: none;
+  z-index: 30;
+  transform: translateX(-50%);
+}
+
+.walking-dialogue::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: #fff7f4;
+  border-right: 3px solid #d9a5b5;
+  border-bottom: 3px solid #d9a5b5;
+  transform: translateX(-50%) rotate(45deg);
+}
 </style>
   
 </head>
@@ -3164,6 +3197,7 @@ top: 120px;
   </div>
 
   <div class="walking-heart" id="walkingHeart">♡ ♡</div>
+  <div class="walking-dialogue" id="walkingDialogue"></div>
 
 </div>
     <!-- ===== Love Mailbox · House Decoration ===== -->
@@ -3300,6 +3334,9 @@ top: 120px;
   <button onclick="comeCloser()">
     ♡ Come Closer ♡
   </button>
+  <button onclick="holdHands()">
+  ♡ Hold Hands ♡
+</button>
 
 </div>
 </div>
@@ -7436,6 +7473,61 @@ function comeCloser() {
     setTimeout(() => {
       walkingHeart.style.display = "none";
     }, 1500);
+  }, 1500);
+}
+  /* ===== Hold Hands ===== */
+
+const holdHandsDialogues = [
+  "🎀：姐姐，牵手！\n🍓：好呀，过来♡",
+  "🍓：怎么突然牵我的手？\n🎀：因为想牵♡",
+  "🎀：好暖和。\n🍓：那就一直牵着我吧♡",
+  "🍓：河岚今天怎么这么黏人？\n🎀：不喜欢吗？\n🍓：喜欢得不得了♡"
+];
+
+let holdHandsDialogueTimer = null;
+let holdHandsArrivalTimer = null;
+
+function holdHands() {
+  const jiwooX = parseFloat(getComputedStyle(walkingJiwoo).left);
+  const jiwooY = parseFloat(getComputedStyle(walkingJiwoo).top);
+
+  // 取消上一轮尚未完成的牵手动画
+  clearTimeout(holdHandsArrivalTimer);
+  clearTimeout(holdHandsDialogueTimer);
+
+  const dialogue = document.getElementById("walkingDialogue");
+  dialogue.style.display = "none";
+
+  // 河岚走到志宇身边
+  moveWalkingCharacter(walkingHaram, jiwooX + 30, jiwooY);
+
+  holdHandsArrivalTimer = setTimeout(() => {
+    // 两人头顶出现爱心
+    walkingHeart.style.left = (jiwooX + 15) + "px";
+    walkingHeart.style.top = (jiwooY - 110) + "px";
+    walkingHeart.style.display = "block";
+    walkingHeart.style.animation = "none";
+
+    void walkingHeart.offsetWidth;
+
+    walkingHeart.style.animation =
+      "walkingHeartFloat 1.5s ease-out forwards";
+
+    // 随机对话
+    const randomDialogue = holdHandsDialogues[
+      Math.floor(Math.random() * holdHandsDialogues.length)
+    ];
+
+    dialogue.textContent = randomDialogue;
+    dialogue.style.left = (jiwooX + 15) + "px";
+    dialogue.style.top = (jiwooY - 185) + "px";
+    dialogue.style.display = "block";
+
+    holdHandsDialogueTimer = setTimeout(() => {
+      dialogue.style.display = "none";
+      walkingHeart.style.display = "none";
+    }, 3500);
+
   }, 1500);
 }
 
