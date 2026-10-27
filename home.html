@@ -5048,7 +5048,7 @@ function resetSkincare() {
 
       <button class="secret-collection-card"
               id="collectionHorror"
-              onclick="openCollectedLetters('Horror')">
+              onclick="openCollectedLetters('horror')">
         <span class="collection-icon">🔒</span>
         <strong>Horror Letters</strong>
         <small>???</small>
@@ -5056,7 +5056,7 @@ function resetSkincare() {
 
       <button class="secret-collection-card"
               id="collectionColdWar"
-              onclick="openCollectedLetters('ColdWar')">
+              onclick="openCollectedLetters('coldWar')">
         <span class="collection-icon">🔒</span>
         <strong>Cold War Letter</strong>
         <small>???</small>
@@ -5120,9 +5120,9 @@ function updateSecretCollection() {
   const memories = getSecretCollection();
 
   const cards = {
-    Horror: document.getElementById("collectionHorror"),
-    ColdWar: document.getElementById("collectionColdWar")
-  };
+  horror: document.getElementById("collectionHorror"),
+  coldwar: document.getElementById("collectionColdWar")
+};
 
   Object.keys(cards).forEach(group => {
     const card = cards[group];
