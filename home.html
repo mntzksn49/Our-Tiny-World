@@ -5081,28 +5081,16 @@ function resetSkincare() {
 
 const secretCollectionKey = "ourTinyWorldSecretMemories";
 
+/* ===== Secret Memories · Reset on Refresh ===== */
+
+let secretMemoriesThisVisit = {};
+
 function getSecretCollection() {
-  try {
-    return JSON.parse(localStorage.getItem(secretCollectionKey)) || {};
-  } catch (error) {
-    return {};
-  }
+  return secretMemoriesThisVisit;
 }
 
 function unlockSecretMemory(group) {
-  const memories = getSecretCollection();
-
-  memories[group] = true;
-
-  try {
-    localStorage.setItem(
-      secretCollectionKey,
-      JSON.stringify(memories)
-    );
-  } catch (error) {
-    console.warn("Could not save secret memory:", error);
-  }
-
+  secretMemoriesThisVisit[group] = true;
   updateSecretCollection();
 }
 
