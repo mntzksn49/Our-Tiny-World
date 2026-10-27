@@ -3434,71 +3434,7 @@ function chooseDinner(place) {
 </style>
 
 <script>
-const movieStories = {
-  Horror: "👻 恐怖电影开始了。\n\n🎀：其实我不害怕的...你知道吧\n\n🍓：嗯嗯是我怕，河岚保护我吧",
-  Romance: "💕 今天看爱情电影。\n\n🎀：姐姐一直看我干嘛？\n\n🍓：想亲亲♡",
-  Animation: "🍰 今天一起看《梦色糕点师》。\n\n🍓：河岚想不想吃草莓之心？\n\n🎀：我不是已经拥有了吗？姐姐的心。"
-};
 
-const movieIcons = {
-  Horror: "👻",
-  Romance: "💕",
-  Animation: "🍰"
-};
-
-function openMovieNight() {
-  document.getElementById("movieMemory").style.display = "flex";
-
-  const screen = document.getElementById("movieScreen");
-  screen.className = "movie-screen";
-
-  document.getElementById("movieScreenContent").textContent = "🎬";
-  document.getElementById("movieSnacks").textContent =
-    "♡ Our cozy little night ♡";
-  document.getElementById("movieStory").textContent =
-    "♡ Choose a movie ♡";
-
-  document.querySelector(".movie-cozy-scene").classList.remove("paused");
-
-  const playButton = document.getElementById("moviePlayButton");
-  playButton.disabled = true;
-  playButton.textContent = "♡ Pause ♡";
-}
-
-function closeMovieNight() {
-  document.getElementById("movieMemory").style.display = "none";
-}
-
-function chooseMovie(type) {
-  const screen = document.getElementById("movieScreen");
-
-  screen.className = "movie-screen " + type.toLowerCase();
-
-  document.getElementById("movieScreenContent").textContent =
-    movieIcons[type];
-
-  document.getElementById("movieSnacks").textContent =
-    "🍿 Popcorn  ♡  🧸 Cozy Blanket";
-
-  document.getElementById("movieStory").textContent =
-    movieStories[type];
-
-  document.querySelector(".movie-cozy-scene").classList.remove("paused");
-
-  const playButton = document.getElementById("moviePlayButton");
-  playButton.disabled = false;
-  playButton.textContent = "♡ Pause ♡";
-}
-  function toggleMoviePlayback() {
-  const screen = document.getElementById("movieScreen");
-  const cozyScene = document.querySelector(".movie-cozy-scene");
-  const playButton = document.getElementById("moviePlayButton");
-
-  const isPaused = screen.classList.toggle("paused");
-  cozyScene.classList.toggle("paused", isPaused);
-
-  playButton.textContent = isPaused ? "♡ Play ♡" : "♡ Pause ♡";
-}
 </script>
 <!-- 客厅电视互动 -->
 <div class="memory-overlay" id="littleTVMemory" onclick="closeLittleTV()">
