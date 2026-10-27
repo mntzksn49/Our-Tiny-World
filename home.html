@@ -1683,6 +1683,64 @@ h1 {
   background: #211a29;
   z-index: 10;
 }
+  /* ===== Movie Secret Envelope ===== */
+
+#movieTvScreen {
+  position: relative;
+}
+
+.movie-secret-envelope {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  border: none;
+  background: #30243c;
+  color: #fff0f5;
+  font-family: inherit;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  font-size: 17px;
+  animation: secretEnvelopeAppear 0.6s ease;
+}
+
+.movie-secret-envelope-icon {
+  display: block;
+  font-size: 75px;
+  animation: secretEnvelopeFloat 1.8s ease-in-out infinite;
+}
+
+.movie-secret-envelope small {
+  font-size: 12px;
+  color: #f1b7cc;
+}
+
+@keyframes secretEnvelopeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes secretEnvelopeFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
   /* ===== Secret Birthday Letters ===== */
 #secretLettersMemory {
   z-index: 99999 !important;
@@ -4126,6 +4184,17 @@ function resetBubbleBath() {
   preload="metadata"
   style="display:none"
 ></video>
+        <button
+  id="movieSecretEnvelope"
+  class="movie-secret-envelope"
+  onclick="openMovieSecretEnvelope()"
+  style="display:none"
+  title="A secret letter is waiting ♡"
+>
+  <span class="movie-secret-envelope-icon">💌</span>
+  <span>♡ A Secret Letter ♡</span>
+  <small>Click to open</small>
+</button>
       </div>
       <div class="movie-tv-stand"></div>
     </div>
@@ -4600,7 +4669,7 @@ function chooseMovie(type) {
       screen.className = "movie-tv-screen romance";
 
       // 弹出两封生日信
-      openSecretLetters("horror");
+      showMovieSecretEnvelope("horror");
     }
   }
 
@@ -4617,13 +4686,14 @@ function chooseMovie(type) {
         "也一直藏在心里。♡";
 
       // 弹出河岚写给志宇的生日信
-      openSecretLetters("coldwar");
+      showMovieSecretEnvelope("coldwar");
     }
   }
 }
 
 function resetMovieNight() {
   stopMovieClips();
+  hideMovieSecretEnvelope();
   document.getElementById("movieTvScreen").className =
     "movie-tv-screen";
 
@@ -4673,7 +4743,7 @@ function playMovieClip(index) {
   const clips = movieClips[currentMovieCategory];
 
   if (!clips || !clips[index]) return;
-
+hideMovieSecretEnvelope();
   currentMovieClipIndex = index;
 
   const clip = clips[index];
