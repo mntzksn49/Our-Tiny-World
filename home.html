@@ -2834,6 +2834,201 @@ top: 120px;
     transform: translateX(-50%) rotate(10deg);
   }
 }
+  /* ===== Love Mailbox ===== */
+
+/* 门口的像素信箱 */
+.love-mailbox {
+  position: absolute;
+  left: 570px;
+  top: 730px;
+  width: 65px;
+  height: 90px;
+  z-index: 35;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: transform 0.2s;
+}
+
+.love-mailbox:hover {
+  transform: translateY(-5px);
+}
+
+.love-mailbox-top {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 57px;
+  height: 53px;
+  background: #e8a8ba;
+  border: 5px solid #986c7a;
+  box-shadow: inset 0 10px 0 #f8d7e1;
+}
+
+.love-mailbox-slot {
+  position: absolute;
+  top: 19px;
+  left: 17px;
+  width: 33px;
+  height: 7px;
+  background: #986c7a;
+  z-index: 2;
+}
+
+.love-mailbox-heart {
+  position: absolute;
+  top: 30px;
+  left: 27px;
+  color: white;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.love-mailbox-post {
+  position: absolute;
+  top: 53px;
+  left: 27px;
+  width: 13px;
+  height: 37px;
+  background: #b98998;
+  border: 4px solid #986c7a;
+}
+
+.love-mailbox-flag {
+  position: absolute;
+  top: -12px;
+  right: -6px;
+  width: 7px;
+  height: 32px;
+  background: #986c7a;
+}
+
+.love-mailbox-flag::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 7px;
+  width: 18px;
+  height: 13px;
+  background: #f3b7ca;
+  border: 3px solid #986c7a;
+}
+
+/* 弹窗 */
+.love-mail-window {
+  width: min(92vw, 520px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.love-mail-progress {
+  padding: 12px;
+  margin: 20px 0;
+  background: #fff0ed;
+  border: 3px dashed #e2b5c4;
+  color: #b8758d;
+  font-size: 13px;
+}
+
+/* 信封 */
+.love-mail-envelope {
+  position: relative;
+  width: 210px;
+  height: 135px;
+  margin: 30px auto;
+  background: #f5c8d7;
+  border: 6px solid #b8758d;
+  cursor: pointer;
+  box-shadow: 7px 7px 0 #e6b2c4;
+  transition: transform 0.2s;
+}
+
+.love-mail-envelope:hover {
+  transform: translateY(-5px);
+}
+
+.love-mail-envelope-flap {
+  position: absolute;
+  inset: 0;
+  background: #fce4eb;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+}
+
+.love-mail-envelope-heart {
+  position: absolute;
+  top: 45px;
+  left: 88px;
+  font-size: 28px;
+  color: #bf7794;
+}
+
+.love-mail-envelope.opened {
+  animation: loveEnvelopeOpen 0.5s ease;
+}
+
+@keyframes loveEnvelopeOpen {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1); }
+}
+
+.love-mail-hint {
+  color: #b8758d;
+  font-size: 12px;
+}
+
+/* 信纸 */
+.love-mail-paper {
+  padding: 25px;
+  margin: 22px 0;
+  background: #fffaf5;
+  border: 4px solid #e2b5c4;
+  box-shadow: 5px 5px 0 #f0d5de;
+  text-align: left;
+  animation: lovePaperAppear 0.4s ease;
+}
+
+@keyframes lovePaperAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.love-mail-content {
+  color: #865e6c;
+  line-height: 2;
+  white-space: pre-line;
+  font-size: 13px;
+}
+
+.love-mail-signature {
+  margin-top: 20px;
+  text-align: right;
+  color: #b8758d;
+  font-size: 12px;
+}
+
+.love-mail-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.love-mail-actions button {
+  padding: 12px 15px;
+  background: #e8a8ba;
+  border: 3px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
 </style>
   
 </head>
@@ -2848,6 +3043,19 @@ top: 120px;
 
 <div class="viewport">
   <main class="house">
+    <!-- ===== Love Mailbox · House Decoration ===== -->
+
+<div class="love-mailbox"
+     onclick="openLoveMailbox()"
+     title="You've got love mail ♡">
+
+  <div class="love-mailbox-flag"></div>
+  <div class="love-mailbox-top"></div>
+  <div class="love-mailbox-slot"></div>
+  <div class="love-mailbox-heart">♡</div>
+  <div class="love-mailbox-post"></div>
+
+</div>
 <!-- ===== Little Treasure Hunt · Hidden Items ===== -->
 
 <div class="treasure-item treasure-ring"
@@ -6763,5 +6971,247 @@ function resetTreasureHunt() {
         onclick="openTreasureCollection()">
   🎁 0 / 5
 </button>
+  <!-- ===== Love Mailbox · Interactive Window ===== -->
+
+<div class="memory-overlay" id="loveMailboxMemory"
+     onclick="closeLoveMailbox()" style="display:none">
+
+  <div class="memory-window love-mail-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeLoveMailbox()">×</button>
+
+    <h2>♡ Love Mailbox ♡</h2>
+    <p>Some little words are just for you ♡</p>
+
+    <div class="love-mail-progress" id="loveMailProgress">
+      ♡ 0 / 6 letters discovered ♡
+    </div>
+
+    <div class="love-mail-envelope"
+         id="loveMailEnvelope"
+         onclick="openLoveEnvelope()"
+         title="Click to open ♡">
+
+      <div class="love-mail-envelope-flap"></div>
+      <div class="love-mail-envelope-heart">♡</div>
+
+    </div>
+
+    <p class="love-mail-hint" id="loveMailHint">
+      ♡ Tap the envelope to read a letter ♡
+    </p>
+
+    <div class="love-mail-paper" id="loveMailPaper"
+         style="display:none">
+
+      <h3 id="loveMailTitle"></h3>
+
+      <div class="love-mail-content" id="loveMailContent"></div>
+
+      <div class="love-mail-signature" id="loveMailSignature"></div>
+
+    </div>
+
+    <div class="love-mail-actions">
+      <button onclick="nextLoveLetter()" id="loveMailNextButton">
+        ♡ Another Letter ♡
+      </button>
+
+      <button onclick="resetLoveMailbox()">
+        ♡ Start Again ♡
+      </button>
+    </div>
+
+  </div>
+</div>
+  <script>
+/* ===== Love Mailbox Mini Game ===== */
+
+const loveLetters = [
+  {
+    title: "♡ Just Because ♡",
+    from: "🎀 Haram",
+    to: "🍓 Jiwoo",
+    content:
+      "姐姐：\n\n" +
+      "今天也没有什么特别的事情，只是突然很想告诉你，我真的很喜欢和你待在一起。\n\n" +
+      "所以明天也要陪我哦。♡"
+  },
+
+  {
+    title: "♡ A Little Promise ♡",
+    from: "🍓 Jiwoo",
+    to: "🎀 Haram",
+    content:
+      "河岚：\n\n" +
+      "明明每天都见面，怎么还是会觉得时间不够呢？\n\n" +
+      "明天也一起吃饭，一起看电影，然后一起回家吧。♡"
+  },
+
+  {
+    title: "♡ Missing You ♡",
+    from: "🎀 Haram",
+    to: "🍓 Jiwoo",
+    content:
+      "姐姐：\n\n" +
+      "才分开一小会儿，就已经开始想你了。\n\n" +
+      "如果姐姐也想我，就给我发一个爱心吧。\n\n" +
+      "不可以只发一个哦。♡"
+  },
+
+  {
+    title: "♡ Good Night ♡",
+    from: "🍓 Jiwoo",
+    to: "🎀 Haram",
+    content:
+      "河岚：\n\n" +
+      "今天是不是又偷偷熬夜了？\n\n" +
+      "记得盖好被子，不许踢被子。\n\n" +
+      "晚安宝贝。♡"
+  },
+
+  {
+    title: "♡ Our Next Date ♡",
+    from: "🎀 Haram",
+    to: "🍓 Jiwoo",
+    content:
+      "姐姐：\n\n" +
+      "下次约会想一起去海边。\n\n" +
+      "想牵着手散步，还想拍好多好多照片。\n\n" +
+      "不过最重要的是，要和你一起。♡"
+  },
+
+  {
+    title: "♡ My Favorite Person ♡",
+    from: "🍓 Jiwoo",
+    to: "🎀 Haram",
+    content:
+      "河岚：\n\n" +
+      "你总是问我最喜欢什么。\n\n" +
+      "喜欢的歌、喜欢的食物、喜欢的季节，好像每次答案都不一样。\n\n" +
+      "但是最喜欢的人，一直都是你。♡"
+  }
+];
+
+const loveSecretLetter = {
+  title: "♡ The Letter I Never Sent ♡",
+  from: "🍓 Jiwoo",
+  to: "🎀 Haram",
+  content:
+    "河岚：\n\n" +
+    "其实有些话，我一直没有好好告诉你。\n\n" +
+    "从很久以前开始，我就习惯了在人群里先寻找你的身影。\n\n" +
+    "后来才发现，原来那些看似普通的瞬间，早就变成了我最珍贵的回忆。\n\n" +
+    "如果以后还有很多很多个明天，我希望每一个明天都有你。\n\n" +
+    "因为我的未来，从来都不是一个人的故事。\n\n" +
+    "而是我们的故事。♡"
+};
+
+const loveMailRead = new Set();
+let loveMailCurrent = null;
+let loveMailSecretOpened = false;
+
+function openLoveMailbox() {
+  document.getElementById("loveMailboxMemory").style.display = "flex";
+  updateLoveMailProgress();
+}
+
+function closeLoveMailbox() {
+  document.getElementById("loveMailboxMemory").style.display = "none";
+}
+
+function openLoveEnvelope() {
+  const unread = loveLetters
+    .map((letter, index) => index)
+    .filter(index => !loveMailRead.has(index));
+
+  let letter;
+
+  if (unread.length > 0) {
+    const randomIndex = Math.floor(Math.random() * unread.length);
+    const chosenIndex = unread[randomIndex];
+
+    loveMailRead.add(chosenIndex);
+    letter = loveLetters[chosenIndex];
+
+  } else if (!loveMailSecretOpened) {
+    letter = loveSecretLetter;
+    loveMailSecretOpened = true;
+
+  } else {
+    document.getElementById("loveMailHint").textContent =
+      "♡ All our little letters have been read ♡";
+    return;
+  }
+
+  loveMailCurrent = letter;
+
+  const envelope = document.getElementById("loveMailEnvelope");
+  envelope.classList.remove("opened");
+  void envelope.offsetWidth;
+  envelope.classList.add("opened");
+
+  document.getElementById("loveMailTitle").textContent =
+    letter.title;
+
+  document.getElementById("loveMailContent").textContent =
+    letter.content;
+
+  document.getElementById("loveMailSignature").textContent =
+    "To " + letter.to + " · From " + letter.from;
+
+  document.getElementById("loveMailPaper").style.display = "block";
+
+  document.getElementById("loveMailHint").textContent =
+    letter === loveSecretLetter
+      ? "♡ A secret letter, just for you ♡"
+      : "♡ A little letter has arrived ♡";
+
+  updateLoveMailProgress();
+}
+
+function nextLoveLetter() {
+  document.getElementById("loveMailPaper").style.display = "none";
+
+  const envelope = document.getElementById("loveMailEnvelope");
+  envelope.classList.remove("opened");
+
+  if (loveMailRead.size === loveLetters.length &&
+      loveMailSecretOpened) {
+    document.getElementById("loveMailHint").textContent =
+      "♡ Every letter has found its way home ♡";
+  } else {
+    document.getElementById("loveMailHint").textContent =
+      "♡ Tap the envelope to read another letter ♡";
+  }
+}
+
+function updateLoveMailProgress() {
+  document.getElementById("loveMailProgress").textContent =
+    "♡ " + loveMailRead.size + " / " +
+    loveLetters.length + " letters discovered ♡";
+
+  if (loveMailRead.size === loveLetters.length &&
+      !loveMailSecretOpened) {
+    document.getElementById("loveMailHint").textContent =
+      "♡ A secret letter is waiting for you ♡";
+  }
+}
+
+function resetLoveMailbox() {
+  loveMailRead.clear();
+  loveMailCurrent = null;
+  loveMailSecretOpened = false;
+
+  document.getElementById("loveMailPaper").style.display = "none";
+  document.getElementById("loveMailEnvelope").classList.remove("opened");
+  document.getElementById("loveMailHint").textContent =
+    "♡ Tap the envelope to read a letter ♡";
+
+  updateLoveMailProgress();
+}
+</script>
 </body>
 </html>
