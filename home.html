@@ -1498,7 +1498,9 @@ h1 {
      onclick="openMovieNight()"
      title="Movie Night ♡"></div>
       <div class="pixel coffee-table"></div>
-      <div class="pixel tv"></div>
+      <div class="pixel tv"
+     onclick="openLittleTV()"
+     title="Our Little TV ♡"></div>
       <div class="pixel picture">♡ ♡</div>
     </section>
 
@@ -2491,6 +2493,129 @@ function chooseDinner(place) {
   0%, 100% { transform: rotate(-8deg); }
   50% { transform: rotate(9deg) translateY(-5px); }
 }
+  /* ===== Our Little TV ===== */
+
+.tv {
+  cursor: pointer;
+}
+
+.tv:hover {
+  filter: brightness(1.1);
+}
+
+.little-tv-window {
+  width: min(92vw, 470px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.little-tv-frame {
+  width: min(100%, 310px);
+  padding: 18px 18px 10px;
+  margin: 18px auto;
+  background: #e6a9be;
+  border: 7px solid #a9768c;
+  box-shadow: 6px 6px 0 #cda0b0;
+}
+
+.little-tv-screen {
+  position: relative;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #8b7b9f;
+  border: 7px solid #6e5c7d;
+  color: white;
+}
+
+.little-tv-picture {
+  font-size: 65px;
+  animation: littleTVFloat 1.8s ease-in-out infinite;
+}
+
+.little-tv-caption {
+  margin-top: 14px;
+  font-size: 12px;
+  color: #fff0f5;
+}
+
+.little-tv-controls {
+  margin-top: 12px;
+  color: #fff7f3;
+  letter-spacing: 10px;
+}
+
+.little-tv-screen.music {
+  background: #bc8eb5;
+}
+
+.little-tv-screen.weather {
+  background: #9dcbd5;
+}
+
+.little-tv-screen.dessert {
+  background: #e6b2b9;
+}
+
+.little-tv-screen.secret {
+  background: #d18eae;
+}
+
+.little-tv-channels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  margin: 20px 0 12px;
+}
+
+.little-tv-channels button {
+  padding: 12px 3px;
+  background: #fff0ed;
+  border: 3px solid #d9a5b5;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.little-tv-channels button span {
+  display: block;
+  margin-top: 7px;
+  font-size: 10px;
+}
+
+.little-tv-channels button.selected {
+  background: #eeb8cb;
+  border-color: #b8758d;
+}
+
+.little-tv-channels button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.little-tv-progress {
+  color: #b8758d;
+  font-size: 12px;
+}
+
+.little-tv-story {
+  min-height: 95px;
+  padding: 18px 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 13px;
+}
+
+@keyframes littleTVFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
 </style>
 
 <script>
@@ -2560,6 +2685,112 @@ function chooseMovie(type) {
   playButton.textContent = isPaused ? "♡ Play ♡" : "♡ Pause ♡";
 }
 </script>
+<!-- 客厅电视互动 -->
+<div class="memory-overlay" id="littleTVMemory" onclick="closeLittleTV()">
+  <div class="memory-window little-tv-window" onclick="event.stopPropagation()">
+    <button class="memory-close" onclick="closeLittleTV()">×</button>
 
+    <h2>♡ Our Little TV ♡</h2>
+    <p>What is on TV today?</p>
+
+    <div class="little-tv-frame">
+      <div class="little-tv-screen" id="littleTVScreen">
+        <div class="little-tv-picture" id="littleTVPicture">📺</div>
+        <div class="little-tv-caption" id="littleTVCaption">♡ Welcome Home ♡</div>
+      </div>
+      <div class="little-tv-controls">●　●　♡</div>
+    </div>
+
+    <div class="little-tv-channels">
+      <button onclick="changeLittleTVChannel('Music', this)">🎤<span>Music</span></button>
+      <button onclick="changeLittleTVChannel('Weather', this)">☀️<span>Weather</span></button>
+      <button onclick="changeLittleTVChannel('Dessert', this)">🍰<span>Dessert</span></button>
+      <button id="littleTVSecretButton"
+              onclick="changeLittleTVChannel('Secret', this)"
+              disabled>🔒<span>Secret</span></button>
+    </div>
+
+    <p class="little-tv-progress" id="littleTVProgress">♡ Discover all 3 channels ♡</p>
+    <div class="little-tv-story" id="littleTVStory">♡ Pick a channel ♡</div>
+  </div>
+</div>
+  <script>
+const littleTVStories = {
+  Music: "🎤 电视上正在播放音乐节目。\n\n🎀：姐姐，如果我们去当练习生会出道吗？\n\n🍓：当然会了，说不定某个平行时空我跟河岚就一起出道了呢♡",
+  Weather: "☀️ 今天的天气预报。\n\n🍓：明天好像是晴天呢。\n\n🎀：那我们出去约会吧！♡",
+  Dessert: "🍰 欢迎来到甜品频道。\n\n🎀：这个蛋糕看起来好好吃\n\n🍓：那下次我们一起做吧♡",
+  Secret: "💗 ♡ SECRET CHANNEL UNLOCKED ♡\n\n🎀：姐姐！电视里怎么是我们两个？\n\n🍓：因为这里是只属于我们的频道呀♡"
+};
+
+const littleTVIcons = {
+  Music: "🎤🎶",
+  Weather: "☀️🌷",
+  Dessert: "🍰🍓",
+  Secret: "🍓💗🎀"
+};
+
+const littleTVVisited = new Set();
+
+function openLittleTV() {
+  document.getElementById("littleTVMemory").style.display = "flex";
+  document.getElementById("littleTVScreen").className = "little-tv-screen";
+  document.getElementById("littleTVPicture").textContent = "📺";
+  document.getElementById("littleTVCaption").textContent = "♡ Welcome Home ♡";
+  document.getElementById("littleTVStory").textContent = "♡ Pick a channel ♡";
+
+  document.querySelectorAll(".little-tv-channels button").forEach(button => {
+    button.classList.remove("selected");
+  });
+
+  updateLittleTVProgress();
+}
+
+function closeLittleTV() {
+  document.getElementById("littleTVMemory").style.display = "none";
+}
+
+function changeLittleTVChannel(channel, button) {
+  if (channel === "Secret" && littleTVVisited.size < 3) return;
+
+  document.getElementById("littleTVScreen").className =
+    "little-tv-screen " + channel.toLowerCase();
+
+  document.getElementById("littleTVPicture").textContent =
+    littleTVIcons[channel];
+
+  document.getElementById("littleTVCaption").textContent =
+    "♡ " + channel + " Channel ♡";
+
+  document.getElementById("littleTVStory").textContent =
+    littleTVStories[channel];
+
+  document.querySelectorAll(".little-tv-channels button").forEach(item => {
+    item.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+
+  if (channel !== "Secret") {
+    littleTVVisited.add(channel);
+  }
+
+  updateLittleTVProgress();
+}
+
+function updateLittleTVProgress() {
+  const count = littleTVVisited.size;
+  const secretButton = document.getElementById("littleTVSecretButton");
+
+  if (count === 3) {
+    secretButton.disabled = false;
+    secretButton.innerHTML = "💗<span>Secret</span>";
+    document.getElementById("littleTVProgress").textContent =
+      "♡ Secret Channel Unlocked! ♡";
+  } else {
+    document.getElementById("littleTVProgress").textContent =
+      "♡ " + count + " / 3 channels discovered ♡";
+  }
+}
+</script>
 </body>
 </html>
