@@ -2235,6 +2235,180 @@ h1 {
     transform: scale(1);
   }
 }
+  /* ===== Our Little Playlist · Room Record Player ===== */
+
+.record-player {
+  position: absolute;
+  left: 360px;
+  top: 285px;
+  width: 76px;
+  height: 58px;
+  background: #dba3b7;
+  border: 6px solid #986c7a;
+  box-shadow: 6px 6px 0 #78545f;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.record-disc {
+  position: absolute;
+  left: 8px;
+  top: 5px;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    #463744 0 5px,
+    #65505f 5px 7px
+  );
+}
+
+.record-center {
+  position: absolute;
+  left: 24px;
+  top: 19px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f6b7cc;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.record-needle {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  width: 5px;
+  height: 32px;
+  background: #fff0e8;
+  border: 2px solid #986c7a;
+  transform: rotate(25deg);
+  transform-origin: top center;
+}
+
+.record-player:hover {
+  filter: brightness(1.08);
+}
+  /* ===== Our Little Playlist · Popup ===== */
+
+.playlist-window {
+  width: min(92vw, 500px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.playlist-player {
+  margin: 20px auto;
+  padding: 28px 15px;
+  background: #fff0ed;
+  border: 4px solid #d9a5b5;
+  text-align: center;
+}
+
+.playlist-vinyl {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    #382e3c 0 10px,
+    #544457 10px 13px,
+    #382e3c 13px 18px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: playlistSpin 5s linear infinite;
+  animation-play-state: paused;
+}
+
+.playlist-vinyl.playing {
+  animation-play-state: running;
+}
+
+.playlist-vinyl-center {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: #e8a8ba;
+  border: 5px solid #f7d5df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 30px;
+}
+
+@keyframes playlistSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.playlist-song-title {
+  color: #865e6c;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.playlist-song-number {
+  color: #b8758d;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.playlist-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 22px 0;
+}
+
+.playlist-buttons button {
+  width: 65px;
+  height: 55px;
+  background: #e8a8ba;
+  border: 4px solid #b8758d;
+  color: white;
+  font-family: inherit;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.playlist-buttons button:hover {
+  background: #d88ea9;
+}
+
+.playlist-song-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.playlist-song-list button {
+  padding: 13px;
+  background: #fff0ed;
+  border: 3px solid #e2b5c4;
+  color: #865e6c;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.playlist-song-list button.active {
+  background: #e8a8ba;
+  border-color: #b8758d;
+  color: white;
+}
+
+.playlist-message {
+  color: #b8758d;
+  font-size: 12px;
+}
 </style>
 </head>
 
@@ -2303,6 +2477,13 @@ h1 {
   <div class="pixel picture"
        onclick="openGallery()"
        title="Our Little Gallery ♡">♡ ♡</div>
+  <div class="pixel record-player"
+     onclick="openPlaylist()"
+     title="Our Little Playlist ♡">
+  <div class="record-disc"></div>
+  <div class="record-center">♡</div>
+  <div class="record-needle"></div>
+</div>
 </section>
     <!-- ===== 卫生间 ===== -->
     <section class="room bathroom">
@@ -5685,6 +5866,154 @@ function resetCuddleTime() {
   document.getElementById("cuddleStory").textContent =
     "♡ Two little hearts, one cozy sofa ♡";
 }
+</script>
+  <!-- ♡ Our Little Playlist ♡ -->
+<div class="memory-overlay" id="playlistMemory" onclick="closePlaylist()">
+  <div class="memory-window playlist-window" onclick="event.stopPropagation()">
+
+    <button class="memory-close" onclick="closePlaylist()">×</button>
+
+    <h2>♡ Our Little Playlist ♡</h2>
+    <p>Every song reminds me of you ♡</p>
+
+    <div class="playlist-player">
+      <div class="playlist-vinyl" id="playlistVinyl">
+        <div class="playlist-vinyl-center">♡</div>
+      </div>
+
+      <div class="playlist-song-title" id="playlistSongTitle">
+        ♡ Choose our song ♡
+      </div>
+
+      <div class="playlist-song-number" id="playlistSongNumber">
+        00 / 00
+      </div>
+    </div>
+
+    <div class="playlist-buttons">
+      <button onclick="previousPlaylistSong()">⏮</button>
+      <button id="playlistPlayButton" onclick="togglePlaylist()">▶</button>
+      <button onclick="nextPlaylistSong()">⏭</button>
+    </div>
+
+    <div class="playlist-song-list" id="playlistSongList"></div>
+
+    <p class="playlist-message">♡ You are my favorite melody ♡</p>
+
+    <audio id="playlistAudio" preload="metadata"></audio>
+
+  </div>
+</div>
+  <script>
+/* ===== Our Little Playlist ===== */
+
+const playlistSongs = [
+  {
+    title: "♡ Our First Song ♡",
+    file: "song1.mp3"
+  },
+  {
+    title: "♡ Sweet Little Moments ♡",
+    file: "song2.mp3"
+  },
+  {
+    title: "♡ Always By Your Side ♡",
+    file: "song3.mp3"
+  }
+];
+
+let playlistCurrentIndex = -1;
+
+function openPlaylist() {
+  document.getElementById("playlistMemory").style.display = "flex";
+  renderPlaylistSongs();
+}
+
+function closePlaylist() {
+  const audio = document.getElementById("playlistAudio");
+  audio.pause();
+  document.getElementById("playlistVinyl").classList.remove("playing");
+  document.getElementById("playlistPlayButton").textContent = "▶";
+  document.getElementById("playlistMemory").style.display = "none";
+}
+
+function renderPlaylistSongs() {
+  const list = document.getElementById("playlistSongList");
+  list.innerHTML = "";
+
+  playlistSongs.forEach((song, index) => {
+    const button = document.createElement("button");
+    button.textContent = "🎵 " + song.title;
+    button.classList.toggle("active", index === playlistCurrentIndex);
+    button.onclick = function () {
+      playPlaylistSong(index);
+    };
+    list.appendChild(button);
+  });
+}
+
+function playPlaylistSong(index) {
+  if (!playlistSongs[index]) return;
+
+  playlistCurrentIndex = index;
+
+  const song = playlistSongs[index];
+  const audio = document.getElementById("playlistAudio");
+
+  audio.src = song.file;
+  audio.load();
+
+  document.getElementById("playlistSongTitle").textContent = song.title;
+  document.getElementById("playlistSongNumber").textContent =
+    String(index + 1).padStart(2, "0") +
+    " / " +
+    String(playlistSongs.length).padStart(2, "0");
+
+  audio.play().then(() => {
+    document.getElementById("playlistVinyl").classList.add("playing");
+    document.getElementById("playlistPlayButton").textContent = "⏸";
+  }).catch(() => {
+    document.getElementById("playlistVinyl").classList.remove("playing");
+    document.getElementById("playlistPlayButton").textContent = "▶";
+  });
+
+  renderPlaylistSongs();
+}
+
+function togglePlaylist() {
+  const audio = document.getElementById("playlistAudio");
+
+  if (playlistCurrentIndex === -1) {
+    playPlaylistSong(0);
+    return;
+  }
+
+  if (audio.paused) {
+    audio.play().then(() => {
+      document.getElementById("playlistVinyl").classList.add("playing");
+      document.getElementById("playlistPlayButton").textContent = "⏸";
+    }).catch(() => {});
+  } else {
+    audio.pause();
+    document.getElementById("playlistVinyl").classList.remove("playing");
+    document.getElementById("playlistPlayButton").textContent = "▶";
+  }
+}
+
+function nextPlaylistSong() {
+  const next = (playlistCurrentIndex + 1) % playlistSongs.length;
+  playPlaylistSong(next);
+}
+
+function previousPlaylistSong() {
+  const previous =
+    (playlistCurrentIndex - 1 + playlistSongs.length) % playlistSongs.length;
+  playPlaylistSong(previous);
+}
+
+document.getElementById("playlistAudio").addEventListener("ended", function () {
+  nextPlaylistSong();
+});
 </script>
 </body>
 </html>
