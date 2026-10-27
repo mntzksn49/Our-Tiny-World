@@ -4199,7 +4199,8 @@ const movieStories = {
     "🍓：都一样可爱呀。\n\n" +
     "🎀：姐姐又在逗我！♡"
 };
-
+let horrorWatchCount = 0;
+let horrorEasterEggTriggered = false;
 const movieVisuals = {
   Horror: {
     emoji: "👻",
@@ -4239,6 +4240,31 @@ function chooseMovie(type) {
     movieStories[type];
 
   document.getElementById("movieOptions").style.display = "none";
+
+  // ♡ Horror hidden easter egg ♡
+  if (type === "Horror") {
+    horrorWatchCount++;
+
+    if (horrorWatchCount === 3 && !horrorEasterEggTriggered) {
+      horrorEasterEggTriggered = true;
+
+      document.getElementById("movieStory").textContent =
+        "♡ SECRET MOMENT UNLOCKED ♡\n\n" +
+        "电视里突然传来一声尖叫。\n\n" +
+        "🎀：啊！姐姐！\n\n" +
+        "🍓：河岚？怎么突然抱过来了？\n\n" +
+        "🎀：……我怕姐姐害怕嘛。\n\n" +
+        "🍓：可是刚刚尖叫的是河岚呀？ㅋㅋ\n\n" +
+        "🎀：呀！不许说了。\n\n" +
+        "🍓：好吧，那就再抱紧我一点吧。♡";
+
+      document.getElementById("movieScreenContent").textContent = "💗";
+      document.getElementById("movieScreenCaption").textContent =
+        "♡ A Secret Cuddle Moment ♡";
+
+      screen.className = "movie-tv-screen romance";
+    }
+  }
 }
 
 function resetMovieNight() {
