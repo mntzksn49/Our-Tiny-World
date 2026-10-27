@@ -2764,17 +2764,24 @@ function chooseDinner(place) {
 }
 
 .gallery-photo {
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
   display: grid;
   place-items: center;
+  overflow: hidden;
   background: #f1cbd9;
   border: 4px solid #c58b9e;
+  box-sizing: border-box;
   transition: background 0.3s;
 }
 
-.gallery-photo span {
-  font-size: 43px;
-  animation: galleryFloat 2s ease-in-out infinite;
+.gallery-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
 }
 
 .gallery-photo-label {
@@ -3158,8 +3165,10 @@ function resetCoffeeTable() {
 
     <div class="gallery-photo-frame">
       <div class="gallery-photo" id="galleryPhoto">
-        <span id="galleryPhotoEmoji">🍓 ♡ 🎀</span>
-      </div>
+  <img id="galleryPhotoImage"
+       src="memory1.jpg"
+       alt="Our Little Memory">
+</div>
       <div class="gallery-photo-label" id="galleryPhotoLabel">OUR FIRST MEMORY</div>
     </div>
 
@@ -3180,18 +3189,21 @@ function resetCoffeeTable() {
 const galleryPages = [
   {
     emoji: "🎡 🍓 🎀",
+    image: "memory1.jpg",
     label: "OUR LITTLE ADVENTURE",
     background: "#f1cbd9",
     story: "🎡 今天一起去游乐园。\n\n🎀：姐姐姐姐姐姐姐姐\n\n🍓：不怕不怕我抓着你的手呢♡"
   },
   {
     emoji: "🌷 🍓 🎀",
+    image: "memory2.jpg",
     label: "A SUNNY DAY",
     background: "#f8ddc9",
     story: "🌷 春天的某个下午。\n\n🍓：河岚，过来拍照！\n\n🎀：要把我拍得好看一点哦♡"
   },
   {
     emoji: "🌙 🍓 🎀",
+    image: "memory3.jpg",
     label: "OUR FOREVER",
     background: "#b9a4d9",
     story: "🌙 夜晚，两个人靠在一起。\n\n🎀：姐姐，以后也要一直在一起。\n\n🍓：嗯，约好了♡"
@@ -3219,7 +3231,7 @@ function changeGalleryPage(direction) {
 function renderGallery() {
   const page = galleryPages[galleryPage];
 
-  document.getElementById("galleryPhotoEmoji").textContent = page.emoji;
+  document.getElementById("galleryPhotoImage").src = page.image;
   document.getElementById("galleryPhotoLabel").textContent = page.label;
   document.getElementById("galleryPhoto").style.background = page.background;
   document.getElementById("galleryStory").textContent = page.story;
