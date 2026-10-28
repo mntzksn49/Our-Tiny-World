@@ -7133,85 +7133,325 @@ function openCollectedLetters(group) {
 
 updateSecretCollection();
 </script>
-  <!-- ♡ Living Room Cuddle Time ♡ -->
-<div class="memory-overlay" id="cuddleMemory" onclick="closeCuddleTime()">
-  <div class="memory-window cuddle-window" onclick="event.stopPropagation()">
+  <!-- ♡ Sofa Whispers ♡ -->
+<style>
+#cuddleMemory .whisper-window {
+  width: min(90vw, 600px);
+  max-height: 88vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
 
-    <button class="memory-close" onclick="closeCuddleTime()">×</button>
+.whisper-scene {
+  position: relative;
+  height: 240px;
+  margin: 22px 0;
+  overflow: hidden;
+  border: 4px solid #dba5b9;
+  background: #fff1ed;
+  transition: background 1.5s;
+}
 
-    <h2>♡ Cuddle Time ♡</h2>
+.whisper-scene.is-rest {
+  background: #f3d8c5;
+}
+
+.whisper-rug {
+  position: absolute;
+  width: 78%;
+  height: 28px;
+  left: 11%;
+  bottom: 22px;
+  background: #eed1c9;
+  border: 4px solid #dfb7af;
+}
+
+.whisper-couch {
+  position: absolute;
+  width: 64%;
+  height: 100px;
+  left: 18%;
+  bottom: 48px;
+  background: #dfa0b5;
+  border: 5px solid #a96f88;
+  box-shadow: 0 8px 0 #c58aa0;
+}
+
+.whisper-couch::before,
+.whisper-couch::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 65px;
+  bottom: -5px;
+  background: #c989a2;
+  border: 4px solid #a96f88;
+}
+
+.whisper-couch::before { left: -14px; }
+.whisper-couch::after { right: -14px; }
+
+.whisper-seat {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0;
+  height: 25px;
+  background: #efb7ca;
+  border-top: 4px solid #a96f88;
+}
+
+.whisper-cushion {
+  position: absolute;
+  top: 18px;
+  width: 48px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  background: #fff0df;
+  border: 4px solid #bd8498;
+  font-size: 22px;
+  transition: left .8s, right .8s, transform .8s;
+}
+
+.whisper-cushion.strawberry { left: 12%; }
+.whisper-cushion.ribbon { right: 12%; }
+
+.is-hug .whisper-cushion.strawberry {
+  left: calc(50% - 53px);
+  transform: rotate(10deg);
+}
+
+.is-hug .whisper-cushion.ribbon {
+  right: calc(50% - 53px);
+  transform: rotate(-10deg);
+}
+
+.whisper-cups {
+  position: absolute;
+  bottom: 13px;
+  left: 0;
+  right: 0;
+  font-size: 25px;
+  text-align: center;
+}
+
+.whisper-heart {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  color: #c77d99;
+  font-size: 27px;
+  text-align: center;
+  opacity: 0;
+}
+
+.is-hug .whisper-heart,
+.is-rest .whisper-heart {
+  opacity: 1;
+  animation: whisperFloat 2s ease-in-out infinite;
+}
+
+@keyframes whisperFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.whisper-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.whisper-actions button,
+.whisper-next,
+.whisper-reset {
+  padding: 12px 6px;
+  border: 3px solid #d39aaf;
+  background: #fff0ed;
+  color: #865e6c;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.whisper-actions button span {
+  display: block;
+  margin-top: 7px;
+  font-size: 12px;
+}
+
+.whisper-actions button {
+  font-size: 25px;
+}
+
+.whisper-actions button:hover,
+.whisper-next:hover {
+  background: #f5d5e0;
+}
+
+.whisper-conversation {
+  min-height: 110px;
+  margin: 18px 0 12px;
+  padding: 14px;
+  border: 3px dashed #dfb0c1;
+  background: #fff9f5;
+  text-align: left;
+  color: #865e6c;
+  line-height: 1.8;
+}
+
+.whisper-line {
+  width: fit-content;
+  max-width: 90%;
+  margin: 8px 0;
+  padding: 9px 12px;
+  background: #f8e1e8;
+  border: 2px solid #e6becd;
+  overflow-wrap: anywhere;
+}
+
+.whisper-line.haram {
+  margin-left: auto;
+  background: #fff0df;
+}
+
+.whisper-next[hidden] {
+  display: none;
+}
+
+.whisper-reset {
+  display: block;
+  margin: 16px auto 0;
+  background: #e8a8ba;
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cuddleMemory * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+
+<div class="memory-overlay"
+     id="cuddleMemory"
+     onclick="closeCuddleTime()">
+
+  <div class="memory-window whisper-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeCuddleTime()">×</button>
+
+    <h2>♡ Sofa Whispers ♡</h2>
     <p>Our favorite place is next to each other ♡</p>
 
-    <div class="cuddle-scene">
-      <img
-  id="cuddleSprite"
-  class="cuddle-sprite"
-  src="cuddle-default.png"
-  alt="Jiwoo and Haram cuddling"
->
-      <div class="cuddle-hearts" id="cuddleHearts">♡ ♡ ♡</div>
-
-      <div class="cuddle-people" id="cuddlePeople">
-        <div class="cuddle-person cuddle-jiwoo" id="cuddleJiwoo">
-          <div class="cuddle-face">🍓</div>
-          <span>JIWOO</span>
-        </div>
-
-        <div class="cuddle-person cuddle-haram" id="cuddleHaram">
-          <div class="cuddle-face">🎀</div>
-          <span>HARAM</span>
-        </div>
+    <div class="whisper-scene" id="whisperScene"
+         role="img" aria-label="摆着草莓与蝴蝶结靠枕的粉色小沙发">
+      <div class="whisper-rug"></div>
+      <div class="whisper-couch">
+        <div class="whisper-cushion strawberry">🍓</div>
+        <div class="whisper-cushion ribbon">🎀</div>
+        <div class="whisper-seat"></div>
       </div>
-
-      <div class="cuddle-blanket" id="cuddleBlanket">♡ ♡ ♡</div>
-      <div class="cuddle-sofa"></div>
+      <div class="whisper-heart">♡ ♡</div>
+      <div class="whisper-cups">☕　☕</div>
     </div>
 
-    <p class="cuddle-status" id="cuddleStatus">
-      ♡ What shall we do together? ♡
-    </p>
+    <p id="whisperStatus">♡ 今天想怎么一起度过？ ♡</p>
 
-    <div class="cuddle-options">
-      <button onclick="chooseCuddle('Hug')">🧸<span>Hug</span></button>
-      <button onclick="chooseCuddle('Lean')">💗<span>Lean On Me</span></button>
-      <button onclick="chooseCuddle('Blanket')">🛋️<span>Blanket</span></button>
+    <div class="whisper-actions">
+      <button type="button" onclick="startSofaWhisper('hug')">
+        🧸<span>抱一会儿</span>
+      </button>
+      <button type="button" onclick="startSofaWhisper('talk')">
+        💬<span>说悄悄话</span>
+      </button>
+      <button type="button" onclick="startSofaWhisper('rest')">
+        🌙<span>陪你发呆</span>
+      </button>
     </div>
 
-    <div class="cuddle-story" id="cuddleStory">
-      ♡ Two little hearts, one cozy sofa ♡
+    <div class="whisper-conversation"
+         id="whisperConversation"
+         aria-live="polite"
+         aria-relevant="additions">
+      两只杯子，两个靠枕，刚好是我们的位置♡
     </div>
 
-    <button class="cuddle-reset" onclick="resetCuddleTime()">
-      ♡ Sit Together Again ♡
+    <button type="button" class="whisper-next"
+            id="whisperNext" onclick="nextSofaWhisper()" hidden>
+      下一句 ♡
     </button>
 
+    <button type="button" class="whisper-reset"
+            onclick="resetCuddleTime()">
+      ♡ Sit Together Again ♡
+    </button>
   </div>
 </div>
-  <script>
-/* ===== Cuddle Time ===== */
 
-let cuddleHugCount = 0;
-let cuddleSecretUnlocked = false;
+<script>
+/* ===== Sofa Whispers ===== */
 
-const cuddleStories = {
-  Hug:
-    "🧸 两个人在沙发上抱在一起。\n\n" +
-    "🎀：姐姐，再抱紧一点嘛。\n\n" +
-    "🍓：已经抱得很紧啦。\n\n" +
-    "🎀：可是还想再近一点。♡",
+const sofaWhisperStories = {
+  hug: [
+    [
+      ["haram", "🎀：姐姐，今天的抱抱还没给我。"],
+      ["jiwoo", "🍓：过来，给你补上。"],
+      ["haram", "🎀：可以多抱一会儿吗？"],
+      ["jiwoo", "🍓：可以，等你想松手的时候再松开♡"]
+    ],
+    [
+      ["jiwoo", "🍓：怎么把靠枕都挪过来了？"],
+      ["haram", "🎀：这样就只能坐得很近了。"],
+      ["jiwoo", "🍓：原来是河岚的小计划。"],
+      ["haram", "🎀：那姐姐上当了吗？♡"]
+    ]
+  ],
 
-  Lean:
-    "💗 河岚轻轻靠在志宇肩膀上。\n\n" +
-    "🍓：河岚困了吗？\n\n" +
-    "🎀：没有，就是想靠着你。\n\n" +
-    "🍓：那就一直靠着吧。♡",
+  talk: [
+    [
+      ["jiwoo", "🍓：今天怎么这么安静？"],
+      ["haram", "🎀：在想事情。"],
+      ["jiwoo", "🍓：想什么？"],
+      ["haram", "🎀：想姐姐什么时候抱我♡"]
+    ],
+    [
+      ["haram", "🎀：姐姐，我告诉你一个秘密。"],
+      ["jiwoo", "🍓：嗯，我听着。"],
+      ["haram", "🎀：今天也比昨天更喜欢你一点。"],
+      ["jiwoo", "🍓：好巧，我也是♡"]
+    ],
+    [
+      ["jiwoo", "🍓：明天想去哪里？"],
+      ["haram", "🎀：还没想好。"],
+      ["jiwoo", "🍓：那慢慢想。"],
+      ["haram", "🎀：不过同行的人已经选好了♡"]
+    ]
+  ],
 
-  Blanket:
-    "🛋️ 两个人一起钻进暖暖的小毯子。\n\n" +
-    "🎀：毯子分你一半！\n\n" +
-    "🍓：那河岚不冷吗？\n\n" +
-    "🎀：靠近一点就不冷啦。♡"
+  rest: [
+    [
+      ["haram", "🎀：我们一定要做点什么吗？"],
+      ["jiwoo", "🍓：不用呀。"],
+      ["haram", "🎀：那我就这样靠着姐姐。"],
+      ["jiwoo", "🍓：嗯，什么都不做，陪着你就好♡"]
+    ],
+    [
+      ["jiwoo", "🍓：灯光这样会不会太暗？"],
+      ["haram", "🎀：刚刚好。"],
+      ["jiwoo", "🍓：困了就休息一会儿。"],
+      ["haram", "🎀：那姐姐要陪着我哦♡"]
+    ]
+  ]
 };
+
+let sofaWhisperLines = [];
+let sofaWhisperIndex = 0;
+const sofaWhisperLast = {};
 
 function openCuddleTime() {
   document.getElementById("cuddleMemory").style.display = "flex";
@@ -7221,97 +7461,72 @@ function openCuddleTime() {
 function closeCuddleTime() {
   document.getElementById("cuddleMemory").style.display = "none";
 }
-function changeCuddleSprite(action) {
-  const sprite = document.getElementById("cuddleSprite");
 
-  const images = {
-    Default: "cuddle-default.png",
-    Hug: "cuddle-hug.png",
-    Lean: "cuddle-lean.png",
-    Blanket: "cuddle-blanket.png",
-    Kiss: "cuddle-kiss.png"
+function startSofaWhisper(mode) {
+  const stories = sofaWhisperStories[mode];
+  if (!stories) return;
+
+  // 同一种互动连续点击时，避免立刻重复同一段
+  const candidates = stories
+    .map((story, index) => index)
+    .filter(index => index !== sofaWhisperLast[mode]);
+
+  const index = candidates[
+    Math.floor(Math.random() * candidates.length)
+  ];
+
+  sofaWhisperLast[mode] = index;
+  sofaWhisperLines = stories[index];
+  sofaWhisperIndex = 0;
+
+  const scene = document.getElementById("whisperScene");
+  scene.className = "whisper-scene";
+
+  if (mode === "hug") scene.classList.add("is-hug");
+  if (mode === "rest") scene.classList.add("is-rest");
+
+  const titles = {
+    hug: "♡ 靠近一点，再近一点 ♡",
+    talk: "♡ 只说给你听 ♡",
+    rest: "♡ 今天慢一点也没关系 ♡"
   };
 
-  sprite.src = images[action];
+  document.getElementById("whisperStatus").textContent = titles[mode];
+  document.getElementById("whisperConversation").replaceChildren();
 
-  sprite.style.animation = "none";
-  void sprite.offsetWidth;
-  sprite.style.animation = "cuddleSpriteAppear 0.35s ease";
+  nextSofaWhisper();
 }
-function chooseCuddle(action) {
-  const people = document.getElementById("cuddlePeople");
-  const hearts = document.getElementById("cuddleHearts");
-  const blanket = document.getElementById("cuddleBlanket");
 
-  people.className = "cuddle-people";
-  hearts.classList.remove("show");
-  blanket.classList.remove("show");
+function nextSofaWhisper() {
+  if (sofaWhisperIndex >= sofaWhisperLines.length) return;
 
-  document.getElementById("cuddleStory").textContent =
-    cuddleStories[action];
+  const [speaker, text] = sofaWhisperLines[sofaWhisperIndex++];
+  const bubble = document.createElement("p");
 
-  if (action === "Hug") {
-    people.classList.add("hug");
-    hearts.classList.add("show");
-    cuddleHugCount++;
+  bubble.className = "whisper-line " + speaker;
+  bubble.textContent = text;
 
-    if (cuddleHugCount === 3 && !cuddleSecretUnlocked) {
-      cuddleSecretUnlocked = true;
+  document.getElementById("whisperConversation").appendChild(bubble);
 
-      document.getElementById("cuddleStory").textContent =
-        "♡ SECRET KISS UNLOCKED ♡\n\n" +
-        "🎀：姐姐，过来一点。\n\n" +
-        "🍓：嗯？怎么啦？\n\n" +
-        "🎀：啵！\n\n" +
-        "🍓：……河岚怎么突然亲我？\n\n" +
-        "🎀：因为抱抱三次以后，就可以亲亲了呀。♡";
+  const finished = sofaWhisperIndex >= sofaWhisperLines.length;
+  document.getElementById("whisperNext").hidden = finished;
 
-      document.getElementById("cuddleStatus").textContent =
-        "♡ A Secret Kiss ♡";
-    } else {
-      document.getElementById("cuddleStatus").textContent =
-        "♡ Hug Hug ♡";
-    }
+  if (finished) {
+    document.getElementById("whisperStatus").textContent =
+      "♡ 还想听什么？再选一个小互动吧 ♡";
   }
-
-  if (action === "Lean") {
-    people.classList.add("lean");
-    document.getElementById("cuddleStatus").textContent =
-      "♡ Stay Close ♡";
-  }
-
-  if (action === "Blanket") {
-  blanket.classList.add("show");
-  document.getElementById("cuddleStatus").textContent =
-    "♡ Warm & Cozy ♡";
-}
-
-// 根据选择切换像素人物图片
-if (
-  action === "Hug" &&
-  cuddleHugCount === 3 &&
-  cuddleSecretUnlocked
-) {
-  changeCuddleSprite("Kiss");
-} else {
-  changeCuddleSprite(action);
-}
-
 }
 
 function resetCuddleTime() {
-    changeCuddleSprite("Default");
-  document.getElementById("cuddlePeople").className =
-    "cuddle-people";
+  sofaWhisperLines = [];
+  sofaWhisperIndex = 0;
 
-  document.getElementById("cuddleHearts").classList.remove("show");
-  document.getElementById("cuddleBlanket").classList.remove("show");
-
-  document.getElementById("cuddleStatus").textContent =
-    "♡ What shall we do together? ♡";
-
-  document.getElementById("cuddleStory").textContent =
-    "♡ Two little hearts, one cozy sofa ♡";
+  document.getElementById("whisperScene").className = "whisper-scene";
+  document.getElementById("whisperStatus").textContent =
+    "♡ 今天想怎么一起度过？ ♡";
+  document.getElementById("whisperConversation").textContent =
+    "两只杯子，两个靠枕，刚好是我们的位置♡";
+  document.getElementById("whisperNext").hidden = true;
 }
 </script>
   <!-- ♡ Our Little Playlist ♡ -->
