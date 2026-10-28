@@ -3645,6 +3645,193 @@ top: 120px;
     animation: none;
   }
 }
+  /* ===== Coffee Table · Pixel Treats ===== */
+
+#coffeeMemory .tea-pixel {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 52px;
+  vertical-align: middle;
+}
+
+#coffeeMemory .tea-pixel i {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 咖啡杯、抹茶杯 */
+
+#coffeeMemory .tea-cup {
+  left: 7px;
+  top: 18px;
+  width: 30px;
+  height: 24px;
+  background: #fff1df;
+  border: 3px solid #9e7470;
+  box-shadow: inset -5px 0 0 #e5c8b9;
+}
+
+#coffeeMemory .tea-cup::after {
+  content: "";
+  position: absolute;
+  right: -12px;
+  top: 2px;
+  width: 10px;
+  height: 13px;
+  border: 3px solid #9e7470;
+  border-left: 0;
+}
+
+#coffeeMemory .tea-surface {
+  left: 10px;
+  top: 18px;
+  width: 24px;
+  height: 5px;
+  background: #89604d;
+}
+
+#coffeeMemory .tea-matcha .tea-surface {
+  background: #8fa66b;
+}
+
+#coffeeMemory .tea-saucer {
+  left: 3px;
+  top: 43px;
+  width: 40px;
+  height: 5px;
+  background: #fff3e2;
+  box-shadow: 0 3px 0 #bd9390;
+}
+
+#coffeeMemory .tea-steam {
+  left: 18px;
+  top: 3px;
+  width: 4px;
+  height: 9px;
+  background: #f9e3d5;
+  box-shadow: 5px 4px 0 #f9e3d5;
+}
+
+/* 珍珠奶茶 */
+
+#coffeeMemory .tea-milk-body {
+  left: 12px;
+  top: 17px;
+  width: 27px;
+  height: 32px;
+  background: #dcb895;
+  border: 3px solid #a77c74;
+  box-shadow: inset 4px 0 0 #efcfad;
+}
+
+#coffeeMemory .tea-milk-lid {
+  left: 9px;
+  top: 14px;
+  width: 33px;
+  height: 6px;
+  background: #fff0df;
+  border-bottom: 2px solid #a77c74;
+}
+
+#coffeeMemory .tea-straw {
+  left: 28px;
+  top: 1px;
+  width: 5px;
+  height: 18px;
+  background: #d78fa8;
+}
+
+#coffeeMemory .tea-pearls {
+  left: 17px;
+  top: 38px;
+  width: 4px;
+  height: 4px;
+  background: #70514b;
+  box-shadow:
+    9px 1px 0 #70514b,
+    4px -6px 0 #70514b,
+    12px -7px 0 #70514b;
+}
+
+/* 焦糖布丁 */
+
+#coffeeMemory .tea-pudding-body {
+  left: 10px;
+  top: 21px;
+  width: 30px;
+  height: 23px;
+  background: #f5d88f;
+  border: 3px solid #bd9166;
+  box-shadow: inset -5px 0 0 #e8bc73;
+}
+
+#coffeeMemory .tea-caramel {
+  left: 13px;
+  top: 17px;
+  width: 24px;
+  height: 8px;
+  background: #ac684d;
+  box-shadow: inset 0 3px 0 #c78a59;
+}
+
+/* 草莓纸杯蛋糕 */
+
+#coffeeMemory .tea-cake-wrapper {
+  left: 12px;
+  top: 30px;
+  width: 27px;
+  height: 18px;
+  border: 3px solid #bb8299;
+  background: repeating-linear-gradient(
+    90deg,
+    #e9a6bd 0 5px,
+    #f7ccda 5px 8px
+  );
+}
+
+#coffeeMemory .tea-frosting {
+  left: 9px;
+  top: 22px;
+  width: 33px;
+  height: 11px;
+  background: #fff0df;
+  box-shadow:
+    0 -7px 0 -3px #fff0df,
+    0 -13px 0 -7px #fff0df;
+}
+
+#coffeeMemory .tea-cherry {
+  left: 22px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  background: #d66e8b;
+}
+
+/* Nuneddine：焦糖色方形小点心 */
+
+#coffeeMemory .tea-cookie-body {
+  left: 9px;
+  top: 18px;
+  width: 32px;
+  height: 27px;
+  border: 3px solid #a77758;
+  background: #ddb17a;
+  box-shadow: inset -4px -4px 0 #c89561;
+}
+
+#coffeeMemory .tea-cookie-dots {
+  left: 17px;
+  top: 25px;
+  width: 4px;
+  height: 4px;
+  background: #94664f;
+  box-shadow:
+    12px 0 0 #94664f,
+    5px 9px 0 #94664f;
+}
 </style>
   
 </head>
@@ -5860,7 +6047,51 @@ function openCoffeeTable() {
 function closeCoffeeTable() {
   document.getElementById("coffeeMemory").style.display = "none";
 }
+function renderCoffeePixel(item, name) {
+  const designs = {
+    Coffee: [
+      "tea-coffee",
+      "tea-steam", "tea-cup", "tea-surface", "tea-saucer"
+    ],
+    Matcha: [
+      "tea-matcha",
+      "tea-steam", "tea-cup", "tea-surface", "tea-saucer"
+    ],
+    "Milk Tea": [
+      "tea-milk",
+      "tea-straw", "tea-milk-body", "tea-milk-lid", "tea-pearls"
+    ],
+    Pudding: [
+      "tea-pudding",
+      "tea-saucer", "tea-pudding-body", "tea-caramel"
+    ],
+    Cupcake: [
+      "tea-cupcake",
+      "tea-cake-wrapper", "tea-frosting", "tea-cherry"
+    ],
+    Nuneddine: [
+      "tea-cookie",
+      "tea-cookie-body", "tea-cookie-dots"
+    ]
+  };
 
+  const design = designs[name];
+  if (!design) return;
+
+  const sprite = document.createElement("span");
+  sprite.className = "tea-pixel " + design[0];
+  sprite.setAttribute("role", "img");
+  sprite.setAttribute("aria-label", name);
+
+  design.slice(1).forEach(className => {
+    const part = document.createElement("i");
+    part.className = className;
+    part.setAttribute("aria-hidden", "true");
+    sprite.appendChild(part);
+  });
+
+  item.replaceChildren(sprite);
+}
 function chooseCoffeeItem(emoji, name) {
   if (coffeeStep >= 3) return;
 
@@ -5869,7 +6100,7 @@ function chooseCoffeeItem(emoji, name) {
   const targets = ["coffeeDrinkOne", "coffeeDrinkTwo", "coffeeDessert"];
   const item = document.getElementById(targets[coffeeStep]);
 
-  item.textContent = emoji;
+  renderCoffeePixel(item, name);
   item.classList.remove("appear");
   void item.offsetWidth;
   item.classList.add("appear");
