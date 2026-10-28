@@ -4005,6 +4005,76 @@ top: 120px;
   color: #b8758d;
   font-size: 11px;
 }
+  /* ===== Secret Taiyaki · Perfect Pair ===== */
+
+#cookingMemory .ck-secret-pair {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 210px;
+  height: 100px;
+  z-index: 1;
+}
+
+/* 左边的小鱼朝右，右边的小鱼朝左 */
+#cookingMemory .ck-secret-pair .ck-food:first-child {
+  transform: scaleX(-1);
+}
+
+#cookingMemory .ck-secret-pair .ck-food:last-child {
+  transform: none;
+}
+
+#cookingMemory .ck-secret-pair .ck-fish-body {
+  background: #edbd72;
+  border-color: #b27c47;
+  box-shadow:
+    0 -4px 0 -2px #edbd72,
+    0 4px 0 -2px #edbd72,
+    inset 0 -6px 0 #dca059;
+}
+
+#cookingMemory .ck-secret-pair .ck-fish-tail {
+  background: #dca059;
+}
+
+#cookingMemory .ck-secret-plate {
+  width: 220px;
+}
+
+#cookingMemory .ck-secret-heart {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  color: #cf819f;
+  font-size: 24px;
+  text-align: center;
+  animation: ckSecretFloat 1.8s ease-in-out infinite;
+}
+
+#cookingMemory .ck-secret-spark {
+  position: absolute;
+  top: 72px;
+  color: #c8964d;
+  font-size: 22px;
+  animation: ckSecretFloat 1.8s ease-in-out infinite;
+}
+
+#cookingMemory .ck-secret-spark.left {
+  left: calc(50% - 125px);
+}
+
+#cookingMemory .ck-secret-spark.right {
+  right: calc(50% - 125px);
+  animation-delay: .4s;
+}
+
+@keyframes ckSecretFloat {
+  0%, 100% { transform: translateY(0); opacity: .7; }
+  50% { transform: translateY(-4px); opacity: 1; }
+}
 </style>
   
 </head>
@@ -4984,7 +5054,38 @@ function ckRender(food, phase) {
 
   worktop.appendChild(ckFoodSprite(food));
 }
+function ckShowSecretTaiyaki() {
+  const worktop = document.getElementById("cookingPot");
+  worktop.className = "ck-worktop";
+  worktop.replaceChildren();
 
+  const plate = document.createElement("div");
+  plate.className = "ck-plate ck-secret-plate";
+
+  const pair = document.createElement("div");
+  pair.className = "ck-secret-pair";
+
+  pair.appendChild(ckFoodSprite("Taiyaki"));
+  pair.appendChild(ckFoodSprite("Taiyaki"));
+
+  const heart = document.createElement("div");
+  heart.className = "ck-secret-heart";
+  heart.textContent = "♡";
+  heart.setAttribute("aria-hidden", "true");
+
+  worktop.append(plate, pair, heart);
+
+  ["left", "right"].forEach(side => {
+    const spark = document.createElement("span");
+    spark.className = "ck-secret-spark " + side;
+    spark.textContent = "✦";
+    spark.setAttribute("aria-hidden", "true");
+    worktop.appendChild(spark);
+  });
+
+  document.getElementById("ckStatus").textContent =
+    "♡ PERFECT! 爱心鲷鱼烧成功啦 ♡";
+}
 function ckSetProgress(value) {
   document.getElementById("cookingProgressBar").style.width =
     value + "%";
@@ -5113,8 +5214,9 @@ function startCooking() {
         if (food === "Taiyaki") {
           TaiyakiCount++;
 
-          if (TaiyakiCount === 3 && !TaiyakiSecretShown) {
-            TaiyakiSecretShown = true;
+          if (taiyakiCount === 3 && !taiyakiSecretShown) {
+  taiyakiSecretShown = true;
+  ckShowSecretTaiyaki();
             story =
               "♡ SECRET RECIPE UNLOCKED ♡\n\n" +
               "🎀：这次的鲷鱼烧完美啦！\n\n" +
