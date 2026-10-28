@@ -3413,6 +3413,34 @@ top: 120px;
   left: 49%;
   top: 24%;
 }
+  /* ===== 左右独立耳环 ===== */
+
+#coupleMirrorMemory .mirror-earring {
+  position: absolute;
+  z-index: 3;
+  top: 30%;
+  width: 10%;
+  aspect-ratio: 3 / 4;
+
+  background-image: url("earrings-heart.png");
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+/* 只显示原图左半边 */
+#coupleMirrorMemory .mirror-earring-left {
+  left: 29%;
+  background-position: left center;
+}
+
+/* 只显示原图右半边 */
+#coupleMirrorMemory .mirror-earring-right {
+  right: 29%;
+  background-position: right center;
+}
 </style>
   
 </head>
@@ -6346,14 +6374,31 @@ function chooseMirrorAccessory(accessory) {
     character + "MirrorAccessory"
   );
 
+  const sprite = image.closest(".mirror-sprite");
+
+  // 移除这个人物上一轮的左右耳环
+  sprite.querySelectorAll(".mirror-earring").forEach((earring) => {
+    earring.remove();
+  });
+
   image.hidden = true;
+  image.removeAttribute("src");
   image.dataset.kind = accessory;
 
-  if (selected.image) {
+  if (accessory === "earrings") {
+    // 同一张素材分别显示左、右半边
+    ["left", "right"].forEach((side) => {
+      const earring = document.createElement("span");
+
+      earring.className =
+        "mirror-earring mirror-earring-" + side;
+
+      earring.setAttribute("aria-hidden", "true");
+      sprite.appendChild(earring);
+    });
+  } else if (selected.image) {
     image.src = selected.image;
     image.hidden = false;
-  } else {
-    image.removeAttribute("src");
   }
 
   document.getElementById(
@@ -6392,6 +6437,11 @@ function updateMirrorStory() {
 }
 
 function resetCoupleMirror() {
+    document.querySelectorAll(
+    "#coupleMirrorMemory .mirror-earring"
+  ).forEach((earring) => {
+    earring.remove();
+  });
   mirrorAccessoryChoices.jiwoo = "original";
   mirrorAccessoryChoices.haram = "original";
 
