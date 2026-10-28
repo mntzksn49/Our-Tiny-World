@@ -3184,6 +3184,137 @@ top: 120px;
   border-bottom: 3px solid #d9a5b5;
   transform: translateX(-50%) rotate(45deg);
 }
+  /* ===== Hide Walking Characters ===== */
+
+#walkingJiwoo,
+#walkingHaram,
+#walkingHeart {
+  display: none !important;
+}
+  /* ===== Our Little Closet ===== */
+
+.closet-window {
+  width: min(92vw, 720px);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.closet-characters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 24px 0;
+}
+
+.closet-character {
+  background: #fff0f3;
+  border: 4px solid #d8a0b4;
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.closet-character h3 {
+  color: #b8758d;
+  font-size: 18px;
+  margin: 8px 0 15px;
+}
+
+.closet-character-stage {
+  height: 225px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #f9e0e7 0 20px,
+      #f4d3df 20px 24px
+    );
+  border: 3px solid #e4b6c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.closet-character-stage img {
+  height: 185px;
+  max-width: 95%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.closet-outfit-name {
+  margin: 14px 0;
+  color: #a96f86;
+  font-size: 13px;
+}
+
+.closet-outfit-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+}
+
+.closet-outfit-options button {
+  background: #f3c7d6;
+  border: 3px solid #c68ca2;
+  padding: 9px 7px;
+  color: #865c6c;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.closet-outfit-options button:hover {
+  background: #e9afc3;
+}
+
+.closet-outfit-options button.selected {
+  background: #d992ad;
+  color: white;
+}
+
+.closet-story {
+  background: #fff8f6;
+  border: 3px dashed #dfaebe;
+  padding: 18px;
+  margin-top: 18px;
+  color: #916675;
+  white-space: pre-line;
+  line-height: 1.9;
+  min-height: 70px;
+}
+
+.closet-reset {
+  margin-top: 18px;
+  background: #e9afc3;
+  color: white;
+  border: 3px solid #b8758d;
+  padding: 12px 18px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 520px) {
+  .closet-characters {
+    gap: 8px;
+  }
+
+  .closet-character {
+    padding: 8px 4px;
+  }
+
+  .closet-character-stage {
+    height: 170px;
+  }
+
+  .closet-character-stage img {
+    height: 145px;
+  }
+
+  .closet-outfit-options button {
+    font-size: 10px;
+  }
+}
 </style>
   
 </head>
@@ -3198,27 +3329,7 @@ top: 120px;
 
 <div class="viewport">
   <main class="house">
-    <!-- ===== Together at Home · Walking Characters ===== -->
-<div class="walking-characters" id="walkingCharacters">
-
-  <div class="walking-character jiwoo-character"
-       id="walkingJiwoo"
-       onclick="event.stopPropagation()">
-    <img src="jiwoo-front.png" alt="Jiwoo">
-    <span class="walking-name">🍓 Jiwoo</span>
-  </div>
-
-  <div class="walking-character haram-character"
-       id="walkingHaram"
-       onclick="event.stopPropagation()">
-    <img src="haram-front.png" alt="Haram">
-    <span class="walking-name">🎀 Haram</span>
-  </div>
-
-  <div class="walking-heart" id="walkingHeart">♡ ♡</div>
-  <div class="walking-dialogue" id="walkingDialogue"></div>
-
-</div>
+    
     <!-- ===== Love Mailbox · House Decoration ===== -->
 
 <div class="love-mailbox"
@@ -3343,21 +3454,7 @@ top: 120px;
     <div class="door door-entry"></div>
 
   </main>
-  <!-- ===== Walking Controls ===== -->
-<div class="walking-controls">
-
-  <button onclick="walkTogetherMode()">
-    ♡ Walk Together ♡
-  </button>
-
-  <button onclick="comeCloser()">
-    ♡ Come Closer ♡
-  </button>
-  <button onclick="holdHands()">
-  ♡ Hold Hands ♡
-</button>
-
-</div>
+  
 </div>
 <!-- 卧室床铺互动弹窗 -->
 <div class="memory-overlay" id="bedMemory" onclick="closeBedMemory()">
@@ -3396,43 +3493,197 @@ function closeBedMemory() {
   audio.currentTime = 0;
 }
 </script>
-<!-- 衣柜互动 -->
+<!-- 衣柜互动 · Our Little Closet -->
 <div class="memory-overlay" id="wardrobeMemory" onclick="closeWardrobe()">
-  <div class="memory-window" onclick="event.stopPropagation()">
+
+  <div class="memory-window closet-window" onclick="event.stopPropagation()">
+
     <button class="memory-close" onclick="closeWardrobe()">×</button>
 
-    <h2>♡ Dress Up ♡</h2>
-    <p>今天约会穿什么好呢？</p>
+    <h2>♡ Our Little Closet ♡</h2>
+    <p>What should we wear today?</p>
 
-    <div class="outfit-options">
-      <button class="outfit-option" onclick="chooseOutfit(1)">👗</button>
-      <button class="outfit-option" onclick="chooseOutfit(2)">🎀</button>
-      <button class="outfit-option" onclick="chooseOutfit(3)">🧥</button>
+    <div class="closet-characters">
+
+      <!-- Jiwoo -->
+      <div class="closet-character">
+        <h3>🍓 Jiwoo</h3>
+
+        <div class="closet-character-stage">
+          <img
+            id="closetJiwoo"
+            src="jiwoo-front.png"
+            alt="Jiwoo">
+        </div>
+
+        <div class="closet-outfit-name" id="jiwooOutfitName">
+          ♡ Pink Pajamas ♡
+        </div>
+
+        <div class="closet-outfit-options">
+          <button onclick="changeClosetOutfit('jiwoo', 'pajamas')">🌙 Pajamas</button>
+          <button onclick="changeClosetOutfit('jiwoo', 'date')">💗 Date</button>
+          <button onclick="changeClosetOutfit('jiwoo', 'winter')">🧥 Winter</button>
+        </div>
+      </div>
+
+      <!-- Haram -->
+      <div class="closet-character">
+        <h3>🎀 Haram</h3>
+
+        <div class="closet-character-stage">
+          <img
+            id="closetHaram"
+            src="haram-front.png"
+            alt="Haram">
+        </div>
+
+        <div class="closet-outfit-name" id="haramOutfitName">
+          ♡ Pink Pajamas ♡
+        </div>
+
+        <div class="closet-outfit-options">
+          <button onclick="changeClosetOutfit('haram', 'pajamas')">🌙 Pajamas</button>
+          <button onclick="changeClosetOutfit('haram', 'date')">💗 Date</button>
+          <button onclick="changeClosetOutfit('haram', 'winter')">🧥 Winter</button>
+        </div>
+      </div>
+
     </div>
 
-    <div id="outfitResult"></div>
+    <div class="closet-story" id="outfitResult">
+      ♡ Let's choose our outfits! ♡
+    </div>
+
+    <button class="closet-reset" onclick="resetCloset()">
+      ♡ Dress Up Again ♡
+    </button>
+
   </div>
 </div>
 
 <script>
+/* ===== Our Little Closet System ===== */
+
+const closetOutfits = {
+  jiwoo: {
+    pajamas: {
+      name: "Pink Pajamas",
+      image: "jiwoo-front.png"
+    },
+    date: {
+      name: "Date Outfit",
+      image: null
+    },
+    winter: {
+      name: "Winter Outfit",
+      image: null
+    }
+  },
+
+  haram: {
+    pajamas: {
+      name: "Pink Pajamas",
+      image: "haram-front.png"
+    },
+    date: {
+      name: "Date Outfit",
+      image: null
+    },
+    winter: {
+      name: "Winter Outfit",
+      image: null
+    }
+  }
+};
+
+const closetSelections = {
+  jiwoo: "pajamas",
+  haram: "pajamas"
+};
+
 function openWardrobe() {
   document.getElementById("wardrobeMemory").style.display = "flex";
-  document.getElementById("outfitResult").innerHTML = "";
+  resetCloset();
 }
 
 function closeWardrobe() {
   document.getElementById("wardrobeMemory").style.display = "none";
 }
 
-function chooseOutfit(number) {
-  const dialogues = {
-    1: "🍓：这条裙子很适合我们宝宝。<p>🎀：真的吗？那就穿这件！</p>",
-    2: "🎀：姐姐，你看这个蝴蝶结！<p>🍓：好可爱，跟你一样。</p>",
-    3: "🎀：今天有点冷呢。<p>🍓：那穿暖和一点，我牵着你。</p>"
-  };
+function changeClosetOutfit(character, outfit) {
+  const selected = closetOutfits[character][outfit];
 
-  document.getElementById("outfitResult").innerHTML =
-    "<p>" + dialogues[number] + "</p>";
+  if (!selected.image) {
+    document.getElementById("outfitResult").textContent =
+      "♡ " + selected.name + " is coming soon! ♡";
+    return;
+  }
+
+  closetSelections[character] = outfit;
+
+  const imageId = character === "jiwoo"
+    ? "closetJiwoo"
+    : "closetHaram";
+
+  const nameId = character === "jiwoo"
+    ? "jiwooOutfitName"
+    : "haramOutfitName";
+
+  document.getElementById(imageId).src = selected.image;
+
+  document.getElementById(nameId).textContent =
+    "♡ " + selected.name + " ♡";
+
+  updateClosetButtons();
+  updateClosetStory();
+}
+
+function updateClosetButtons() {
+  document.querySelectorAll(".closet-character").forEach((panel, index) => {
+    const character = index === 0 ? "jiwoo" : "haram";
+    const buttons = panel.querySelectorAll(".closet-outfit-options button");
+    const outfits = ["pajamas", "date", "winter"];
+
+    buttons.forEach((button, buttonIndex) => {
+      button.classList.toggle(
+        "selected",
+        closetSelections[character] === outfits[buttonIndex]
+      );
+    });
+  });
+}
+
+function updateClosetStory() {
+  const jiwoo = closetSelections.jiwoo;
+  const haram = closetSelections.haram;
+
+  if (jiwoo === "pajamas" && haram === "pajamas") {
+    document.getElementById("outfitResult").textContent =
+      "♡ Matching Pajamas ♡\n\n" +
+      "🎀：我们穿情侣睡衣啦！\n\n" +
+      "🍓：嗯，跟河岚穿一样的好可爱。\n\n" +
+      "🎀：那今天也一起窝在家里吧♡";
+  }
+}
+
+function resetCloset() {
+  closetSelections.jiwoo = "pajamas";
+  closetSelections.haram = "pajamas";
+
+  document.getElementById("closetJiwoo").src = "jiwoo-front.png";
+  document.getElementById("closetHaram").src = "haram-front.png";
+
+  document.getElementById("jiwooOutfitName").textContent =
+    "♡ Pink Pajamas ♡";
+
+  document.getElementById("haramOutfitName").textContent =
+    "♡ Pink Pajamas ♡";
+
+  document.getElementById("outfitResult").textContent =
+    "♡ Let's choose our outfits! ♡";
+
+  updateClosetButtons();
 }
 </script>
   
@@ -7436,213 +7687,7 @@ function resetLoveMailbox() {
 }
 </script>
   <script>
-/* ===== Together at Home · Walking System ===== */
 
-const walkingHouse = document.querySelector(".house");
-const walkingJiwoo = document.getElementById("walkingJiwoo");
-const walkingHaram = document.getElementById("walkingHaram");
-const walkingHeart = document.getElementById("walkingHeart");
-    /* ===== Four Direction Character Sprites ===== */
-
-const walkingSprites = {
-  jiwoo: {
-    front: "jiwoo-front.png",
-    back: "jiwoo-back.png",
-    left: "jiwoo-left.png",
-    right: "jiwoo-right.png"
-  },
-
-  haram: {
-    front: "haram-front.png",
-    back: "haram-back.png",
-    left: "haram-left.png",
-    right: "haram-right.png"
-  }
-};
-
-function setWalkingDirection(character, direction) {
-  const name = character.id === "walkingJiwoo" ? "jiwoo" : "haram";
-  const image = character.querySelector("img");
-
-  if (!image) return;
-
-  image.src = walkingSprites[name][direction];
-}
-
-let walkingTogether = false;
-let walkingTimers = new WeakMap();
-
-/* ===== Four Direction Walking System ===== */
-
-const characterSprites = {
-  walkingJiwoo: {
-    front: "jiwoo-front.png",
-    back: "jiwoo-back.png",
-    left: "jiwoo-left.png",
-    right: "jiwoo-right.png"
-  },
-  walkingHaram: {
-    front: "haram-front.png",
-    back: "haram-back.png",
-    left: "haram-left.png",
-    right: "haram-right.png"
-  }
-};
-
-function moveWalkingCharacter(character, x, y) {
-
-  const previousTimer = walkingTimers.get(character);
-  if (previousTimer) clearTimeout(previousTimer);
-
-  // 读取人物当前位置
-  const oldX = parseFloat(getComputedStyle(character).left);
-  const oldY = parseFloat(getComputedStyle(character).top);
-
-  const dx = x - oldX;
-  const dy = y - oldY;
-
-  // 根据移动方向选择图片
-  let direction = "front";
-
-  if (Math.abs(dx) >= Math.abs(dy)) {
-    direction = dx >= 0 ? "right" : "left";
-  } else {
-    direction = dy >= 0 ? "front" : "back";
-  }
-
-  // 切换人物素材
-  const image = character.querySelector("img");
-  const sprites = characterSprites[character.id];
-
-  if (image && sprites && (Math.abs(dx) > 1 || Math.abs(dy) > 1)) {
-    image.src = sprites[direction];
-  }
-
-  // 重新启动走路动画
-  character.classList.remove("walking");
-  void character.offsetWidth;
-  character.classList.add("walking");
-
-  // 移动到目标位置
-  character.style.left = x + "px";
-  character.style.top = y + "px";
-
-  const timer = setTimeout(() => {
-    character.classList.remove("walking");
-  }, 1500);
-
-  walkingTimers.set(character, timer);
-}
-
-function walkTogetherMode() {
-  walkingTogether = !walkingTogether;
-
-  alert(
-    walkingTogether
-      ? "♡ Walk Together mode is ON! Click the floor ♡"
-      : "♡ Walk Together mode is OFF ♡"
-  );
-}
-
-function comeCloser() {
-  const jiwooX = parseFloat(walkingJiwoo.style.left) || 280;
-  const jiwooY = parseFloat(walkingJiwoo.style.top) || 620;
-
-  moveWalkingCharacter(walkingHaram, jiwooX + 42, jiwooY);
-
-  setTimeout(() => {
-    walkingHeart.style.left = (jiwooX + 15) + "px";
-    walkingHeart.style.top = (jiwooY - 110) + "px";
-
-    walkingHeart.style.display = "block";
-    walkingHeart.style.animation = "none";
-
-    void walkingHeart.offsetWidth;
-
-    walkingHeart.style.animation =
-      "walkingHeartFloat 1.5s ease-out forwards";
-
-    setTimeout(() => {
-      walkingHeart.style.display = "none";
-    }, 1500);
-  }, 1500);
-}
-  /* ===== Hold Hands ===== */
-
-const holdHandsDialogues = [
-  "🎀：姐姐，牵手！\n🍓：好呀，过来♡",
-  "🍓：怎么突然牵我的手？\n🎀：因为想牵♡",
-  "🎀：好暖和。\n🍓：那就一直牵着我吧♡",
-  "🍓：河岚今天怎么这么黏人？\n🎀：不喜欢吗？\n🍓：喜欢得不得了♡"
-];
-
-let holdHandsDialogueTimer = null;
-let holdHandsArrivalTimer = null;
-
-function holdHands() {
-  const jiwooX = parseFloat(getComputedStyle(walkingJiwoo).left);
-  const jiwooY = parseFloat(getComputedStyle(walkingJiwoo).top);
-
-  // 取消上一轮尚未完成的牵手动画
-  clearTimeout(holdHandsArrivalTimer);
-  clearTimeout(holdHandsDialogueTimer);
-
-  const dialogue = document.getElementById("walkingDialogue");
-  dialogue.style.display = "none";
-
-  // 河岚走到志宇身边
-  moveWalkingCharacter(walkingHaram, jiwooX + 30, jiwooY);
-
-  holdHandsArrivalTimer = setTimeout(() => {
-    // 两人头顶出现爱心
-    walkingHeart.style.left = (jiwooX + 15) + "px";
-    walkingHeart.style.top = (jiwooY - 110) + "px";
-    walkingHeart.style.display = "block";
-    walkingHeart.style.animation = "none";
-
-    void walkingHeart.offsetWidth;
-
-    walkingHeart.style.animation =
-      "walkingHeartFloat 1.5s ease-out forwards";
-
-    // 随机对话
-    const randomDialogue = holdHandsDialogues[
-      Math.floor(Math.random() * holdHandsDialogues.length)
-    ];
-
-    dialogue.textContent = randomDialogue;
-    dialogue.style.left = (jiwooX + 15) + "px";
-    dialogue.style.top = (jiwooY - 185) + "px";
-    dialogue.style.display = "block";
-
-    holdHandsDialogueTimer = setTimeout(() => {
-      dialogue.style.display = "none";
-      walkingHeart.style.display = "none";
-    }, 3500);
-
-  }, 1500);
-}
-
-walkingHouse.addEventListener("click", function(event) {
-
-  if (!walkingTogether) return;
-
-  // 点击家具时，不触发移动
-  if (event.target.closest(
-    ".pixel, button, .treasure-item, .treasure-hidden"
-  )) return;
-
-  const rect = walkingHouse.getBoundingClientRect();
-
-  const x = (event.clientX - rect.left) *
-            (walkingHouse.offsetWidth / rect.width);
-
-  const y = (event.clientY - rect.top) *
-            (walkingHouse.offsetHeight / rect.height);
-
-  moveWalkingCharacter(walkingJiwoo, x - 35, y);
-  moveWalkingCharacter(walkingHaram, x + 35, y);
-});
 
 </script>
 </body>
