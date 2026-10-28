@@ -3441,6 +3441,210 @@ top: 120px;
   right: 26%;
   background-position: right center;
 }
+  /* ===== Dinner Date · Pixel Decorations ===== */
+
+#dinnerMemory .table-pixel-cake,
+#dinnerMemory .table-pixel-candle,
+#dinnerMemory .table-pixel-flowers {
+  position: relative;
+  width: 58px;
+  height: 64px;
+}
+
+#dinnerMemory .table-pixel-cake span,
+#dinnerMemory .table-pixel-candle span,
+#dinnerMemory .table-pixel-flowers span {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* 草莓奶油蛋糕 */
+
+#dinnerMemory .cake-plate {
+  left: 0;
+  bottom: 2px;
+  width: 58px;
+  height: 6px;
+  background: #fff9ef;
+  box-shadow: 0 3px 0 #c99b9e;
+}
+
+#dinnerMemory .cake-layers {
+  left: 6px;
+  bottom: 8px;
+  width: 46px;
+  height: 32px;
+  border: 3px solid #bd8590;
+  background: linear-gradient(
+    to bottom,
+    #f5d795 0 28%,
+    #fff4df 28% 43%,
+    #eaa0b5 43% 58%,
+    #fff4df 58% 72%,
+    #f5d795 72% 100%
+  );
+}
+
+#dinnerMemory .cake-cream {
+  z-index: 2;
+  left: 6px;
+  bottom: 36px;
+  width: 46px;
+  height: 9px;
+  background: #fff7e8;
+  box-shadow:
+    4px 4px 0 -1px #fff7e8,
+    -3px 3px 0 -1px #fff7e8;
+}
+
+#dinnerMemory .cake-berry {
+  z-index: 3;
+  left: 24px;
+  bottom: 45px;
+  width: 12px;
+  height: 10px;
+  background: #de627c;
+  box-shadow:
+    0 3px 0 -2px #b74662,
+    0 -4px 0 -2px #6b9366;
+}
+
+#dinnerMemory .cake-berry::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  width: 2px;
+  height: 2px;
+  background: #ffe6b2;
+  box-shadow: 5px 1px 0 #ffe6b2, 2px 5px 0 #ffe6b2;
+}
+
+/* 奶油色蜡烛与粉色烛台 */
+
+#dinnerMemory .candle-holder {
+  left: 9px;
+  bottom: 2px;
+  width: 40px;
+  height: 7px;
+  background: #c68d9f;
+  border-bottom: 3px solid #a96f85;
+  box-shadow: 5px -4px 0 -1px #e4b5c3;
+}
+
+#dinnerMemory .candle-wax {
+  left: 20px;
+  bottom: 9px;
+  width: 21px;
+  height: 33px;
+  background: #fff0cf;
+  border: 3px solid #d7b895;
+  box-shadow: inset -4px 0 0 #edd5ac;
+}
+
+#dinnerMemory .candle-wax::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 3px;
+  width: 4px;
+  height: 12px;
+  background: #fff8e7;
+}
+
+#dinnerMemory .candle-wick {
+  left: 29px;
+  bottom: 42px;
+  width: 3px;
+  height: 6px;
+  background: #926858;
+}
+
+#dinnerMemory .candle-flame {
+  left: 26px;
+  bottom: 47px;
+  width: 9px;
+  height: 12px;
+  background: #f6bd65;
+  box-shadow:
+    0 -4px 0 -2px #f6bd65,
+    inset 3px -3px 0 #ffe9a2;
+  transform-origin: center bottom;
+  animation: tableCandleFlicker 1.8s ease-in-out infinite;
+}
+
+@keyframes tableCandleFlicker {
+  0%, 100% { transform: scaleY(1) rotate(-3deg); }
+  50% { transform: scaleY(.88) rotate(4deg); }
+}
+
+/* 三朵小花与奶油白花瓶 */
+
+#dinnerMemory .flower-stems {
+  left: 28px;
+  bottom: 21px;
+  width: 4px;
+  height: 28px;
+  background: #73966b;
+  box-shadow:
+    -10px 6px 0 #73966b,
+    10px 4px 0 #73966b;
+}
+
+#dinnerMemory .flower-vase {
+  left: 16px;
+  bottom: 2px;
+  width: 29px;
+  height: 25px;
+  background: #fff2df;
+  border: 3px solid #c69a9b;
+  box-shadow: inset -5px 0 0 #ead4c4;
+}
+
+#dinnerMemory .flower-vase::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: -8px;
+  width: 17px;
+  height: 7px;
+  background: #fff2df;
+  border: 3px solid #c69a9b;
+  border-bottom: 0;
+}
+
+#dinnerMemory .flower-bloom {
+  width: 8px;
+  height: 8px;
+  background: #ffe4a0;
+  box-shadow:
+    -6px 0 0 #e99db8,
+    6px 0 0 #e99db8,
+    0 -6px 0 #e99db8,
+    0 6px 0 #e99db8;
+}
+
+#dinnerMemory .bloom-one {
+  left: 26px;
+  bottom: 49px;
+}
+
+#dinnerMemory .bloom-two {
+  left: 15px;
+  bottom: 38px;
+}
+
+#dinnerMemory .bloom-three {
+  left: 37px;
+  bottom: 41px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dinnerMemory .candle-flame {
+    animation: none;
+  }
+}
 </style>
   
 </head>
@@ -4333,17 +4537,39 @@ function takeFridgeFood(food) {
     <div class="date-table-scene">
       <div class="date-table-top" id="dateTableTop">
 
-        <div class="date-decoration tablecloth"
-             id="dateTablecloth"></div>
+        <!-- 像素草莓蛋糕 -->
+<div class="date-decoration cake"
+     id="dateCake" role="img" aria-label="草莓小蛋糕">
+  <div class="table-pixel-cake">
+    <span class="cake-berry"></span>
+    <span class="cake-cream"></span>
+    <span class="cake-layers"></span>
+    <span class="cake-plate"></span>
+  </div>
+</div>
 
-        <div class="date-decoration cake"
-             id="dateCake">🍰</div>
+<!-- 像素小蜡烛 -->
+<div class="date-decoration candle"
+     id="dateCandle" role="img" aria-label="点亮的小蜡烛">
+  <div class="table-pixel-candle">
+    <span class="candle-flame"></span>
+    <span class="candle-wick"></span>
+    <span class="candle-wax"></span>
+    <span class="candle-holder"></span>
+  </div>
+</div>
 
-        <div class="date-decoration candle"
-             id="dateCandle">🕯️</div>
-
-        <div class="date-decoration flowers"
-             id="dateFlowers">💐</div>
+<!-- 像素小花瓶 -->
+<div class="date-decoration flowers"
+     id="dateFlowers" role="img" aria-label="插着粉色小花的花瓶">
+  <div class="table-pixel-flowers">
+    <span class="flower-stems"></span>
+    <span class="flower-bloom bloom-one"></span>
+    <span class="flower-bloom bloom-two"></span>
+    <span class="flower-bloom bloom-three"></span>
+    <span class="flower-vase"></span>
+  </div>
+</div>
 
       </div>
     </div>
