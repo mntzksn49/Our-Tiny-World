@@ -3315,6 +3315,63 @@ top: 120px;
     font-size: 10px;
   }
 }
+  /* ===== Mirror Accessories ===== */
+
+#coupleMirrorMemory .couple-mirror-characters {
+  gap: 6px;
+  padding: 12px 6px;
+}
+
+#coupleMirrorMemory .couple-mirror-avatar {
+  position: relative;
+  height: 225px;
+  align-items: flex-end;
+}
+
+#coupleMirrorMemory .couple-mirror-character-img {
+  height: 210px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+#coupleMirrorMemory .couple-mirror-person:last-child
+.couple-mirror-character-img {
+  height: 200px;
+}
+
+.mirror-accessory-preview {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  font-size: 28px;
+  pointer-events: none;
+}
+
+.mirror-person-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.mirror-person-options button {
+  padding: 10px 14px;
+  border: 3px solid #d9a5b5;
+  background: #fff0ed;
+  color: #865e6c;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+#coupleMirrorMemory button.selected {
+  background: #d992ad;
+  color: white;
+}
+
+#coupleMirrorMemory .couple-mirror-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 </style>
   
 </head>
@@ -6039,177 +6096,248 @@ document.getElementById("bathSecretBunny").classList.remove("visible", "happy");
 
   </div>
 </div>
-  <!-- 浴室双人换装互动 -->
-<div class="memory-overlay" id="coupleMirrorMemory" onclick="closeCoupleMirror()">
-  <div class="memory-window couple-mirror-window" onclick="event.stopPropagation()">
-    <button class="memory-close" onclick="closeCoupleMirror()">×</button>
+  <!-- 浴室镜子 · Accessories -->
+<div class="memory-overlay"
+     id="coupleMirrorMemory"
+     onclick="closeCoupleMirror()">
+
+  <div class="memory-window couple-mirror-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeCoupleMirror()">×</button>
 
     <h2>♡ Mirror Mirror ♡</h2>
-    <p>Let's dress up together!</p>
+    <p>A little finishing touch!</p>
 
     <div class="couple-mirror-frame">
       <div class="couple-mirror-characters">
 
         <div class="couple-mirror-person">
           <div class="couple-mirror-avatar">
-  <img src="jiwoo-base.png" id="jiwooMirrorImage" class="couple-mirror-character-img" alt="Jiwoo">
-</div>
-<div class="couple-mirror-outfit" id="jiwooMirrorOutfit">♡</div>
-          <div class="couple-mirror-name">JIWOO</div>
+            <img src="jiwoo-pajamas.png"
+                 id="jiwooMirrorImage"
+                 class="couple-mirror-character-img"
+                 alt="Jiwoo">
+
+            <span class="mirror-accessory-preview"
+                  id="jiwooMirrorAccessory"></span>
+          </div>
+
+          <div class="couple-mirror-outfit"
+               id="jiwooMirrorOutfit">♡ Original ♡</div>
+          <div class="couple-mirror-name">🍓 JIWOO</div>
         </div>
 
         <div class="couple-mirror-heart">♡</div>
 
         <div class="couple-mirror-person">
           <div class="couple-mirror-avatar">
-  <img src="haram-base.png" id="haramMirrorImage" class="couple-mirror-character-img" alt="Haram">
-</div>
-<div class="couple-mirror-outfit" id="haramMirrorOutfit">♡</div>
-          <div class="couple-mirror-name">HARAM</div>
+            <img src="haram-pajamas.png"
+                 id="haramMirrorImage"
+                 class="couple-mirror-character-img"
+                 alt="Haram">
+
+            <span class="mirror-accessory-preview"
+                  id="haramMirrorAccessory"></span>
+          </div>
+
+          <div class="couple-mirror-outfit"
+               id="haramMirrorOutfit">♡ Original ♡</div>
+          <div class="couple-mirror-name">🎀 HARAM</div>
         </div>
 
       </div>
     </div>
 
+    <div class="mirror-person-options">
+      <button type="button"
+              id="mirrorSelectJiwoo"
+              onclick="selectMirrorCharacter('jiwoo')">
+        🍓 Jiwoo
+      </button>
+
+      <button type="button"
+              id="mirrorSelectHaram"
+              onclick="selectMirrorCharacter('haram')">
+        🎀 Haram
+      </button>
+    </div>
+
     <p class="couple-mirror-step" id="coupleMirrorStep">
-      ♡ Choose Jiwoo's outfit ♡
+      ♡ Choose Jiwoo's accessory ♡
     </p>
 
-    <div class="couple-mirror-options" id="coupleMirrorOptions">
-      <button onclick="chooseMirrorOutfit('Sweet')">🎀<span>Sweet</span></button>
-      <button onclick="chooseMirrorOutfit('Cozy')">🧸<span>Cozy</span></button>
-      <button onclick="chooseMirrorOutfit('Cool')">🖤<span>Cool</span></button>
+    <div class="couple-mirror-options">
+      <button type="button"
+              data-accessory="original"
+              onclick="chooseMirrorAccessory('original')">
+        ♡<span>Original</span>
+      </button>
+
+      <button type="button"
+              data-accessory="bow"
+              onclick="chooseMirrorAccessory('bow')">
+        🎀<span>Bow</span>
+      </button>
+
+      <button type="button"
+              data-accessory="flower"
+              onclick="chooseMirrorAccessory('flower')">
+        🌸<span>Flower</span>
+      </button>
+
+      <button type="button"
+              data-accessory="sparkle"
+              onclick="chooseMirrorAccessory('sparkle')">
+        ✨<span>Sparkle</span>
+      </button>
     </div>
 
     <div class="couple-mirror-story" id="coupleMirrorStory">
-      ♡ Our outfits are waiting ♡
+      ♡ Choose a little accessory! ♡
     </div>
 
-    <button class="couple-mirror-reset" onclick="resetCoupleMirror()">
-      ♡ Dress Up Again ♡
+    <button class="couple-mirror-reset"
+            onclick="resetCoupleMirror()">
+      ♡ Try Again ♡
     </button>
+
   </div>
 </div>
   <script>
-const coupleMirrorOutfits = {
-  Sweet: {
-    jiwoo: "👚",
-    haram: "👗"
-  },
-  Cozy: {
-    jiwoo: "🧥",
-    haram: "🧸"
-  },
-  Cool: {
-    jiwoo: "🖤",
-    haram: "🕶️"
-  }
+/* ===== Mirror Mirror · Accessories ===== */
+
+const mirrorAccessories = {
+  original: { name: "Original", emoji: "" },
+  bow: { name: "Bow", emoji: "🎀" },
+  flower: { name: "Flower", emoji: "🌸" },
+  sparkle: { name: "Sparkle", emoji: "✨" }
 };
 
-const coupleMirrorStories = {
-  Sweet: "🎀：我们穿情侣装出去约会吧\n\n🍓：好呀，今天想去哪里？♡",
-  Cozy: "🍓：河岚穿这套衣服好可爱。\n\n🎀：不许笑！\n\n🍓：没有笑，是喜欢♡",
-  Cool: "🎀：我这样是不是很帅？\n\n🍓：嗯，很帅气哦河岚小姐♡",
-  Mixed: "🎀：姐姐，我们穿得好像不太一样。\n\n🍓：没关系，站在一起脸很配就够啦♡"
-};
+let mirrorActiveCharacter = "jiwoo";
 
-let coupleMirrorStep = 0;
-let coupleMirrorChoices = [];
+const mirrorAccessoryChoices = {
+  jiwoo: "original",
+  haram: "original"
+};
 
 function openCoupleMirror() {
   document.getElementById("coupleMirrorMemory").style.display = "flex";
+
+  // 读取衣柜当前选择的服装
+  ["jiwoo", "haram"].forEach((character) => {
+    const imageId = character === "jiwoo"
+      ? "jiwooMirrorImage"
+      : "haramMirrorImage";
+
+    const selectedOutfit = closetSelections[character];
+
+    document.getElementById(imageId).src =
+      closetOutfits[character][selectedOutfit].image;
+  });
+
   resetCoupleMirror();
 }
 
 function closeCoupleMirror() {
   document.getElementById("coupleMirrorMemory").style.display = "none";
 }
-const coupleMirrorImages = {
-  Base: {
-    jiwoo: "jiwoo-base.png",
-    haram: "haram-base.png"
-  },
-  Sweet: {
-    jiwoo: "jiwoo-sweet.png",
-    haram: "haram-sweet.png"
-  },
-  Cozy: {
-    jiwoo: "jiwoo_cozy.png",
-    haram: "haram_cozy.png"
-  },
-    Cool: {
-    jiwoo: "jiwoo-cool.png",
-    haram: "haram-cool.png"
-  }
-};
-function chooseMirrorOutfit(style) {
-  if (coupleMirrorStep >= 2) return;
 
-  coupleMirrorChoices.push(style);
+function selectMirrorCharacter(character) {
+  if (!Object.hasOwn(mirrorAccessoryChoices, character)) return;
 
-  const character = coupleMirrorStep === 0 ? "jiwoo" : "haram";
+  mirrorActiveCharacter = character;
 
-  const imageId = character === "jiwoo"
-    ? "jiwooMirrorImage"
-    : "haramMirrorImage";
-
-  const outfitImage = coupleMirrorImages[style];
-
-  if (outfitImage) {
-    document.getElementById(imageId).src = outfitImage[character];
-  }
-
-  if (coupleMirrorStep === 0) {
-    document.getElementById("jiwooMirrorOutfit").textContent =
-      "♡ " + style + " ♡";
-
-    document.getElementById("coupleMirrorStep").textContent =
-      "♡ Choose Haram's outfit ♡";
-
-    coupleMirrorStep = 1;
-  } else {
-    document.getElementById("haramMirrorOutfit").textContent =
-      "♡ " + style + " ♡";
-
-    coupleMirrorStep = 2;
-    finishCoupleMirror();
-  }
-}
-
-function finishCoupleMirror() {
-  const jiwooStyle = coupleMirrorChoices[0];
-  const haramStyle = coupleMirrorChoices[1];
-
-  const matched = jiwooStyle === haramStyle;
+  const name = character === "jiwoo" ? "Jiwoo" : "Haram";
 
   document.getElementById("coupleMirrorStep").textContent =
-    matched ? "♡ PERFECT MATCH ♡" : "♡ Our Unique Style ♡";
+    "♡ Choose " + name + "'s accessory ♡";
 
-  document.getElementById("coupleMirrorStory").textContent =
-    matched ? coupleMirrorStories[jiwooStyle] : coupleMirrorStories.Mixed;
+  document.getElementById("mirrorSelectJiwoo").classList.toggle(
+    "selected", character === "jiwoo"
+  );
 
-  document.getElementById("coupleMirrorOptions").style.display = "none";
+  document.getElementById("mirrorSelectHaram").classList.toggle(
+    "selected", character === "haram"
+  );
+
+  document.querySelectorAll(
+    "#coupleMirrorMemory [data-accessory]"
+  ).forEach((button) => {
+    const selected = button.dataset.accessory ===
+      mirrorAccessoryChoices[character];
+
+    button.classList.toggle("selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+}
+
+function chooseMirrorAccessory(accessory) {
+  if (!Object.hasOwn(mirrorAccessories, accessory)) return;
+
+  const character = mirrorActiveCharacter;
+  const selected = mirrorAccessories[accessory];
+
+  mirrorAccessoryChoices[character] = accessory;
+
+  const prefix = character === "jiwoo" ? "jiwoo" : "haram";
+
+  document.getElementById(prefix + "MirrorAccessory").textContent =
+    selected.emoji;
+
+  document.getElementById(prefix + "MirrorOutfit").textContent =
+    "♡ " + selected.name + " ♡";
+
+  selectMirrorCharacter(character);
+  updateMirrorStory();
+}
+
+function updateMirrorStory() {
+  const jiwoo = mirrorAccessoryChoices.jiwoo;
+  const haram = mirrorAccessoryChoices.haram;
+
+  let story;
+
+  if (jiwoo === "original" && haram === "original") {
+    story =
+      "🎀：不加配饰也好看吗？\n\n" +
+      "🍓：当然，河岚本来就很可爱♡";
+  } else if (jiwoo === haram) {
+    story =
+      "🎀：姐姐，我们选了一样的！\n\n" +
+      "🍓：嗯，今天连小配饰也是情侣款♡";
+  } else if (mirrorActiveCharacter === "jiwoo") {
+    story =
+      "🍓：这个适合我吗？\n\n" +
+      "🎀：适合！怎样都好看♡";
+  } else {
+    story =
+      "🎀：姐姐，帮我看看！\n\n" +
+      "🍓：好可爱，今天就这样出门吧♡";
+  }
+
+  document.getElementById("coupleMirrorStory").textContent = story;
 }
 
 function resetCoupleMirror() {
-  coupleMirrorStep = 0;
-  coupleMirrorChoices = [];
+  mirrorAccessoryChoices.jiwoo = "original";
+  mirrorAccessoryChoices.haram = "original";
 
-  document.getElementById("jiwooMirrorOutfit").textContent = "♡";
-document.getElementById("haramMirrorOutfit").textContent = "♡";
+  ["jiwoo", "haram"].forEach((character) => {
+    document.getElementById(
+      character + "MirrorAccessory"
+    ).textContent = "";
 
-  document.getElementById("coupleMirrorStep").textContent =
-    "♡ Choose Jiwoo's outfit ♡";
+    document.getElementById(
+      character + "MirrorOutfit"
+    ).textContent = "♡ Original ♡";
+  });
 
-  document.getElementById("coupleMirrorOptions").style.display = "grid";
+  selectMirrorCharacter("jiwoo");
 
   document.getElementById("coupleMirrorStory").textContent =
-    "♡ Our outfits are waiting ♡";
-  document.getElementById("jiwooMirrorImage").src =
-  coupleMirrorImages.Base.jiwoo;
-
-document.getElementById("haramMirrorImage").src =
-  coupleMirrorImages.Base.haram;
+    "♡ Choose a little accessory! ♡";
 }
     /* ===== Movie Night ===== */
 /* ===== Secret Birthday Letters ===== */
