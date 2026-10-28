@@ -5214,8 +5214,8 @@ function startCooking() {
         if (food === "Taiyaki") {
           TaiyakiCount++;
 
-          if (taiyakiCount === 3 && !taiyakiSecretShown) {
-  taiyakiSecretShown = true;
+          if (TaiyakiCount === 3 && !TaiyakiSecretShown) {
+  TaiyakiSecretShown = true;
   ckShowSecretTaiyaki();
             story =
               "♡ SECRET RECIPE UNLOCKED ♡\n\n" +
@@ -8623,7 +8623,8 @@ function resetSkincare() {
 
 resetSkincare();
 </script>
-  
+
+<script>
 /* ===== Secret Memories Collection ===== */
 
 const secretCollectionKey = "ourTinyWorldSecretMemories";
