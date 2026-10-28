@@ -8623,7 +8623,54 @@ function resetSkincare() {
 
 resetSkincare();
 </script>
+<!-- 秘密信件收藏入口 -->
+<button type="button"
+        class="secret-collection-entry"
+        onclick="openSecretCollection()">
+  💌 Secret Letters
+</button>
 
+<!-- 秘密信件收藏弹窗 -->
+<div class="memory-overlay"
+     id="secretCollectionMemory"
+     onclick="closeSecretCollection()">
+
+  <div class="memory-window secret-collection-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeSecretCollection()">×</button>
+
+    <h2>♡ Secret Letters ♡</h2>
+    <p>Our little hidden memories</p>
+
+    <div class="secret-collection-grid">
+
+      <button type="button"
+              class="secret-collection-card locked"
+              id="collectionHorror"
+              onclick="openCollectedLetters('horror')">
+        <span class="collection-icon">🔒</span>
+        <strong>Movie Night</strong>
+        <small>??? · Locked</small>
+      </button>
+
+      <button type="button"
+              class="secret-collection-card locked"
+              id="collectionColdWar"
+              onclick="openCollectedLetters('coldwar')">
+        <span class="collection-icon">🔒</span>
+        <strong>After the Rain</strong>
+        <small>??? · Locked</small>
+      </button>
+
+    </div>
+
+    <p class="secret-collection-footer">
+      ♡ 解锁后的秘密信件，可以在这里重读 ♡
+    </p>
+  </div>
+</div>
 <script>
 /* ===== Secret Memories Collection ===== */
 
