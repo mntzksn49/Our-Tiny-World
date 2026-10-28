@@ -3832,6 +3832,179 @@ top: 120px;
     12px 0 0 #94664f,
     5px 9px 0 #94664f;
 }
+  /* ===== Our Little Fridge · Pixel Food ===== */
+
+#fridgeMemory .fridge-pixel {
+  display: inline-block;
+  position: relative;
+  width: 52px;
+  height: 58px;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+#fridgeMemory .fridge-pixel i {
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* 橙汁盒 / 牛奶盒 */
+
+#fridgeMemory .fp-carton {
+  left: 10px;
+  top: 17px;
+  width: 33px;
+  height: 37px;
+  border: 3px solid #b88770;
+  background: #f3c47e;
+  box-shadow: inset -5px 0 0 #dfa669;
+}
+
+#fridgeMemory .fp-cap {
+  left: 14px;
+  top: 8px;
+  width: 25px;
+  height: 12px;
+  background: #fff0d6;
+  border: 3px solid #b88770;
+}
+
+#fridgeMemory .fp-label {
+  left: 15px;
+  top: 29px;
+  width: 23px;
+  height: 15px;
+  background: #fff2db;
+}
+
+#fridgeMemory .juice .fp-label::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 9px;
+  height: 9px;
+  background: #e99b45;
+  box-shadow: 2px -3px 0 -1px #73936a;
+}
+
+#fridgeMemory .milk .fp-carton {
+  border-color: #a97c91;
+  background: #fff1e5;
+  box-shadow: inset -5px 0 0 #ead6d2;
+}
+
+#fridgeMemory .milk .fp-cap {
+  background: #e6adbf;
+  border-color: #a97c91;
+}
+
+#fridgeMemory .milk .fp-label {
+  background: #e6adbf;
+}
+
+#fridgeMemory .milk .fp-label::after {
+  content: "MILK";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: monospace;
+  font-size: 7px;
+  line-height: 1;
+  color: #fff8ef;
+}
+
+/* 草莓 */
+
+#fridgeMemory .fp-berry {
+  left: 13px;
+  top: 22px;
+  width: 27px;
+  height: 23px;
+  background: #de718b;
+  box-shadow:
+    0 6px 0 -2px #de718b,
+    0 11px 0 -6px #c75573,
+    inset -5px 0 0 #c75573;
+}
+
+#fridgeMemory .fp-leaves {
+  left: 22px;
+  top: 13px;
+  width: 8px;
+  height: 12px;
+  background: #779666;
+  box-shadow:
+    -7px 4px 0 -1px #779666,
+    7px 4px 0 -1px #779666;
+}
+
+#fridgeMemory .fp-seeds {
+  left: 19px;
+  top: 28px;
+  width: 3px;
+  height: 3px;
+  background: #ffe8b7;
+  box-shadow:
+    10px 0 0 #ffe8b7,
+    5px 8px 0 #ffe8b7,
+    5px 16px 0 #ffe8b7;
+}
+
+/* 粉色马卡龙 */
+
+#fridgeMemory .fp-filling {
+  left: 7px;
+  top: 30px;
+  width: 39px;
+  height: 8px;
+  background: #fff0db;
+  border: 2px solid #bc8199;
+}
+
+#fridgeMemory .fp-shell-top {
+  left: 7px;
+  top: 22px;
+  width: 39px;
+  height: 10px;
+  background: #ecaec5;
+  box-shadow:
+    0 -5px 0 -2px #ecaec5,
+    inset 0 3px 0 #f8d2df;
+}
+
+#fridgeMemory .fp-shell-bottom {
+  left: 7px;
+  top: 38px;
+  width: 39px;
+  height: 9px;
+  background: #d991ad;
+  box-shadow: 0 4px 0 -2px #bd7d98;
+}
+
+/* 牛奶盒外层不再显示方框 */
+
+#fridgeMemory .pixel-milk-decoration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: none;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#fridgeMemory .pixel-milk-decoration small {
+  color: #b8758d;
+  font-size: 11px;
+}
 </style>
   
 </head>
@@ -4557,14 +4730,22 @@ function startCooking() {
         <div class="fridge-shelf">
           <button class="fridge-food" data-food="Orange juice"
                   onclick="takeFridgeFood('Orange juice')">
-            <span>🍊</span>
+            <span class="fridge-pixel juice" role="img" aria-label="橙汁盒">
+  <i class="fp-cap"></i>
+  <i class="fp-carton"></i>
+  <i class="fp-label"></i>
+</span>
             <small>Orange Juice</small>
             <em id="countOrange">× 2</em>
           </button>
 
           <button class="fridge-food" data-food="Strawberry"
                   onclick="takeFridgeFood('Strawberry')">
-            <span>🍓</span>
+            <span class="fridge-pixel strawberry" role="img" aria-label="草莓">
+  <i class="fp-berry"></i>
+  <i class="fp-leaves"></i>
+  <i class="fp-seeds"></i>
+</span>
             <small>Strawberry</small>
             <em id="countStrawberry">× 2</em>
           </button>
@@ -4573,12 +4754,23 @@ function startCooking() {
         <div class="fridge-shelf">
           <button class="fridge-food" data-food="Macaron"
                   onclick="takeFridgeFood('Macaron')">
-            <span>🩷</span>
+            <span class="fridge-pixel macaron" role="img" aria-label="粉色马卡龙">
+  <i class="fp-filling"></i>
+  <i class="fp-shell-top"></i>
+  <i class="fp-shell-bottom"></i>
+</span>
             <small>Macarons</small>
             <em id="countMacaron">× 2</em>
           </button>
 
-          <div class="fridge-decoration">♡ MILK ♡</div>
+          <div class="fridge-decoration pixel-milk-decoration">
+  <span class="fridge-pixel milk" role="img" aria-label="牛奶盒">
+    <i class="fp-cap"></i>
+    <i class="fp-carton"></i>
+    <i class="fp-label"></i>
+  </span>
+  <small>MILK</small>
+</div>
         </div>
 
       </div>
@@ -4699,7 +4891,15 @@ function takeFridgeFood(food) {
   plateFood.classList.remove("plate-pop");
   void plateFood.offsetWidth;
 
-  plateFood.textContent = fridgeEmojis[food];
+  const source = document.querySelector(
+  '#fridgeMemory .fridge-food[data-food="' +
+  food +
+  '"] .fridge-pixel'
+);
+
+if (source) {
+  plateFood.replaceChildren(source.cloneNode(true));
+}
   plateFood.classList.add("plate-pop");
 
   document.getElementById("fridgeNote").textContent =
