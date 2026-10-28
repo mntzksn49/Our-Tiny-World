@@ -4482,99 +4482,525 @@ function renderDiary() {
 </script>
 
 <!-- 厨房料理台互动 -->
+<style>
+#cookingMemory .ck-window {
+  width: min(92vw, 620px);
+  max-height: 88vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#cookingMemory .ck-menu {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 20px 0;
+}
+
+#cookingMemory .ck-menu button,
+#cookingMemory .ck-start {
+  padding: 12px 7px;
+  border: 3px solid #d6a0b2;
+  background: #fff2eb;
+  color: #946b7c;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+#cookingMemory .ck-menu button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-size: 12px;
+}
+
+#cookingMemory button.selected {
+  background: #f0c8d6;
+  border-color: #ba7d96;
+}
+
+#cookingMemory button:disabled {
+  cursor: default;
+  opacity: .65;
+}
+
+#cookingMemory .ck-stage {
+  padding: 18px 12px;
+  background: #fff2eb;
+  border: 3px solid #dfb0c0;
+}
+
+#cookingMemory .ck-ingredients {
+  min-height: 40px;
+  color: #9c7383;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#cookingMemory .ck-worktop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  margin: 15px 0;
+  overflow: hidden;
+  background: #f8e0df;
+  border: 4px solid #d6a0b2;
+}
+
+/* 菜品共用的像素画布 */
+
+#cookingMemory .ck-food {
+  display: inline-block;
+  position: relative;
+  width: 90px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+#cookingMemory .ck-food i {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+}
+
+#cookingMemory .ck-worktop .ck-food {
+  transform: scale(1.5);
+}
+
+/* 焦糖色鱼形鲷鱼烧 */
+
+#cookingMemory .ck-fish-body {
+  left: 18px;
+  top: 21px;
+  width: 49px;
+  height: 32px;
+  background: #dba363;
+  border: 3px solid #a5754f;
+  box-shadow:
+    0 -4px 0 -2px #dba363,
+    0 4px 0 -2px #dba363,
+    inset 0 -6px 0 #c38a52;
+}
+
+#cookingMemory .ck-fish-tail {
+  left: 66px;
+  top: 22px;
+  width: 18px;
+  height: 30px;
+  background: #c78e54;
+  clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%);
+}
+
+#cookingMemory .ck-fish-eye {
+  left: 27px;
+  top: 29px;
+  width: 4px;
+  height: 4px;
+  background: #805c45;
+}
+
+#cookingMemory .ck-fish-scales {
+  left: 39px;
+  top: 29px;
+  width: 4px;
+  height: 4px;
+  border-right: 2px solid #b6804d;
+  border-bottom: 2px solid #b6804d;
+  box-shadow:
+    9px 0 0 -1px #b6804d,
+    5px 9px 0 -1px #b6804d;
+}
+
+/* 草莓塔 */
+
+#cookingMemory .ck-tart-base {
+  left: 16px;
+  top: 43px;
+  width: 59px;
+  height: 17px;
+  border: 3px solid #b98b62;
+  background: repeating-linear-gradient(
+    90deg, #e7bd80 0 7px, #d9a66d 7px 10px
+  );
+}
+
+#cookingMemory .ck-tart-cream {
+  left: 18px;
+  top: 31px;
+  width: 55px;
+  height: 14px;
+  background: #fff6df;
+  box-shadow: 0 -4px 0 -2px #fff6df;
+}
+
+#cookingMemory .ck-tart-berries {
+  left: 23px;
+  top: 20px;
+  width: 12px;
+  height: 14px;
+  background: #db718c;
+  border-top: 4px solid #7e9967;
+  box-shadow:
+    17px -5px 0 #d96783,
+    34px 0 0 #db718c;
+}
+
+/* 小火锅 */
+
+#cookingMemory .ck-pot-body {
+  left: 15px;
+  top: 35px;
+  width: 61px;
+  height: 26px;
+  background: #d69cae;
+  border: 3px solid #a8768e;
+  box-shadow: inset 0 -6px 0 #c38b9f;
+}
+
+#cookingMemory .ck-pot-body::before,
+#cookingMemory .ck-pot-body::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  width: 10px;
+  height: 9px;
+  border: 3px solid #a8768e;
+}
+
+#cookingMemory .ck-pot-body::before { left: -13px; }
+#cookingMemory .ck-pot-body::after { right: -13px; }
+
+#cookingMemory .ck-soup {
+  left: 18px;
+  top: 28px;
+  width: 55px;
+  height: 12px;
+  background: #ead1a3;
+  border: 3px solid #a8768e;
+}
+
+#cookingMemory .ck-vegetables {
+  left: 25px;
+  top: 24px;
+  width: 10px;
+  height: 9px;
+  background: #8da36f;
+  box-shadow:
+    14px 3px 0 #d99a96,
+    28px 0 0 #9bb681;
+}
+
+/* 蒸汽 */
+
+#cookingMemory .ck-steam {
+  display: none;
+  left: 28px;
+  top: 1px;
+  width: 4px;
+  height: 12px;
+  background: #fffaf1;
+  box-shadow: 17px -4px 0 #fffaf1, 34px 0 0 #fffaf1;
+}
+
+/* 鲷鱼烧模具 */
+
+#cookingMemory .ck-mold {
+  position: absolute;
+  width: 140px;
+  height: 68px;
+  background: #9a7a75;
+  border: 5px solid #765954;
+  box-shadow: 0 7px 0 #c39a8c;
+}
+
+#cookingMemory .ck-mold::after {
+  content: "";
+  position: absolute;
+  right: -37px;
+  top: 22px;
+  width: 32px;
+  height: 13px;
+  background: #92675b;
+  border: 3px solid #765954;
+}
+
+#cookingMemory .ck-mold::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 3px solid #b99a8c;
+}
+
+#cookingMemory .ck-worktop.is-baking .ck-food {
+  z-index: 1;
+  opacity: .65;
+  filter: grayscale(1);
+}
+
+/* 装盘 */
+
+#cookingMemory .ck-plate {
+  position: absolute;
+  width: 150px;
+  height: 22px;
+  top: calc(50% + 38px);
+  background: #fff7e8;
+  border: 3px solid #d9b2b4;
+  box-shadow: 0 4px 0 #e8c8c7;
+}
+
+#cookingMemory .ck-progress {
+  height: 12px;
+  margin: 16px 0;
+  background: #f2d5df;
+  border: 3px solid #d6a0b2;
+}
+
+#cookingMemory .ck-progress-fill {
+  width: 0;
+  height: 100%;
+  background: #ce8eaa;
+  transition: width .6s ease;
+}
+
+#cookingMemory .ck-status {
+  min-height: 24px;
+  margin: 10px 0;
+  font-size: 12px;
+  color: #a7748c;
+}
+
+#cookingMemory .ck-result {
+  white-space: pre-line;
+  margin-top: 18px;
+  padding: 16px;
+  background: #fff8f3;
+  border: 3px dashed #deb0c1;
+  color: #946b7c;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* 草莓逐颗放上去 */
+
+#cookingMemory .ck-worktop.is-assembling .ck-tart-berries {
+  animation: ckPlaceBerries 1.2s steps(1) forwards;
+}
+
+@keyframes ckPlaceBerries {
+  0% { opacity: 0; }
+  25% { opacity: 1; box-shadow: none; }
+  60% { box-shadow: 17px -5px 0 #d96783; }
+  100% {
+    box-shadow: 17px -5px 0 #d96783, 34px 0 0 #db718c;
+  }
+}
+
+#cookingMemory .ck-worktop.is-simmering .ck-steam,
+#cookingMemory .ck-worktop.is-baking .ck-steam {
+  display: block;
+  animation: ckSteamRise 1s ease-in-out infinite;
+}
+
+#cookingMemory .ck-worktop.is-simmering .ck-vegetables {
+  animation: ckSoupBubble .7s ease-in-out infinite alternate;
+}
+
+@keyframes ckSteamRise {
+  0%, 100% { transform: translateY(0); opacity: .6; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+
+@keyframes ckSoupBubble {
+  to { transform: translateY(-2px); }
+}
+
+@media (max-width: 380px) {
+  #cookingMemory .ck-menu { gap: 5px; }
+  #cookingMemory .ck-menu button { padding: 8px 2px; }
+  #cookingMemory .ck-menu .ck-food { transform: scale(.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cookingMemory * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+
 <div class="memory-overlay" id="cookingMemory"
      onclick="closeCooking()">
-  <div class="memory-window"
+  <div class="memory-window ck-window"
        onclick="event.stopPropagation()">
 
-    <button class="memory-close"
-            onclick="closeCooking()">×</button>
+    <button class="memory-close" onclick="closeCooking()">×</button>
 
     <h2>♡ Let's Cook Together ♡</h2>
     <p>What should we make today?</p>
 
-    <div class="cooking-menu">
-  <button class="food-option"
-          onclick="selectFood('Taiyaki', this)">
-    <span class="food-emoji">🐟</span>
-    Taiyaki
-  </button>
+    <div class="ck-menu">
+      <button type="button" data-recipe="Taiyaki"
+              onclick="selectFood('Taiyaki', this)">
+        <span class="ck-menu-art"></span>
+        Taiyaki
+      </button>
 
-  <button class="food-option"
-          onclick="selectFood('Cake', this)">
-    <span class="food-emoji">🍰</span>
-    Strawberry Tart
-  </button>
+      <button type="button" data-recipe="Cake"
+              onclick="selectFood('Cake', this)">
+        <span class="ck-menu-art"></span>
+        Strawberry Tart
+      </button>
 
-  <button class="food-option"
-          onclick="selectFood('Shabu-shabu', this)">
-    <span class="food-emoji">🍲</span>
-    Shabu-shabu
-  </button>
-</div>
+      <button type="button" data-recipe="Shabu-shabu"
+              onclick="selectFood('Shabu-shabu', this)">
+        <span class="ck-menu-art"></span>
+        Shabu-shabu
+      </button>
+    </div>
 
-<div class="cooking-stage">
-  <div class="cooking-ingredients" id="cookingIngredients">
-    ♡ Pick a recipe ♡
-  </div>
+    <div class="ck-stage">
+      <div class="ck-ingredients" id="cookingIngredients">
+        ♡ Pick a recipe ♡
+      </div>
 
-  <div class="cooking-pot" id="cookingPot">🍳</div>
+      <div class="ck-worktop" id="cookingPot">
+        ♡ Our little kitchen ♡
+      </div>
 
-  <div class="cooking-progress">
-    <div class="cooking-progress-bar"
-         id="cookingProgressBar"></div>
-  </div>
+      <p class="ck-status" id="ckStatus" aria-live="polite">
+        ♡ 今天想一起做什么？ ♡
+      </p>
 
-  <button class="cook-start"
-          id="cookStartButton"
-          onclick="startCooking()"
-          disabled>
-    ♡ START COOKING ♡
-  </button>
-</div>
+      <div class="ck-progress" id="ckProgress"
+           role="progressbar" aria-label="烹饪进度"
+           aria-valuemin="0" aria-valuemax="100"
+           aria-valuenow="0">
+        <div class="ck-progress-fill" id="cookingProgressBar"></div>
+      </div>
 
-<div class="cooking-result" id="cookingResult">
-  ♡ Choose something to cook ♡
-</div>
+      <button class="ck-start" id="cookStartButton"
+              onclick="startCooking()" disabled>
+        ♡ START COOKING ♡
+      </button>
+    </div>
+
+    <div class="ck-result" id="cookingResult" aria-live="polite">
+      ♡ Choose something to cook ♡
+    </div>
   </div>
 </div>
 
 <script>
+/* ===== Let's Cook Together · Pixel Kitchen ===== */
+
 const cookingStories = {
-  Taiyaki: "🐟 鲷鱼烧做好啦！\n\n🎀：姐姐你快来尝尝！\n\n🍓：河岚呀...好像没熟呢。",
+  Taiyaki:
+    "鲷鱼烧做好啦！\n\n🎀：姐姐你快来尝尝！\n\n" +
+    "🍓：河岚呀...好像没熟呢。",
 
-  Cake: "🍰 噔噔噔～草莓塔新鲜出炉！\n\n🍓：宝宝快来尝尝\n\n🎀：哇姐姐完全是我的天野莓啊♡",
+  Cake:
+    "噔噔噔～草莓塔新鲜出炉！\n\n🍓：宝宝快来尝尝\n\n" +
+    "🎀：哇姐姐完全是我的天野莓啊♡",
 
-  "Shabu-shabu": "🍲 今天晚上想吃什么？\n\n🎀：我们吃涮涮锅吧！\n\n🍓：看来河岚跟我又共享神经元了呢♡"
+  "Shabu-shabu":
+    "今天晚上想吃什么？\n\n🎀：我们吃涮涮锅吧！\n\n" +
+    "🍓：看来河岚跟我又共享神经元了呢♡"
 };
 
 const cookingRecipes = {
   Taiyaki: {
-    ingredients: "🥚  +  🥛  +  🐟",
-    cooking: "🔥 🐟 🔥",
-    finished: "🐟",
-    label: "Fresh Taiyaki!"
+    ingredients: "鸡蛋 ＋ 面粉 ＋ 红豆馅",
+    label: "Fresh Taiyaki!",
+    process: "♡ 合上鱼形模具，慢慢烘烤 ♡",
+    mode: "is-baking",
+    parts: [
+      "ck-fish-tail", "ck-fish-body",
+      "ck-fish-eye", "ck-fish-scales", "ck-steam"
+    ]
   },
 
   Cake: {
-    ingredients: "🍓  +  🥛  +  🍰",
-    cooking: "🥧 ♡ 🍓",
-    finished: "🍰",
-    label: "Strawberry Tart!"
+    ingredients: "草莓 ＋ 奶油 ＋ 塔皮",
+    label: "Strawberry Tart!",
+    process: "♡ 铺好奶油，放上小草莓 ♡",
+    mode: "is-assembling",
+    parts: ["ck-tart-base", "ck-tart-cream", "ck-tart-berries"]
   },
 
   "Shabu-shabu": {
-    ingredients: "🥬  +  🥩  +  🍲",
-    cooking: "♨️ 🍲 ♨️",
-    finished: "🍲",
-    label: "Shabu-shabu!"
+    ingredients: "蔬菜 ＋ 肉片 ＋ 高汤",
+    label: "Shabu-shabu!",
+    process: "♡ 咕嘟咕嘟，小锅煮开啦 ♡",
+    mode: "is-simmering",
+    parts: ["ck-pot-body", "ck-soup", "ck-vegetables", "ck-steam"]
   }
 };
 
 let selectedFood = null;
 let cookingTimer = null;
+let cookingBusy = false;
 let TaiyakiCount = 0;
 let TaiyakiSecretShown = false;
+
+function ckFoodSprite(food) {
+  const sprite = document.createElement("span");
+  sprite.className = "ck-food";
+  sprite.setAttribute("aria-hidden", "true");
+
+  cookingRecipes[food].parts.forEach(className => {
+    const part = document.createElement("i");
+    part.className = className;
+    sprite.appendChild(part);
+  });
+
+  return sprite;
+}
+
+function ckRender(food, phase) {
+  const worktop = document.getElementById("cookingPot");
+  worktop.replaceChildren();
+  worktop.className = "ck-worktop";
+
+  if (phase === "cooking") {
+    worktop.classList.add(cookingRecipes[food].mode);
+
+    if (food === "Taiyaki") {
+      const mold = document.createElement("div");
+      mold.className = "ck-mold";
+      worktop.appendChild(mold);
+    }
+  }
+
+  if (phase === "finished" && food !== "Shabu-shabu") {
+    const plate = document.createElement("div");
+    plate.className = "ck-plate";
+    worktop.appendChild(plate);
+  }
+
+  worktop.appendChild(ckFoodSprite(food));
+}
+
+function ckSetProgress(value) {
+  document.getElementById("cookingProgressBar").style.width =
+    value + "%";
+  document.getElementById("ckProgress").setAttribute(
+    "aria-valuenow", String(value)
+  );
+}
+
+function ckLockMenu(locked) {
+  document.querySelectorAll(
+    "#cookingMemory [data-recipe]"
+  ).forEach(button => {
+    button.disabled = locked;
+  });
+}
+
 function openCooking() {
   document.getElementById("cookingMemory").style.display = "flex";
   resetCooking();
@@ -4583,133 +5009,136 @@ function openCooking() {
 function closeCooking() {
   clearTimeout(cookingTimer);
   cookingTimer = null;
-
+  cookingBusy = false;
   document.getElementById("cookingMemory").style.display = "none";
 }
 
 function resetCooking() {
   clearTimeout(cookingTimer);
   cookingTimer = null;
+  cookingBusy = false;
   selectedFood = null;
 
   document.getElementById("cookingIngredients").textContent =
     "♡ Pick a recipe ♡";
-
-  document.getElementById("cookingPot").textContent = "🍳";
-  document.getElementById("cookingPot").classList.remove("is-cooking");
-
-  document.getElementById("cookingProgressBar").style.width = "0%";
-
-  document.getElementById("cookStartButton").disabled = true;
-  document.getElementById("cookStartButton").textContent =
-    "♡ START COOKING ♡";
-
+  document.getElementById("cookingPot").className = "ck-worktop";
+  document.getElementById("cookingPot").textContent =
+    "♡ Our little kitchen ♡";
+  document.getElementById("ckStatus").textContent =
+    "♡ 今天想一起做什么？ ♡";
   document.getElementById("cookingResult").textContent =
     "♡ Choose something to cook ♡";
 
-  document.querySelectorAll(".food-option").forEach(button => {
+  ckSetProgress(0);
+  ckLockMenu(false);
+
+  const start = document.getElementById("cookStartButton");
+  start.disabled = true;
+  start.textContent = "♡ START COOKING ♡";
+
+  document.querySelectorAll(
+    "#cookingMemory [data-recipe]"
+  ).forEach(button => {
     button.classList.remove("selected");
-    button.disabled = false;
   });
 }
 
 function selectFood(food, button) {
-  clearTimeout(cookingTimer);
-  cookingTimer = null;
+  if (cookingBusy || !cookingRecipes[food]) return;
+
   selectedFood = food;
+  ckSetProgress(0);
+  ckRender(food, "preview");
 
-  const recipe = cookingRecipes[food];
-
-  document.querySelectorAll(".food-option").forEach(item => {
-    item.classList.remove("selected");
+  document.querySelectorAll(
+    "#cookingMemory [data-recipe]"
+  ).forEach(item => {
+    item.classList.toggle("selected", item === button);
   });
 
-  button.classList.add("selected");
-
   document.getElementById("cookingIngredients").textContent =
-    recipe.ingredients;
-
-  document.getElementById("cookingPot").textContent = "🍳";
-  document.getElementById("cookingPot").classList.remove("is-cooking");
-
-  document.getElementById("cookingProgressBar").style.width = "0%";
-
-  const startButton = document.getElementById("cookStartButton");
-  startButton.disabled = false;
-  startButton.textContent = "♡ START COOKING ♡";
-
+    cookingRecipes[food].ingredients;
+  document.getElementById("ckStatus").textContent =
+    "♡ 食材准备好啦 ♡";
   document.getElementById("cookingResult").textContent =
     "♡ Ready to cook? ♡";
+
+  const start = document.getElementById("cookStartButton");
+  start.disabled = false;
+  start.textContent = "♡ START COOKING ♡";
 }
 
 function startCooking() {
-  if (!selectedFood) return;
+  if (!selectedFood || cookingBusy) return;
 
+  cookingBusy = true;
   const food = selectedFood;
   const recipe = cookingRecipes[food];
+  const start = document.getElementById("cookStartButton");
 
-  const pot = document.getElementById("cookingPot");
-  const progress = document.getElementById("cookingProgressBar");
-  const startButton = document.getElementById("cookStartButton");
-  const result = document.getElementById("cookingResult");
+  start.disabled = true;
+  start.textContent = "COOKING... ♡";
+  ckLockMenu(true);
+  ckSetProgress(0);
+  ckRender(food, "preview");
 
-  clearTimeout(cookingTimer);
-
-  startButton.disabled = true;
-  startButton.textContent = "COOKING... ♡";
-
-  document.querySelectorAll(".food-option").forEach(button => {
-    button.disabled = true;
-  });
-
-  pot.textContent = recipe.cooking;
-  pot.classList.add("is-cooking");
-
-  progress.style.width = "0%";
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      progress.style.width = "100%";
-    });
-  });
-
-  result.textContent = "♡ Making something delicious... ♡";
+  document.getElementById("ckStatus").textContent =
+    "♡ 准备食材中…… ♡";
+  document.getElementById("cookingResult").textContent =
+    "♡ Making something delicious... ♡";
 
   cookingTimer = setTimeout(() => {
-    cookingTimer = null;
+    ckSetProgress(35);
+    ckRender(food, "cooking");
+    document.getElementById("ckStatus").textContent = recipe.process;
 
-    pot.classList.remove("is-cooking");
-    pot.textContent = recipe.finished;
+    cookingTimer = setTimeout(() => {
+      ckSetProgress(75);
+      document.getElementById("ckStatus").textContent =
+        "♡ 快好啦，准备装盘 ♡";
 
-    if (food === "Taiyaki") {
-  TaiyakiCount++;
+      cookingTimer = setTimeout(() => {
+        cookingTimer = null;
+        cookingBusy = false;
 
-  if (TaiyakiCount === 3 && !TaiyakiSecretShown) {
-    TaiyakiSecretShown = true;
+        ckSetProgress(100);
+        ckRender(food, "finished");
 
-    result.textContent =
-      "♡ SECRET RECIPE UNLOCKED ♡\n\n" +
-      "🎀：这次的鲷鱼烧完美啦！\n\n" +
-      "🍓：怎么摆成了嘴对嘴啵啵的样子ㅋㅋ好可爱";
-  } else {
-    result.textContent =
-      "♡ " + recipe.label + " ♡\n\n" +
-      cookingStories[food];
-  }
-} else {
-  result.textContent =
-    "♡ " + recipe.label + " ♡\n\n" +
-    cookingStories[food];
+        document.getElementById("ckStatus").textContent =
+          "♡ 做好啦，一起尝尝吧 ♡";
+
+        let story =
+          "♡ " + recipe.label + " ♡\n\n" + cookingStories[food];
+
+        if (food === "Taiyaki") {
+          TaiyakiCount++;
+
+          if (TaiyakiCount === 3 && !TaiyakiSecretShown) {
+            TaiyakiSecretShown = true;
+            story =
+              "♡ SECRET RECIPE UNLOCKED ♡\n\n" +
+              "🎀：这次的鲷鱼烧完美啦！\n\n" +
+              "🍓：怎么摆成了嘴对嘴啵啵的样子ㅋㅋ好可爱";
+          }
+        }
+
+        document.getElementById("cookingResult").textContent = story;
+
+        start.disabled = false;
+        start.textContent = "♡ COOK AGAIN ♡";
+        ckLockMenu(false);
+      }, 800);
+    }, 1500);
+  }, 650);
 }
 
-    startButton.disabled = false;
-    startButton.textContent = "♡ COOK AGAIN ♡";
-
-    document.querySelectorAll(".food-option").forEach(button => {
-      button.disabled = false;
-    });
-  }, 2400);
-}
+document.querySelectorAll(
+  "#cookingMemory [data-recipe]"
+).forEach(button => {
+  button.querySelector(".ck-menu-art").appendChild(
+    ckFoodSprite(button.dataset.recipe)
+  );
+});
 </script>
 
 <!-- 冰箱互动弹窗 -->
