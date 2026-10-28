@@ -3512,7 +3512,7 @@ function closeBedMemory() {
         <div class="closet-character-stage">
           <img
             id="closetJiwoo"
-            src="jiwoo-front.png"
+            src="jiwoo-pajamas.png"
             alt="Jiwoo">
         </div>
 
@@ -3534,7 +3534,7 @@ function closeBedMemory() {
         <div class="closet-character-stage">
           <img
             id="closetHaram"
-            src="haram-front.png"
+            src="haram-pajamas.png"
             alt="Haram">
         </div>
 
@@ -3569,30 +3569,30 @@ const closetOutfits = {
   jiwoo: {
     pajamas: {
       name: "Pink Pajamas",
-      image: "jiwoo-front.png"
+      image: "jiwoo-pajamas.png"
     },
     date: {
       name: "Date Outfit",
-      image: null
+      image: "jiwoo-date.png"
     },
     winter: {
       name: "Winter Outfit",
-      image: null
+      image: "jiwoo-winter.png"
     }
   },
 
   haram: {
     pajamas: {
       name: "Pink Pajamas",
-      image: "haram-front.png"
+      image: "haram-pajamas.png"
     },
     date: {
       name: "Date Outfit",
-      image: null
+      image: "haram-date.png"
     },
     winter: {
       name: "Winter Outfit",
-      image: null
+      image: "haram-winter.png"
     }
   }
 };
@@ -3611,45 +3611,43 @@ function closeWardrobe() {
   document.getElementById("wardrobeMemory").style.display = "none";
 }
 
-function changeClosetOutfit(character, outfit) {
-  const selected = closetOutfits[character][outfit];
-
-  if (!selected.image) {
-    document.getElementById("outfitResult").textContent =
-      "♡ " + selected.name + " is coming soon! ♡";
-    return;
-  }
-
-  closetSelections[character] = outfit;
-
-  const imageId = character === "jiwoo"
-    ? "closetJiwoo"
-    : "closetHaram";
-
+function renderClosetCharacter(character) {
+  const outfit = closetOutfits[character][closetSelections[character]];
+  const imageId = character === "jiwoo" ? "closetJiwoo" : "closetHaram";
   const nameId = character === "jiwoo"
     ? "jiwooOutfitName"
     : "haramOutfitName";
 
-  document.getElementById(imageId).src = selected.image;
-
+  document.getElementById(imageId).src = outfit.image;
   document.getElementById(nameId).textContent =
-    "♡ " + selected.name + " ♡";
+    "♡ " + outfit.name + " ♡";
+}
 
+function changeClosetOutfit(character, outfit) {
+  if (!closetOutfits[character]?.[outfit]) return;
+
+  closetSelections[character] = outfit;
+
+  renderClosetCharacter(character);
   updateClosetButtons();
   updateClosetStory();
 }
 
 function updateClosetButtons() {
-  document.querySelectorAll(".closet-character").forEach((panel, index) => {
+  document.querySelectorAll(
+    "#wardrobeMemory .closet-character"
+  ).forEach((panel, index) => {
     const character = index === 0 ? "jiwoo" : "haram";
-    const buttons = panel.querySelectorAll(".closet-outfit-options button");
     const outfits = ["pajamas", "date", "winter"];
 
-    buttons.forEach((button, buttonIndex) => {
-      button.classList.toggle(
-        "selected",
-        closetSelections[character] === outfits[buttonIndex]
-      );
+    panel.querySelectorAll(
+      ".closet-outfit-options button"
+    ).forEach((button, buttonIndex) => {
+      const selected =
+        closetSelections[character] === outfits[buttonIndex];
+
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
     });
   });
 }
@@ -3658,32 +3656,44 @@ function updateClosetStory() {
   const jiwoo = closetSelections.jiwoo;
   const haram = closetSelections.haram;
 
-  if (jiwoo === "pajamas" && haram === "pajamas") {
-    document.getElementById("outfitResult").textContent =
+  const stories = {
+    pajamas:
       "♡ Matching Pajamas ♡\n\n" +
-      "🎀：我们穿情侣睡衣啦！\n\n" +
-      "🍓：嗯，跟河岚穿一样的好可爱。\n\n" +
-      "🎀：那今天也一起窝在家里吧♡";
-  }
+      "🎀：我们穿情侣睡衣啦！\n" +
+      "🍓：嗯，跟河岚穿一样的好可爱。\n" +
+      "🎀：那今天就窝在家里吧♡",
+
+    date:
+      "♡ Our Little Date ♡\n\n" +
+      "🎀：姐姐，我准备好啦！\n" +
+      "🍓：今天也好漂亮，牵着手出门吧。\n" +
+      "🎀：出发！♡",
+
+    winter:
+      "♡ Cozy Winter Together ♡\n\n" +
+      "🍓：河岚，今天冷不冷？\n" +
+      "🎀：牵着你就不冷了。\n" +
+      "🍓：那就牵紧一点♡"
+  };
+
+  document.getElementById("outfitResult").textContent =
+    jiwoo === haram
+      ? stories[jiwoo]
+      : "♡ Our Own Little Style ♡\n\n" +
+        "🎀：穿不一样的也可以吗？\n" +
+        "🍓：当然，只要跟你在一起就好♡";
 }
 
 function resetCloset() {
   closetSelections.jiwoo = "pajamas";
   closetSelections.haram = "pajamas";
 
-  document.getElementById("closetJiwoo").src = "jiwoo-front.png";
-  document.getElementById("closetHaram").src = "haram-front.png";
-
-  document.getElementById("jiwooOutfitName").textContent =
-    "♡ Pink Pajamas ♡";
-
-  document.getElementById("haramOutfitName").textContent =
-    "♡ Pink Pajamas ♡";
+  renderClosetCharacter("jiwoo");
+  renderClosetCharacter("haram");
+  updateClosetButtons();
 
   document.getElementById("outfitResult").textContent =
     "♡ Let's choose our outfits! ♡";
-
-  updateClosetButtons();
 }
 </script>
   
