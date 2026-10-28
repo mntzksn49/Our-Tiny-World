@@ -4573,8 +4573,8 @@ const cookingRecipes = {
 
 let selectedFood = null;
 let cookingTimer = null;
-let taiyakiCount = 0;
-let taiyakiSecretShown = false;
+let TaiyakiCount = 0;
+let TaiyakiSecretShown = false;
 function openCooking() {
   document.getElementById("cookingMemory").style.display = "flex";
   resetCooking();
@@ -4682,10 +4682,10 @@ function startCooking() {
     pot.textContent = recipe.finished;
 
     if (food === "Taiyaki") {
-  taiyakiCount++;
+  TaiyakiCount++;
 
-  if (taiyakiCount === 3 && !taiyakiSecretShown) {
-    taiyakiSecretShown = true;
+  if (TaiyakiCount === 3 && !TaiyakiSecretShown) {
+    TaiyakiSecretShown = true;
 
     result.textContent =
       "♡ SECRET RECIPE UNLOCKED ♡\n\n" +
