@@ -7551,58 +7551,447 @@ function turnOffMovieTV() {
   closeMovieNight();
 }
 </script>
-  <!-- 浴室护肤互动 -->
-<div class="memory-overlay" id="skincareMemory" onclick="closeSkincare()">
-  <div class="memory-window skincare-window" onclick="event.stopPropagation()">
-    <button class="memory-close" onclick="closeSkincare()">×</button>
+  <!-- 浴室护肤互动 · 双人洗漱台 -->
+<style>
+#skincareMemory .skincare-window {
+  width: min(92vw, 580px);
+  max-height: 88vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#skincareMemory .nr-scene {
+  margin: 20px 0;
+  padding: 18px 12px 0;
+  background: #f8e2e7;
+  border: 4px solid #d7a0b5;
+}
+
+#skincareMemory .nr-mirrors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+#skincareMemory .nr-mirror {
+  position: relative;
+  padding: 12px 4px 9px;
+  background: #fff7f6;
+  border: 5px solid #c48ba3;
+  border-radius: 45% 45% 8px 8px;
+  box-shadow: inset 4px 0 0 #f0d6df;
+  text-align: center;
+}
+
+#skincareMemory .nr-marker {
+  display: block;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+#skincareMemory .nr-name {
+  display: block;
+  margin-top: 8px;
+  color: #a77389;
+  font-size: 11px;
+}
+
+/* 简洁的小脸与发型 */
+
+#skincareMemory .nr-head {
+  position: relative;
+  width: 88px;
+  height: 92px;
+  margin: 8px auto 0;
+  background: #745044;
+  border: 3px solid #5c403b;
+  border-radius: 46% 46% 28% 28%;
+}
+
+#skincareMemory .nr-haram .nr-head {
+  background: #39343b;
+  border-color: #29272e;
+  border-radius: 46% 46% 18% 18%;
+}
+
+#skincareMemory .nr-skin {
+  position: absolute;
+  left: 12%;
+  top: 23%;
+  width: 76%;
+  height: 66%;
+  background: #f8d5bd;
+  border-radius: 35% 35% 42% 42%;
+}
+
+#skincareMemory .nr-jiwoo .nr-skin {
+  border-radius: 35% 35% 47% 47%;
+}
+
+#skincareMemory .nr-mask {
+  display: none;
+  position: absolute;
+  inset: 2px;
+  background: #fffaf0;
+  border: 1px solid #e7d9ca;
+  border-radius: inherit;
+}
+
+#skincareMemory .nr-eyes {
+  position: absolute;
+  left: 23%;
+  top: 40%;
+  width: 5px;
+  height: 7px;
+  background: #604a48;
+  box-shadow: 28px 0 0 #604a48;
+}
+
+#skincareMemory .nr-haram .nr-eyes {
+  height: 9px;
+}
+
+#skincareMemory .nr-mouth {
+  position: absolute;
+  left: calc(50% - 5px);
+  bottom: 20%;
+  width: 10px;
+  height: 5px;
+  border-bottom: 2px solid #be7a80;
+  border-radius: 50%;
+}
+
+#skincareMemory .nr-blush {
+  position: absolute;
+  left: 13%;
+  top: 62%;
+  width: 9px;
+  height: 4px;
+  background: #e9a6a0;
+  box-shadow: 37px 0 0 #e9a6a0;
+}
+
+#skincareMemory .nr-jiwoo .nr-skin::after {
+  content: "";
+  position: absolute;
+  right: 12%;
+  top: 58%;
+  width: 2px;
+  height: 2px;
+  background: #76544b;
+}
+
+/* 洗脸泡泡 */
+
+#skincareMemory .nr-bubbles {
+  display: none;
+  position: absolute;
+  left: -5px;
+  top: 48px;
+  width: 13px;
+  height: 13px;
+  background: #fffaf4;
+  border: 2px solid #d4e3e2;
+  border-radius: 50%;
+  box-shadow:
+    10px 11px 0 -2px #fffaf4,
+    73px 2px 0 -1px #fffaf4;
+}
+
+#skincareMemory .nr-scene[data-stage="wash"] .nr-bubbles {
+  display: block;
+  animation: nrBubbleFloat 2s ease-in-out infinite;
+}
+
+#skincareMemory .nr-scene[data-stage="mask"] .nr-mask {
+  display: block;
+}
+
+/* 面霜和完成后的星光 */
+
+#skincareMemory .nr-cream {
+  display: none;
+  position: absolute;
+  left: 12%;
+  top: 60%;
+  width: 9px;
+  height: 5px;
+  background: #fff9e9;
+  border-radius: 50%;
+  box-shadow: 37px 0 0 #fff9e9;
+}
+
+#skincareMemory .nr-scene[data-stage="cream"] .nr-cream {
+  display: block;
+}
+
+#skincareMemory .nr-spark {
+  display: none;
+  position: absolute;
+  right: -7px;
+  top: 28px;
+  color: #d4a55f;
+  font-size: 20px;
+}
+
+#skincareMemory .nr-scene[data-stage="done"] .nr-spark {
+  display: block;
+}
+
+#skincareMemory .nr-goodnight {
+  min-height: 24px;
+  margin: 10px 0;
+  color: #bd8199;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* 台面与三个像素护肤品 */
+
+#skincareMemory .nr-counter {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 30px;
+  min-height: 61px;
+  padding: 8px 5px;
+  background: #efd1c4;
+  border-top: 4px solid #bd9092;
+}
+
+#skincareMemory .nr-product {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 43px;
+  vertical-align: middle;
+  opacity: .55;
+}
+
+#skincareMemory .nr-product.active {
+  opacity: 1;
+  filter: drop-shadow(0 2px 0 #c495a6);
+}
+
+#skincareMemory .nr-bottle::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 13px;
+  width: 23px;
+  height: 29px;
+  border: 3px solid #b6879c;
+  background: #fff0dc;
+  box-shadow: inset -5px 0 0 #ead4c4;
+}
+
+#skincareMemory .nr-bottle::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 5px;
+  width: 16px;
+  height: 5px;
+  background: #ce91aa;
+  box-shadow: -3px 5px 0 -1px #ce91aa;
+}
+
+#skincareMemory .nr-packet::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 7px;
+  width: 29px;
+  height: 35px;
+  border: 3px solid #c18da3;
+  background: #f4c9d8;
+}
+
+#skincareMemory .nr-packet::after {
+  content: "♡";
+  position: absolute;
+  inset: 14px 0 0;
+  color: #a97088;
+  font-size: 18px;
+  text-align: center;
+}
+
+#skincareMemory .nr-jar::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 23px;
+  width: 31px;
+  height: 19px;
+  border: 3px solid #b58b9e;
+  background: #fff1e2;
+}
+
+#skincareMemory .nr-jar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 17px;
+  width: 35px;
+  height: 8px;
+  background: #dca7bd;
+  border: 2px solid #b58b9e;
+}
+
+#skincareMemory .skincare-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 20px;
+}
+
+#skincareMemory .skincare-actions button span {
+  margin: 0;
+}
+
+#skincareMemory .nr-dialogue {
+  margin: 15px 0;
+  padding: 12px;
+  background: #fff9f5;
+  border: 3px dashed #e2b5c3;
+  color: #865e6c;
+  text-align: left;
+}
+
+#skincareMemory .nr-dialogue p {
+  margin: 8px 0;
+  padding: 9px 12px;
+  line-height: 1.7;
+  background: #f8e2e9;
+  border-radius: 10px;
+}
+
+#skincareMemory .nr-dialogue p:nth-child(even) {
+  background: #fff0df;
+}
+
+@keyframes nrBubbleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (max-width: 380px) {
+  #skincareMemory .nr-mirrors { gap: 8px; }
+  #skincareMemory .nr-head { width: 72px; }
+  #skincareMemory .nr-counter { gap: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #skincareMemory * {
+    animation: none !important;
+  }
+}
+</style>
+
+<div class="memory-overlay" id="skincareMemory"
+     onclick="closeSkincare()">
+  <div class="memory-window skincare-window"
+       onclick="event.stopPropagation()">
+
+    <button class="memory-close"
+            onclick="closeSkincare()">×</button>
 
     <h2>♡ Our Night Routine ♡</h2>
     <p>Let's get ready for bed together!</p>
 
-    <div class="skincare-scene">
-      <div class="skincare-people">
-        <div class="skincare-person">
-          <div class="skincare-face" id="skincareJiwooFace">🍓</div>
-          <div class="skincare-person-name">JIWOO</div>
+    <div class="nr-scene" id="nrScene" data-stage="ready">
+      <div class="nr-mirrors">
+
+        <div class="nr-mirror nr-jiwoo">
+          <span class="nr-marker">🍓</span>
+          <div class="nr-head" role="img" aria-label="Jiwoo的小脸">
+            <div class="nr-skin">
+              <i class="nr-mask"></i>
+              <i class="nr-blush"></i>
+              <i class="nr-eyes"></i>
+              <i class="nr-mouth"></i>
+              <i class="nr-cream"></i>
+            </div>
+            <i class="nr-bubbles"></i>
+            <span class="nr-spark">✦</span>
+          </div>
+          <span class="nr-name">JIWOO</span>
         </div>
 
-        <div class="skincare-heart">♡</div>
-
-        <div class="skincare-person">
-          <div class="skincare-face" id="skincareHaramFace">🎀</div>
-          <div class="skincare-person-name">HARAM</div>
+        <div class="nr-mirror nr-haram">
+          <span class="nr-marker">🎀</span>
+          <div class="nr-head" role="img" aria-label="Haram的小脸">
+            <div class="nr-skin">
+              <i class="nr-mask"></i>
+              <i class="nr-blush"></i>
+              <i class="nr-eyes"></i>
+              <i class="nr-mouth"></i>
+              <i class="nr-cream"></i>
+            </div>
+            <i class="nr-bubbles"></i>
+            <span class="nr-spark">✦</span>
+          </div>
+          <span class="nr-name">HARAM</span>
         </div>
       </div>
 
-      <div class="skincare-product" id="skincareProduct">🧴</div>
+      <div class="nr-goodnight" id="nrGoodnight">
+        ♡ Our little bathroom ♡
+      </div>
+
+      <div class="nr-counter" aria-label="护肤品台面">
+        <span class="nr-product nr-bottle active"
+              data-product="0" role="img" aria-label="洗面奶"></span>
+        <span class="nr-product nr-packet"
+              data-product="1" role="img" aria-label="面膜袋"></span>
+        <span class="nr-product nr-jar"
+              data-product="2" role="img" aria-label="面霜罐"></span>
+      </div>
     </div>
 
-    <p class="skincare-progress" id="skincareProgress">
-      ♡ Step 1 / 3 · Wash our faces ♡
-    </p>
+    <p class="skincare-progress" id="skincareProgress"
+       aria-live="polite"></p>
 
     <div class="skincare-actions" id="skincareActions">
-      <button onclick="nextSkincareStep()">💦<span>Face Wash</span></button>
+      <button type="button" onclick="nextSkincareStep()">
+        <i class="nr-product nr-bottle active" aria-hidden="true"></i>
+        <span id="nrActionLabel">Face Wash</span>
+      </button>
     </div>
 
-    <div class="skincare-story" id="skincareStory">
-      ♡ Our little night routine is waiting ♡
-    </div>
+    <div class="nr-dialogue" id="skincareStory"
+         aria-live="polite"></div>
 
     <button class="skincare-reset" onclick="resetSkincare()">
       ♡ Start Again ♡
     </button>
   </div>
 </div>
-  <script>
+
+<script>
+/* ===== Our Night Routine · Little Vanity ===== */
+
 let skincareStep = 0;
+let nrFinishTimer = null;
 
-const skincareStories = [
-  "💦 洗脸时间。\n\n🎀：姐姐，水好凉！\n\n🍓：那我帮你调暖一点♡",
-
-  "🎭 两个人一起敷面膜。\n\n🎀：你现在好像一只小幽灵ㅋㅋㅋ\n\n🍓：河岚也一样呀！",
-
-  "🧴 睡前护肤完成啦。\n\n🍓：河岚，脸伸过来。\n\n🎀：怎么啦？\n\n🍓：啵啵，晚安♡"
+const nrStories = [
+  [
+    "洗脸时间。",
+    "🎀：姐姐，水好凉！",
+    "🍓：那我帮你调暖一点♡"
+  ],
+  [
+    "两个人一起敷面膜。",
+    "🎀：你现在好像一只小幽灵ㅋㅋㅋ",
+    "🍓：河岚也一样呀！"
+  ],
+  [
+    "睡前护肤完成啦。",
+    "🍓：河岚，脸伸过来。",
+    "🎀：怎么啦？",
+    "🍓：啵啵，晚安♡"
+  ]
 ];
 
 function openSkincare() {
@@ -7611,122 +8000,99 @@ function openSkincare() {
 }
 
 function closeSkincare() {
+  clearTimeout(nrFinishTimer);
+  nrFinishTimer = null;
   document.getElementById("skincareMemory").style.display = "none";
+}
+
+function nrShowStory(lines) {
+  const story = document.getElementById("skincareStory");
+  story.replaceChildren();
+
+  lines.forEach(text => {
+    const bubble = document.createElement("p");
+    bubble.textContent = text;
+    story.appendChild(bubble);
+  });
+}
+
+function nrUpdateAction() {
+  const labels = ["Face Wash", "Face Mask", "Moisturizer"];
+  const icons = ["nr-bottle", "nr-packet", "nr-jar"];
+  const progress = [
+    "♡ Step 1 / 3 · Wash our faces ♡",
+    "♡ Step 2 / 3 · Face masks ♡",
+    "♡ Step 3 / 3 · Moisturizer ♡"
+  ];
+
+  const actions = document.getElementById("skincareActions");
+  const finished = skincareStep >= 3;
+  actions.style.display = finished ? "none" : "flex";
+
+  document.getElementById("skincareProgress").textContent =
+    finished
+      ? "♡ Our night routine is complete! ♡"
+      : progress[skincareStep];
+
+  if (!finished) {
+    document.getElementById("nrActionLabel").textContent =
+      labels[skincareStep];
+
+    actions.querySelector("i").className =
+      "nr-product active " + icons[skincareStep];
+  }
+
+  document.querySelectorAll(
+    "#skincareMemory .nr-counter [data-product]"
+  ).forEach(product => {
+    product.classList.toggle(
+      "active",
+      Number(product.dataset.product) === skincareStep
+    );
+  });
 }
 
 function nextSkincareStep() {
   if (skincareStep >= 3) return;
 
-  const jiwoo = document.getElementById("skincareJiwooFace");
-  const haram = document.getElementById("skincareHaramFace");
-  const product = document.getElementById("skincareProduct");
-  const progress = document.getElementById("skincareProgress");
-  const actions = document.getElementById("skincareActions");
+  const stages = ["wash", "mask", "cream"];
 
-  jiwoo.classList.remove("skincare-bounce");
-  haram.classList.remove("skincare-bounce");
-  void jiwoo.offsetWidth;
-  jiwoo.classList.add("skincare-bounce");
-  haram.classList.add("skincare-bounce");
+  document.getElementById("nrScene").dataset.stage =
+    stages[skincareStep];
 
-  document.getElementById("skincareStory").textContent =
-    skincareStories[skincareStep];
-
+  nrShowStory(nrStories[skincareStep]);
   skincareStep++;
+  nrUpdateAction();
 
-  if (skincareStep === 1) {
-    jiwoo.textContent = "🍓💦";
-    haram.textContent = "🎀💦";
-    product.textContent = "🫧";
+  if (skincareStep === 3) {
+    document.getElementById("nrGoodnight").textContent =
+      "♡ 轻轻抹匀面霜…… ♡";
 
-    progress.textContent = "♡ Step 2 / 3 · Face masks ♡";
-    actions.innerHTML =
-      '<button onclick="nextSkincareStep()">🎭<span>Face Mask</span></button>';
-
-  } else if (skincareStep === 2) {
-    jiwoo.textContent = "👻🍓";
-    haram.textContent = "👻🎀";
-    product.textContent = "🎭";
-
-    progress.textContent = "♡ Step 3 / 3 · Moisturizer ♡";
-    actions.innerHTML =
-      '<button onclick="nextSkincareStep()">🧴<span>Moisturizer</span></button>';
-
-  } else {
-    jiwoo.textContent = "🍓✨";
-    haram.textContent = "🎀✨";
-    product.textContent = "💗";
-
-    progress.textContent = "♡ Our night routine is complete! ♡";
-    actions.style.display = "none";
+    nrFinishTimer = setTimeout(() => {
+      document.getElementById("nrScene").dataset.stage = "done";
+      document.getElementById("nrGoodnight").textContent =
+        "♡ 晚安，明天也一起 ♡";
+      nrFinishTimer = null;
+    }, 1200);
   }
 }
 
 function resetSkincare() {
+  clearTimeout(nrFinishTimer);
+  nrFinishTimer = null;
   skincareStep = 0;
 
-  document.getElementById("skincareJiwooFace").textContent = "🍓";
-  document.getElementById("skincareHaramFace").textContent = "🎀";
-  document.getElementById("skincareProduct").textContent = "🧴";
+  document.getElementById("nrScene").dataset.stage = "ready";
+  document.getElementById("nrGoodnight").textContent =
+    "♡ Our little bathroom ♡";
 
-  document.getElementById("skincareProgress").textContent =
-    "♡ Step 1 / 3 · Wash our faces ♡";
-
-  const actions = document.getElementById("skincareActions");
-  actions.style.display = "flex";
-  actions.innerHTML =
-    '<button onclick="nextSkincareStep()">💦<span>Face Wash</span></button>';
-
-  document.getElementById("skincareStory").textContent =
-    "♡ Our little night routine is waiting ♡";
+  nrShowStory(["两面小镜子，陪我们一起准备晚安♡"]);
+  nrUpdateAction();
 }
+
+resetSkincare();
 </script>
-  <!-- ♡ Secret Memories Collection ♡ -->
-<div class="memory-overlay" id="secretCollectionMemory"
-     onclick="closeSecretCollection()">
-
-  <div class="memory-window secret-collection-window"
-       onclick="event.stopPropagation()">
-
-    <button class="memory-close"
-            onclick="closeSecretCollection()">×</button>
-
-    <h2>♡ Secret Memories Collection ♡</h2>
-    <p>Every little memory stays with us ♡</p>
-
-    <div class="secret-collection-grid">
-
-      <button class="secret-collection-card"
-              id="collectionHorror"
-              onclick="openCollectedLetters('horror')">
-        <span class="collection-icon">🔒</span>
-        <strong>Horror Letters</strong>
-        <small>???</small>
-      </button>
-
-      <button class="secret-collection-card"
-              id="collectionColdWar"
-              onclick="openCollectedLetters('coldwar')">
-        <span class="collection-icon">🔒</span>
-        <strong>Cold War Letter</strong>
-        <small>???</small>
-      </button>
-
-    </div>
-
-    <p class="secret-collection-footer">
-      ♡ Some memories are waiting to be discovered ♡
-    </p>
-
-  </div>
-</div>
-
-<!-- 收藏册入口 -->
-<button class="secret-collection-entry"
-        onclick="openSecretCollection()">
-  💌 Secret Memories
-</button>
-  <script>
+  
 /* ===== Secret Memories Collection ===== */
 
 const secretCollectionKey = "ourTinyWorldSecretMemories";
